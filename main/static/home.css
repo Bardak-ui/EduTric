@@ -1,0 +1,40 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #cccccc;
+}
+.container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+.header{
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* Высота верхней полоски */
+    background-color: #666666;
+}
+
+.left_panel{
+    top: 0;
+    left: 0;
+    width: 50px; /* Ширина левой полоски */
+    margin: 0 0 0;
+    height: 100vh;
+    width: 5%;
+    background-color: #999999;
+}
+.avatar {
+    position: absolute;
+    top: 0; /* Отступ сверху */
+    left: 0; /* Отступ слева */
+    width: 65px; /* Размер аватарки */
+    height: 56px; /* Размер аватарки */
+    background-color: #ffffff; /* Цвет аватарки */
+    border: 2px solid #fff; /* Обводка аватарки */
+  }
+/* 
+head #666666
+left-panel #999999
+*/
