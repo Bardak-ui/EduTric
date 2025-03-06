@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Profile, Teacher
+from .models import Profile, Teacher, FAQ
 
 def home(request):
     return render(request,'home.html')
@@ -19,5 +19,9 @@ def search_user(request):
 def ads(request):
     return render(request, 'ads.html')
 
-def FAQ(request):
-    return render(request, 'FAQ.html')
+def FAQ_LIST(request):
+    faqs = FAQ.objects.all()
+    return render(request, 'faq_list.html', {'faqs': faqs})
+
+def pay(request):
+    return render(request, 'ads.html')

@@ -1,40 +1,61 @@
-body{
+body {
     margin: 0;
     padding: 0;
     background-color: #cccccc;
+    font-family: Arial, sans-serif; /* Добавлен шрифт для улучшения читаемости */
 }
+
 .container {
     position: relative;
     width: 100%;
     height: 100vh;
-}
-.header{
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 60px; /* Высота верхней полоски */
-    background-color: #666666;
+    display: flex; /* Добавлено для гибкого расположения элементов */
+    flex-direction: column; /* Элементы располагаются вертикально */
 }
 
-.left_panel{
+.header {
+    width: 100%;
+    height: 90px; /* Высота верхней полоски */
+    background-color: #666666;
+    position: fixed; /* Фиксированное положение */
     top: 0;
     left: 0;
-    width: 50px; /* Ширина левой полоски */
-    margin: 0 0 0;
-    height: 100vh;
-    width: 5%;
-    background-color: #999999;
+    z-index: 1000; /* Убедитесь, что хедер поверх других элементов */
 }
-.avatar {
-    position: absolute;
-    top: 0; /* Отступ сверху */
-    left: 0; /* Отступ слева */
-    width: 65px; /* Размер аватарки */
-    height: 56px; /* Размер аватарки */
+
+.left_panel {
+    width: 100px; /* Ширина левой полоски */
+    min-width: 85px; /* Минимальная ширина */
+    height: 100vh;
+    background-color: #999999;
+    position: fixed; /* Фиксированное положение */
+    top: 90px; /* Смещение вниз на высоту хедера */
+    left: 0;
+    z-index: 999; /* Убедитесь, что панель под хедером */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрирование элементов по горизонтали */
+    padding-top: 20px; /* Отступ сверху */
+}
+
+.content {
+    margin-left: 100px; /* Отступ для контента, чтобы не перекрывать левую панель */
+    margin-top: 90px; /* Отступ для контента, чтобы не перекрывать хедер */
+    padding: 20px; /* Внутренний отступ для контента */
+    flex-grow: 1; /* Контент занимает оставшееся пространство */
+}
+
+.avatar img {
+    width: 98px; /* Размер аватарки */
+    height: 88px; /* Размер аватарки */
     background-color: #ffffff; /* Цвет аватарки */
-    border: 2px solid #fff; /* Обводка аватарки */
-  }
-/* 
-head #666666
-left-panel #999999
-*/
+    border: 1px solid #000000; /* Обводка аватарки */
+    display: block; /* Убрать лишние отступы */
+    margin: 0 auto; /* Центрирование аватарки */
+}
+
+.left_panel img {
+    width: 85px;
+    height: 85px;
+    margin-bottom: 30px; /* Отступ между изображениями */
+}

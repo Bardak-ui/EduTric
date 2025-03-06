@@ -8,16 +8,20 @@
     <title>Главная страница</title>
 </head>
 <body>
-    <div class="content">
-        
-        
+    <div class="content">     
         <div class="header">
-        
+            <label for="search">fdsfgdsf</label>
+            <input class='search'type="text">
         </div>
         <div class="left_panel">
-            <div class="schebule">
-                <img src="{% static '/media/ads.png' %}">
-            </div>
+            <nav>
+                <a href="{% url 'schebule' %}"><img src="{% static '/media/schedule.png' %}"></a>
+                <a href="{% url 'ads' %}"><img src="{% static '/media/ads.png' %}"></a>
+                <a href="{% url 'pay' %}"><img src="{% static '/media/pay.png' %}"></a>
+                <a href="{% url 'search_user' %}"><img src="{% static '/media/searche.png' %}"></a>
+                <img src="{% static '/media/full.png' %}">
+                <a href="{% url 'FAQ_LIST' %}"><img src="{% static '/media/faq.png' %}"></a>
+            </nav>
         </div>
         <div class="avatar">
             {% if user.profile.avatar %}
@@ -28,10 +32,22 @@
                 </a>
             {% else %}
                 <a href="{% url 'profile' %}">
-                    <div class="no-avatar">Нет загруженной аватарки</div>
+                    <img src="{% static '/media/no_avatar.jpeg' %}">
                 </a>
             {% endif %}
         </div>
     </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Навигация{% endblock %}</title>
+</head>
+<body>
+    
 </body>
 </html>
