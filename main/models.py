@@ -131,7 +131,6 @@ class Profile(models.Model):
     course = models.IntegerField()
     birthday = models.IntegerField(max_length=11)
 
-
 class FAQ(models.Model):
     question = models.CharField(max_length=255, verbose_name="Вопрос")
     answer = models.TextField(verbose_name="Ответ")
@@ -143,3 +142,30 @@ class FAQ(models.Model):
     class Meta:
         verbose_name = "FAQ"
         verbose_name_plural = "FAQs"
+
+class Schedule(models.Model):
+    WEEKDAYS = [
+        (1, "Понедельник"),
+        (2, "Вторник"),
+        (3, "Среда"),
+        (4, "Четверг"),
+        (5, "Пятница"),
+        (6, "Суббота"),
+        (7, "Воскресенье"),
+    ]
+
+    group = models.CharField(max_length=255, choices=Groups.GROUPS_CHOICES, verbose_name="Группа")
+    subject = models.CharField(max_length=255, verbose_name="Предмет")
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE ,verbose_name="Преподаватель")
+    weekday = models.IntegerField(choices=WEEKDAYS, verbose_name="День недели")
+    start_time = models.TimeField(verbose_name="Начало")
+    end_time = models.TimeField(verbose_name="Конец")
+    room = models.CharField(max_length=20, verbose_name="Аудитория")
+
+    def str(self):
+        return f"{self.group} - {self.subject} ({self.weekday()})"
+
+    class Meta:
+        verbose_name = "Занятие"
+        verbose_name_plural = "Расписание"
+        ordering = ["weekday", "start_time"]

@@ -1,13 +1,48 @@
-{% extends "base.html" %}
-    
-{% block title %}Часто задаваемые вопросы{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'FAQ.css' %}">
+    <title>{% block title %}Навигация{% endblock %}</title>
+</head>
+<body>
+    <div class="content">     
+        <div class="header">
+            <div class="searche">
+                <input class="search" type="text" id="search" style="text-align: center; font-size: 30px;" placeholder="Поиск по сайту">
+            </div>
+        </div>
+        <div class="left_panel">
+            <div class="avatar">
+                {% if user.profile.avatar %}
+                    <a href="{% url 'profile' %}">
+                        <div class="avatar-wrapper">
+                            <img src="{{ user.profile.avatar.url }}" alt="Аватар пользователя" class="avatar"/>
+                        </div>
+                    </a>
+                {% else %}
+                    <a href="{% url 'profile' %}">
+                        <img src="{% static '/media/no_avatar.jpeg' %}">
+                    </a>
+                {% endif %}
+            </div>
+            <nav>
+                <a href="{% url 'schebule' %}"><img src="{% static '/media/schedule.png' %}"></a>
+                <a href="{% url 'ads' %}"><img src="{% static '/media/ads.png' %}"></a>
+                <a href="{% url 'pay' %}"><img style="width: 100px; height: 90px;" src="{% static '/media/pay.png' %}"></a>
+                <br>
+                <a href="{% url 'search_user' %}"><img src="{% static '/media/searche.png' %}"></a>
+                <img src="{% static '/media/full.png' %}">
+                <a href="{% url 'FAQ_LIST' %}"><img src="{% static '/media/faq.png' %}"></a>
+            </nav>
+        </div>
+    </div>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
 
-{% block content %}
-    <h1>Часто задаваемые вопросы</h1>
-    {% for faq in faqs %}
-        <details>
-            <summary>{{ faq.question }}</summary>
-            <p>{{ faq.answer }}</p>
-        </details>
-    {% endfor %}
-{% endblock %}
+</body>
+</html> 

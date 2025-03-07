@@ -1,53 +1,15 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'home.css' %}">
-    <title>Главная страница</title>
-</head>
-<body>
-    <div class="content">     
-        <div class="header">
-            <label for="search">fdsfgdsf</label>
-            <input class='search'type="text">
-        </div>
-        <div class="left_panel">
-            <nav>
-                <a href="{% url 'schebule' %}"><img src="{% static '/media/schedule.png' %}"></a>
-                <a href="{% url 'ads' %}"><img src="{% static '/media/ads.png' %}"></a>
-                <a href="{% url 'pay' %}"><img src="{% static '/media/pay.png' %}"></a>
-                <a href="{% url 'search_user' %}"><img src="{% static '/media/searche.png' %}"></a>
-                <img src="{% static '/media/full.png' %}">
-                <a href="{% url 'FAQ_LIST' %}"><img src="{% static '/media/faq.png' %}"></a>
-            </nav>
-        </div>
-        <div class="avatar">
-            {% if user.profile.avatar %}
-                <a href="{% url 'profile' %}">
-                    <div class="avatar-wrapper">
-                        <img src="{{ user.profile.avatar.url }}" alt="Аватар пользователя" class="avatar"/>
-                    </div>
-                </a>
-            {% else %}
-                <a href="{% url 'profile' %}">
-                    <img src="{% static '/media/no_avatar.jpeg' %}">
-                </a>
-            {% endif %}
-        </div>
-    </div>
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Навигация{% endblock %}</title>
-</head>
-<body>
     
-</body>
-</html>
+    <title>{% block title %}Главная страница{% endblock %}</title>
+</head>
+{% block content %}
+    {% for faq in faqs %}
+        <!-- прописать структуру с графикм успеваемости ближайшее расписание группа -->
+    {% endfor %}
+{% endblock %}

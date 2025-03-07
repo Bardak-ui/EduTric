@@ -1,61 +1,77 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #cccccc;
-    font-family: Arial, sans-serif; /* Добавлен шрифт для улучшения читаемости */
+    background-color: #ccc;
 }
 
 .container {
-    position: relative;
+    position: absolute;
     width: 100%;
-    height: 100vh;
-    display: flex; /* Добавлено для гибкого расположения элементов */
-    flex-direction: column; /* Элементы располагаются вертикально */
+    min-height: 100vh; /* Используем min-height вместо height */
 }
 
 .header {
-    width: 100%;
-    height: 90px; /* Высота верхней полоски */
-    background-color: #666666;
-    position: fixed; /* Фиксированное положение */
+    position: fixed; /* Фиксируем шапку */
     top: 0;
     left: 0;
-    z-index: 1000; /* Убедитесь, что хедер поверх других элементов */
+    width: 100%;
+    height: 90px;
+    background-color: #666;
+    display: flex;
+    align-items: center; /* Выравниваем по вертикали */
+    justify-content: center; /* Выравниваем по горизонтали */
+}
+
+.searche {
+    width: 80%; /* Ширина поиска */
+    max-width: 600px; /* Максимальная ширина */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Расстояние между label и input */
+}
+
+.searche label {
+    color: #fff; /* Цвет текста */
+    font-size: 16px; /* Размер текста */
+}
+
+.searche .search {
+    flex-grow: 1; /* Растягиваем input на всё доступное пространство */
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .left_panel {
-    width: 100px; /* Ширина левой полоски */
-    min-width: 85px; /* Минимальная ширина */
-    height: 100vh;
-    background-color: #999999;
-    position: fixed; /* Фиксированное положение */
-    top: 90px; /* Смещение вниз на высоту хедера */
+    position: absolute;
+    top: 0;
     left: 0;
-    z-index: 999; /* Убедитесь, что панель под хедером */
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Центрирование элементов по горизонтали */
-    padding-top: 20px; /* Отступ сверху */
+    width: 100px;
+    height: 100vh;
+    background-color: #999;
+    z-index: 50; /* Убедимся, что панель под шапкой */
 }
 
 .content {
-    margin-left: 100px; /* Отступ для контента, чтобы не перекрывать левую панель */
-    margin-top: 90px; /* Отступ для контента, чтобы не перекрывать хедер */
-    padding: 20px; /* Внутренний отступ для контента */
-    flex-grow: 1; /* Контент занимает оставшееся пространство */
+    padding-top: 100px; /* Отступ для контента, чтобы не заезжал под шапку */
+    margin-left: 100px; /* Отступ для контента, чтобы не заезжал под левую панель */
 }
 
-.avatar img {
-    width: 98px; /* Размер аватарки */
-    height: 88px; /* Размер аватарки */
-    background-color: #ffffff; /* Цвет аватарки */
-    border: 1px solid #000000; /* Обводка аватарки */
-    display: block; /* Убрать лишние отступы */
-    margin: 0 auto; /* Центрирование аватарки */
+.content .left_panel .avatar img {
+    top: 0;
+    left: 0;
+    width: 98px;
+    height: 88px;
+    background-color: #fff;
+    border: 1px solid #000;
+    object-fit: cover; /* Для корректного отображения аватарки */
 }
 
 .left_panel img {
+    display: flex; /* Исправлено с flex на block */
     width: 85px;
     height: 85px;
-    margin-bottom: 30px; /* Отступ между изображениями */
+
+    margin: 0 auto 25px; /* Упрощён синтаксис margin */
 }
