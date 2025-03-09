@@ -1,13 +1,29 @@
 {% extends "base.html" %}
-    
-{% block title %}Часто задаваемые вопросы{% endblock %}
+{% load static %}
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'FAQ.css' %}">
+    <title>{% block title %}FAQ{% endblock %}</title>
+</head>
 {% block content %}
+    <!-- Добавляем кнопку бургер-меню -->
+    <div class="burger-menu" onclick="toggleMenu()">☰</div>
+    
     <h1>Часто задаваемые вопросы</h1>
-    {% for faq in faqs %}
-        <details>
-            <summary>{{ faq.question }}</summary>
-            <p>{{ faq.answer }}</p>
-        </details>
-    {% endfor %}
+    <div class="FAQ">
+        {% for faq in faqs %}
+            <details>
+                <summary>{{ faq.question }}</summary>
+                <p>{{ faq.answer }}</p>
+            </details>
+        {% endfor %}
+    </div> 
 {% endblock %}
+
+<script>
+    function toggleMenu() {
+        document.querySelector('.left_panel').classList.toggle('active');
+    }
+</script>

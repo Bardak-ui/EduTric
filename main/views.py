@@ -1,14 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Profile, Teacher, FAQ
 from django.contrib.auth.decorators import login_required
+from .forms import CustomeUserForm, CreateProfile, CreateProfileTeacher, EditProfile, EditProfileTeacher
 
 @login_required
 def home(request):
     return render(request,'home.html')
 
-@login_required
 def register(request):
-    return render(request, 'register.html')
+    if request.method == 'POST':
+        form = CustomeUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login/')
+        else:
+            form = CustomeUserForm()
+    return render(request, 'register.html', {'form':form})
 
 @login_required
 def profile(request):

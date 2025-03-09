@@ -75,3 +75,23 @@ body {
 
     margin: 0 auto 25px; /* Упрощён синтаксис margin */
 }
+
+.FAQ{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    justify-self: right;
+    background-color: #666;
+    border: 1px solid #000;
+    border-radius: 2%;
+    width: 1700px;
+    height: 700px;
+}
+
+.h1{
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}
