@@ -121,8 +121,10 @@ class Kurator(models.Model):
     ]
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile_user', unique=True)
-    fio = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profile_user', unique=True)
+    familiy = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    otchestvo = models.CharField(max_length=255)
     faculti = models.CharField(max_length=255, choices=Faculti.FACULTI_CHOICES)
     avatar = models.ImageField(upload_to='./profile_avatars/', blank=True, null=True, default="")
     role = models.CharField(max_length=50, blank=True, choices=Role.ROLE_CHOICES)

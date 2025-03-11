@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Profile, Teacher, FAQ
 from django.contrib.auth.decorators import login_required
 from .forms import CustomeUserForm, CreateProfile, CreateProfileTeacher, EditProfile, EditProfileTeacher
@@ -12,14 +12,15 @@ def register(request):
         form = CustomeUserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login/')
-        else:
-            form = CustomeUserForm()
+            return redirect('/')
+    else:
+        form = CustomeUserForm()
     return render(request, 'register.html', {'form':form})
 
 @login_required
 def profile(request):
-    return render(request, 'profile.html')
+    profile = get_object_or_404(Profile, user = request.user)
+    return render(request, 'profile.html', {'profile':profile})
 
 @login_required
 def schebule(request):

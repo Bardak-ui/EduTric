@@ -1,14 +1,20 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'register.css' %}">
     <title>Регистрация</title>
 </head>
 <body>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.username }}
+        <input type="password" name="password1" placeholder="Придумайте пароль" autocomplete="new-password">
+        <input type="password" name="password2" placeholder="Подтвердите пароль" autocomplete="new-password">
+        <button type="submit">Зарегистрироваться</button>
+        <a href="/">Уже есть аккаунт?</a>
     </form>
 </body>
 </html>
