@@ -25,6 +25,8 @@
 .schedule-table th {
     background-color: #6b6b6b;
     color: white;
+    text-align: center;
+    border-radius: 10px;
     font-weight: bold;
 }
 

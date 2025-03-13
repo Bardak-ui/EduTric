@@ -12,11 +12,13 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('register/', views.register, name='register'),
     path('schedule/', views.schedule, name='schedule'),
+    path('schedule/group/<str:group_id>/', views.schedule, name='schedule_group'),
     path("schedule/add/", views.add_schedule, name="add_schedule"),
     path('search_user/', views.search_user, name='search_user'),
     path('FAQ/', views.FAQ_LIST, name='FAQ_LIST'),
     path('ads/', views.ads, name='ads'),
     path('pay/', views.pay, name='pay'),
+    #path('edit_evalutions/', views.edit_evalutions, name='edit_evalutions'),
 ]
 
 if settings.DEBUG:

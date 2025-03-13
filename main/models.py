@@ -165,7 +165,7 @@ class Performance(models.Model):
 
 
 class LessonTime(models.Model):
-    lesson_number = models.IntegerField(verbose_name="Номер пары", unique=True)
+    lesson_number = models.CharField(max_length=1 ,verbose_name="Номер пары", unique=True)
     start_time = models.TimeField(verbose_name="Начало пары")
     end_time = models.TimeField(verbose_name="Конец пары")
 
@@ -191,8 +191,8 @@ class Schedule(models.Model):
     subjects = models.ManyToManyField(Subject, verbose_name="Предметы", blank=True)
     teacher = models.CharField(max_length=100, verbose_name="Преподаватель")
     weekday = models.IntegerField(choices=WEEKDAYS, verbose_name="День недели")
-    lesson_time = models.ManyToManyField(LessonTime, verbose_name="Время пары", blank=True)
-    room = models.CharField(max_length=20, verbose_name="Аудитория")
+    lesson_time = models.ForeignKey(LessonTime, on_delete=models.CASCADE, verbose_name="Время пары")
+    room = models.CharField(max_length=3, verbose_name="Аудитория")
 
     def __str__(self):
         return f"Пара: {self.weekday} - {self.group} - ({self.subjects})"

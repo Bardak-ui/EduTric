@@ -1,5 +1,5 @@
 from django import forms
-from .models import Teacher,Profile, Schedule, LessonTime
+from .models import Teacher,Profile, Schedule, LessonTime, Groups, Subject
 from django.forms import TextInput, DateInput, Textarea, PasswordInput, IntegerField,CharField,ChoiceField
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -51,10 +51,39 @@ class ScheduleForm(forms.ModelForm):
         model = Schedule
         fields = ['group', 'subjects', 'teacher', 'weekday', 'lesson_time', 'room']
         widgets = {
-            "subjects": forms.CheckboxSelectMultiple(),
-            "lesson_time": forms.CheckboxSelectMultiple(),
+            'subjects': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'weekday': forms.Select(attrs={'class': 'form-control'}),
+            'lesson_time': forms.Select(attrs={'class': 'form-control'}),  # Исправлено на Select
+            'room': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
-    def init(self, *args, **kwargs):
-        super().init(*args, **kwargs)
-        self.fields["lesson_time"].queryset = LessonTime.objects.all()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Фильтрация учителей по группе
+        if 'group' in self.data:
+            try:
+                group_name = self.data.get('group')
+                self.fields['teacher'].queryset = Teacher.objects.filter(group=group_name)
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk and self.instance.group:
+            self.fields['teacher'].queryset = Teacher.objects.filter(group=self.instance.group)
+
+        # Фильтрация предметов по учителю
+        if 'teacher' in self.data:
+            try:
+                teacher_name = self.data.get('teacher')
+                self.fields['subjects'].queryset = Subject.objects.filter(teacher=teacher_name)
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk and self.instance.teacher:
+            self.fields['subjects'].queryset = Subject.objects.filter(teacher=self.instance.teacher)
+
+        # Упорядочиваем lesson_time
+        self.fields['lesson_time'].queryset = LessonTime.objects.all().order_by('lesson_number')
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        return cleaned_data

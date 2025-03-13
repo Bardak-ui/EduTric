@@ -76,13 +76,26 @@ def pay(request):
     
 @login_required
 def schedule(request, group_id=None):
-    groups = Groups.objects.all()
-    if group_id:
-        schedule = Schedule.objects.filter(group_id=group_id)
-    else:
-        schedule = Schedule.objects.all()
+    # Получаем все группы
+    groups = Groups.GROUPS_CHOICES
 
-    return render(request, 'schedule.html', {'groups': groups, 'schedule': schedule, 'selected_group': group_id})
+    # Получаем расписание для выбранной группы
+    selected_group = group_id
+    schedule = Schedule.objects.all()
+
+    if group_id:
+        schedule = schedule.filter(group=group_id)
+
+    # Группируем расписание по дням недели
+    schedule_by_day = {}
+    for day in Schedule.WEEKDAYS:
+        schedule_by_day[day[1]] = schedule.filter(weekday=day[0]).order_by('lesson_time__lesson_number')
+
+    return render(request, 'schedule.html', {
+        'groups': groups,
+        'selected_group': selected_group,  # Передаем group_id как строку
+        'schedule_by_day': schedule_by_day,
+    })
 
 @login_required
 def add_schedule(request):
@@ -95,3 +108,6 @@ def add_schedule(request):
         form = ScheduleForm()
 
     return render(request, "schedule_form.html", {"form": form})
+
+def edit_evalutions(request):
+    return render(request, 'edit_evalutions.html')

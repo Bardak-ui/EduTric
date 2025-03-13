@@ -4,28 +4,28 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'schedule.css' %}">
-    <h1>Расписание занятий</h1>
-    <form method="get" action="{% url 'add_schedule' %}">
-            <button type="submit">Заполнить расписание</button>
-    </form><br>
+<h1>Расписание занятий</h1>
 
-    <div class="group-select">
-        <p>Выберите группу</p>
-        <select id="group-select" onchange="location = this.value;">
-    </div>
-        <option value="/schedule/">Все группы</option>
-        {% for group in groups %}
-            <section value="/schedule/group/{{ group.id }}/" 
-                {% if group.id == selected_group %}selected{% endif %}>
-                {{ group.name }}
-            </section>
+<!-- Выбор группы -->
+<div class="group-select">
+    <p>Выберите группу</p>
+    <select id="group-select" onchange="location = this.value;">
+        <option value="{% url 'schedule' %}">Все группы</option>
+        {% for group_id, group_name in groups %}
+            <option value="{% url 'schedule_group' group_id %}" 
+                {% if group_id == selected_group %}selected{% endif %}>
+                {{ group_name }}
+            </option>
         {% endfor %}
     </select>
+</div>
 
+<!-- Таблица с расписанием -->
+{% for day, lessons in schedule_by_day.items %}
+    <h2>{{ day }}</h2>
     <table>
         <thead>
             <tr>
-                <th>День недели</th>
                 <th>Время</th>
                 <th>Предмет</th>
                 <th>Преподаватель</th>
@@ -33,27 +33,25 @@
             </tr>
         </thead>
         <tbody>
-            {% for lesson in schedule %}
+            {% for lesson in lessons %}
                 <tr>
-                    <td>{{ lesson.get_weekday_display }}</td>
-                    <td>
-                        {% for time in lesson.lesson_time.all %}
-                            {{ time.start_time }} - {{ time.end_time }}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>                    
+                    <td>{{ lesson.lesson_time.start_time }} - {{ lesson.lesson_time.end_time }}</td>
                     <td>
                         {% for subject in lesson.subjects.all %}
                             {{ subject.name }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            Нет данных
                         {% endfor %}
                     </td>
                     <td>{{ lesson.teacher }}</td>
                     <td>{{ lesson.room }}</td>
                 </tr>
             {% empty %}
-                <tr><td colspan="5">Нет данных на ближайшее время</td></tr>
+                <tr>
+                    <td colspan="4">Нет занятий</td>
+                </tr>
             {% endfor %}
-        </tbody>        
+        </tbody>
     </table>
-{% endblock %} 
-
-
+{% endfor %}
+{% endblock %}
