@@ -1,11 +1,26 @@
 from django.db import models
 from django.contrib.auth.models import User 
+from datetime import datetime, timedelta
 
 class Role(models.Model):
     ROLE_CHOICES = [
         ('Администратор','Administrator'),
         ('Учитель','Teacher'),
         ('Ученик','Student')
+    ]
+
+class Course(models.Model):
+    COURSE = [
+        ('11','11'),
+        ('12','12'),
+        ('21','21'),
+        ('22','22'),
+        ('31','31'),
+        ('32','32'),
+        ('41','41'),
+        ('42','42'),
+        ('51','51'),
+        ('52','52'),
     ]
 
 class Groups(models.Model):
@@ -128,7 +143,8 @@ class Profile(models.Model):
     phone = models.CharField(max_length=11, verbose_name='Номер телефона')
     kurator = models.ForeignKey(Teacher, null=True, blank=True,on_delete=models.CASCADE, related_name='profile_kurator_group', verbose_name='Куратор')
     group = models.CharField(max_length=255, choices=Groups.GROUPS_CHOICES, verbose_name='Группа')
-    course = models.CharField(max_length=2, verbose_name='Курс')
+    #course = models.CharField(max_length=2,verbose_name='Курс')
+    course = models.CharField(max_length=2, choices=Course.COURSE, verbose_name='Курс')
     birthday = models.CharField(max_length=10,verbose_name='Дата рождения')
 
     def __str__(self):
@@ -166,11 +182,15 @@ class Performance(models.Model):
 
 class LessonTime(models.Model):
     lesson_number = models.CharField(max_length=1 ,verbose_name="Номер пары", unique=True)
-    start_time = models.TimeField(verbose_name="Начало пары")
-    end_time = models.TimeField(verbose_name="Конец пары")
+    start_time = models.TimeField(blank=True,null=True,verbose_name="Начало пары")
+    end_time = models.TimeField(blank=True,null=True,verbose_name="Конец пары")
+    start_time_1 = models.TimeField(blank=True,null=True,verbose_name="Начало первой части")
+    end_time_1 = models.TimeField(blank=True,null=True,verbose_name="Конец первой части")
+    start_time_2 = models.TimeField(blank=True,null=True,verbose_name="Начало второй части")
+    end_time_2 = models.TimeField(blank=True,null=True,verbose_name="Конец второй части")
 
     def __str__(self):
-        return f"Пара {self.lesson_number}: {self.start_time} - {self.end_time}"
+        return f"Пара {self.lesson_number}: {self.start_time_1} - {self.end_time_1}, {self.start_time_2} - {self.end_time_2}"
 
     class Meta:
         ordering = ["lesson_number"]
@@ -201,3 +221,6 @@ class Schedule(models.Model):
         verbose_name = "Занятие"
         verbose_name_plural = "Расписание"
         ordering = ["weekday"]
+        unique_together = ('group', 'weekday', 'lesson_time')  # Уникальность пары для группы, д
+        
+

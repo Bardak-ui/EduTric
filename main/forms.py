@@ -23,6 +23,12 @@ class CustomeUserForm(UserCreationForm):
         #         'autocomplete': 'new-password',  # Отключаем автозаполнение
         #     })
         # }
+        def save(self, commit=True):
+            user = super().save(commit=False)
+            user.set_password(self.cleaned_data['password1'])  # Хэширование пароля
+            if commit:
+                user.save()
+            return user
 class CreateProfile(forms.ModelForm):
     class Meta:
         model = Profile
@@ -53,7 +59,7 @@ class ScheduleForm(forms.ModelForm):
         widgets = {
             'subjects': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'weekday': forms.Select(attrs={'class': 'form-control'}),
-            'lesson_time': forms.Select(attrs={'class': 'form-control'}),  # Исправлено на Select
+            'lesson_time': forms.Select(attrs={'class': 'form-control'}),
             'room': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
@@ -82,8 +88,3 @@ class ScheduleForm(forms.ModelForm):
 
         # Упорядочиваем lesson_time
         self.fields['lesson_time'].queryset = LessonTime.objects.all().order_by('lesson_number')
-
-    def clean(self):
-        cleaned_data = super().clean()
-
-        return cleaned_data

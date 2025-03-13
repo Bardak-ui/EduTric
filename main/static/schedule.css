@@ -17,17 +17,7 @@ form {
     margin-bottom: 20px;
 }
 
-button {
-    justify-self: center;
-    align-self: center;
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
+
 
 button:hover {
     background-color: #45a049;
@@ -76,4 +66,31 @@ tbody tr:nth-child(even) {
 .filter-container {
     text-align: center;
     margin: 20px 0;
+}
+
+.add-button {
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    padding: 12px 24px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+    background-color: #37474f;
+}
+
+h2{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
