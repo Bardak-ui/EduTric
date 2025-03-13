@@ -1,6 +1,8 @@
 from django.contrib.auth.views import LoginView
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     #path('', views.profile, name='profile'),
@@ -9,9 +11,13 @@ urlpatterns = [
     path('home/', views.home, name='home'),
     path('profile/', views.profile, name='profile'),
     path('register/', views.register, name='register'),
-    path('schebule/', views.schebule, name='schebule'),
+    path('schedule/', views.schedule, name='schedule'),
+    path("schedule/add/", views.add_schedule, name="add_schedule"),
     path('search_user/', views.search_user, name='search_user'),
     path('FAQ/', views.FAQ_LIST, name='FAQ_LIST'),
     path('ads/', views.ads, name='ads'),
     path('pay/', views.pay, name='pay'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

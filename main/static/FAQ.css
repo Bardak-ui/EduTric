@@ -1,97 +1,92 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #ccc;
+/* Основные стили */
+.faq-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.container {
-    position: absolute;
-    width: 100%;
-    min-height: 100vh; /* Используем min-height вместо height */
+.faq-container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2.5em;
 }
 
-.header {
-    position: fixed; /* Фиксируем шапку */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 90px;
-    background-color: #666;
+.faq-list {
     display: flex;
-    align-items: center; /* Выравниваем по вертикали */
-    justify-content: center; /* Выравниваем по горизонтали */
+    flex-direction: column;
+    gap: 15px;
 }
 
-.searche {
-    width: 80%; /* Ширина поиска */
-    max-width: 600px; /* Максимальная ширина */
+.faq-item {
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    border-color: #666;
+}
+
+.faq-question {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px; /* Расстояние между label и input */
+    padding: 15px 20px;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    background: #f1f1f1;
+    border-radius: 8px;
 }
 
-.searche label {
-    color: #fff; /* Цвет текста */
-    font-size: 16px; /* Размер текста */
+.faq-question .icon {
+    font-size: 1.5em;
+    font-weight: bold;
+    transition: transform 0.3s ease;
 }
 
-.searche .search {
-    flex-grow: 1; /* Растягиваем input на всё доступное пространство */
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.faq-question:hover {
+    background: #e9e9e9;
 }
 
-.left_panel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100px;
-    height: 100vh;
-    background-color: #999;
-    z-index: 50; /* Убедимся, что панель под шапкой */
+details[open] .faq-question .icon {
+    transform: rotate(45deg);
 }
 
-.content {
-    padding-top: 100px; /* Отступ для контента, чтобы не заезжал под шапку */
-    margin-left: 100px; /* Отступ для контента, чтобы не заезжал под левую панель */
+.faq-answer {
+    padding: 15px 20px;
+    font-size: 1em;
+    color: #555;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    border-radius: 0 0 8px 8px;
 }
 
-.content .left_panel .avatar img {
-    top: 0;
-    left: 0;
-    width: 98px;
-    height: 88px;
-    background-color: #fff;
-    border: 1px solid #000;
-    object-fit: cover; /* Для корректного отображения аватарки */
+.no-faqs {
+    text-align: center;
+    color: #666;
+    font-style: italic;
 }
 
-.left_panel img {
-    display: flex; /* Исправлено с flex на block */
-    width: 85px;
-    height: 85px;
+/* Адаптивность */
+@media (max-width: 768px) {
+    .faq-container {
+        margin: 20px;
+        padding: 15px;
+    }
 
-    margin: 0 auto 25px; /* Упрощён синтаксис margin */
-}
+    .faq-question {
+        font-size: 1em;
+        padding: 10px 15px;
+    }
 
-.FAQ{
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    justify-self: right;
-    background-color: #666;
-    border: 1px solid #000;
-    border-radius: 2%;
-    width: 1700px;
-    height: 700px;
-}
-
-.h1{
-    display: flex;
-    justify-self: center;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
+    .faq-answer {
+        padding: 10px 15px;
+    }
 }

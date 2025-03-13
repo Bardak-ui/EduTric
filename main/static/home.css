@@ -1,77 +1,49 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #ccc;
+/* Общие стили для контейнера */
+.schedule-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.container {
-    position: absolute;
+/* Стили для таблицы */
+.schedule-table {
     width: 100%;
-    min-height: 100vh; /* Используем min-height вместо height */
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
-.header {
-    position: fixed; /* Фиксируем шапку */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 90px;
-    background-color: #666;
-    display: flex;
-    align-items: center; /* Выравниваем по вертикали */
-    justify-content: center; /* Выравниваем по горизонтали */
+.schedule-table th,
+.schedule-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 
-.searche {
-    width: 80%; /* Ширина поиска */
-    max-width: 600px; /* Максимальная ширина */
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Расстояние между label и input */
+.schedule-table th {
+    background-color: #6b6b6b;
+    color: white;
+    font-weight: bold;
 }
 
-.searche label {
-    color: #fff; /* Цвет текста */
-    font-size: 16px; /* Размер текста */
+.schedule-table tr:hover {
+    background-color: #f1f1f1;
 }
 
-.searche .search {
-    flex-grow: 1; /* Растягиваем input на всё доступное пространство */
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .schedule-container {
+        padding: 10px;
+    }
 
-.left_panel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100px;
-    height: 100vh;
-    background-color: #999;
-    z-index: 50; /* Убедимся, что панель под шапкой */
-}
+    .schedule-table th,
+    .schedule-table td {
+        padding: 8px;
+    }
 
-.content {
-    padding-top: 100px; /* Отступ для контента, чтобы не заезжал под шапку */
-    margin-left: 100px; /* Отступ для контента, чтобы не заезжал под левую панель */
-}
-
-.content .left_panel .avatar img {
-    top: 0;
-    left: 0;
-    width: 98px;
-    height: 88px;
-    background-color: #fff;
-    border: 1px solid #000;
-    object-fit: cover; /* Для корректного отображения аватарки */
-}
-
-.left_panel img {
-    display: flex; /* Исправлено с flex на block */
-    width: 85px;
-    height: 85px;
-
-    margin: 0 auto 25px; /* Упрощён синтаксис margin */
+    .schedule-table {
+        font-size: 14px;
+    }
 }

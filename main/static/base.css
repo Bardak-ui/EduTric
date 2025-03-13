@@ -1,0 +1,109 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #ccc;
+}
+
+.container {
+    position: absolute;
+    width: 100%;
+    min-height: 100vh; /* Используем min-height вместо height */
+}
+
+.header {
+    position: fixed; /* Фиксируем шапку */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background-color: #666;
+    display: flex;
+    align-items: center; /* Выравниваем по вертикали */
+    justify-content: center; /* Выравниваем по горизонтали */
+}
+
+.searche {
+    width: 80%; /* Ширина поиска */
+    max-width: 600px; /* Максимальная ширина */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Расстояние между label и input */
+}
+
+.searche label {
+    color: #fff; /* Цвет текста */
+    font-size: 16px; /* Размер текста */
+}
+
+.searche .search {
+    flex-grow: 1; /* Растягиваем input на всё доступное пространство */
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.left_panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100vh;
+    background-color: #999;
+    z-index: 50; /* Убедимся, что панель под шапкой */
+}
+
+.content {
+    padding-top: 100px; /* Отступ для контента, чтобы не заезжал под шапку */
+    margin-left: 100px; /* Отступ для контента, чтобы не заезжал под левую панель */
+}
+
+.content .left_panel .avatar img {
+    top: 0;
+    left: 0;
+    width: 98px;
+    height: 88px;
+    background-color: #fff;
+    border: 1px solid #000;
+    object-fit: cover; /* Для корректного отображения аватарки */
+}
+
+.left_panel img {
+    display: flex; /* Исправлено с flex на block */
+    width: 85px;
+    height: 85px;
+
+    margin: 0 auto 25px; /* Упрощён синтаксис margin */
+}
+
+.FAQ{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    justify-self: right;
+    background-color: #666;
+    border: 1px solid #000;
+    border-radius: 2%;
+    width: 1700px;
+    height: 700px;
+}
+
+.h1{
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}
+
+.content_home {
+    display: flex;
+    padding-top: 50px; /* Отступ для контента, чтобы не заезжал под шапку */
+    margin-left: 100px; /* Отступ для контента, чтобы не заезжал под левую панель */
+    background-color: #cccccc;
+    border: #000;
+    width: 100px;
+    height: 100px;
+    margin-left: auto; /* Выталкивает элемент вправо */
+    margin-right: 10px; /* Отступ от других элементов */
+}

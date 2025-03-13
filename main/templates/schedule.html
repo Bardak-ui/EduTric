@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Расписание занятий{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'schedule.css' %}">
+    <h1>Расписание занятий</h1>
+    <form method="get" action="{% url 'add_schedule' %}">
+            <button type="submit">Заполнить расписание</button>
+    </form><br>
+
+    <div class="group-select">
+        <p>Выберите группу</p>
+        <select id="group-select" onchange="location = this.value;">
+    </div>
+        <option value="/schedule/">Все группы</option>
+        {% for group in groups %}
+            <section value="/schedule/group/{{ group.id }}/" 
+                {% if group.id == selected_group %}selected{% endif %}>
+                {{ group.name }}
+            </section>
+        {% endfor %}
+    </select>
+
+    <table>
+        <thead>
+            <tr>
+                <th>День недели</th>
+                <th>Время</th>
+                <th>Предмет</th>
+                <th>Преподаватель</th>
+                <th>Аудитория</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lesson in schedule %}
+                <tr>
+                    <td>{{ lesson.get_weekday_display }}</td>
+                    <td>
+                        {% for time in lesson.lesson_time.all %}
+                            {{ time.start_time }} - {{ time.end_time }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>                    
+                    <td>
+                        {% for subject in lesson.subjects.all %}
+                            {{ subject.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{ lesson.teacher }}</td>
+                    <td>{{ lesson.room }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5">Нет данных на ближайшее время</td></tr>
+            {% endfor %}
+        </tbody>        
+    </table>
+{% endblock %} 
+
+

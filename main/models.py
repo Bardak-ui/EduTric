@@ -115,24 +115,24 @@ class Kurator(models.Model):
         ('Котелевская Мария Александровна','Котелевская Мария Александровна'),
         ('Исаева Марина Владимировна','Исаева Марина Владимировна'),
         ('Куликова Елена Сергеевна','Куликова Елена Сергеевна'),
-        ('',''),
-        ('',''),
-        ('',''),
     ]
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profile_user', unique=True)
-    familiy = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    otchestvo = models.CharField(max_length=255)
-    faculti = models.CharField(max_length=255, choices=Faculti.FACULTI_CHOICES)
-    avatar = models.ImageField(upload_to='./profile_avatars/', blank=True, null=True, default="")
-    role = models.CharField(max_length=50, blank=True, choices=Role.ROLE_CHOICES)
-    phone = models.IntegerField(max_length=11,blank=True, null=True, verbose_name='constact_whatsapp')
-    kurator = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='profile_kurator_group')
-    group = models.CharField(max_length=255, choices=Groups.GROUPS_CHOICES)
-    course = models.IntegerField()
-    birthday = models.IntegerField(max_length=11)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile_user', unique=True)
+    familiy = models.CharField(max_length=255,  verbose_name='Фамилия')
+    name = models.CharField(max_length=255, verbose_name='Имя')
+    otchestvo = models.CharField(max_length=255, verbose_name='Отчество')
+    faculti = models.CharField(max_length=255, choices=Faculti.FACULTI_CHOICES, verbose_name='Факультет')
+    avatar = models.ImageField(upload_to='./profile_avatars/', blank=True, null=True)
+    role = models.CharField(max_length=50, blank=True,null=True, choices=Role.ROLE_CHOICES, default='Student')
+    phone = models.CharField(max_length=11, verbose_name='Номер телефона')
+    kurator = models.ForeignKey(Teacher, null=True, blank=True,on_delete=models.CASCADE, related_name='profile_kurator_group', verbose_name='Куратор')
+    group = models.CharField(max_length=255, choices=Groups.GROUPS_CHOICES, verbose_name='Группа')
+    course = models.CharField(max_length=2, verbose_name='Курс')
+    birthday = models.CharField(max_length=10,verbose_name='Дата рождения')
+
+    def __str__(self):
+        return f'{self.familiy} {self.name} {self.otchestvo}'
 
 class FAQ(models.Model):
     question = models.CharField(max_length=255, verbose_name="Вопрос")
@@ -146,6 +146,37 @@ class FAQ(models.Model):
         verbose_name = "FAQ"
         verbose_name_plural = "FAQs"
 
+class Subject(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Предмет")
+    teacher = models.CharField(max_length=100, verbose_name="Преподаватель")
+
+    def __str__(self):
+        return f'Предмет: {self.name} | Преподаватель: {self.teacher}'
+
+    class Meta:
+        verbose_name = "Предмет"
+        verbose_name_plural = "Предметы"
+
+class Performance(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    grade = models.IntegerField(verbose_name="Оценка")
+    date = models.DateField(auto_now_add=True)
+
+
+class LessonTime(models.Model):
+    lesson_number = models.IntegerField(verbose_name="Номер пары", unique=True)
+    start_time = models.TimeField(verbose_name="Начало пары")
+    end_time = models.TimeField(verbose_name="Конец пары")
+
+    def __str__(self):
+        return f"Пара {self.lesson_number}: {self.start_time} - {self.end_time}"
+
+    class Meta:
+        ordering = ["lesson_number"]
+        verbose_name = "Время пары"
+        verbose_name_plural = "Времена пар"
+
 class Schedule(models.Model):
     WEEKDAYS = [
         (1, "Понедельник"),
@@ -154,21 +185,19 @@ class Schedule(models.Model):
         (4, "Четверг"),
         (5, "Пятница"),
         (6, "Суббота"),
-        (7, "Воскресенье"),
     ]
 
-    group = models.CharField(max_length=255, choices=Groups.GROUPS_CHOICES, verbose_name="Группа")
-    subject = models.CharField(max_length=255, verbose_name="Предмет")
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE ,verbose_name="Преподаватель")
+    group = models.CharField(max_length=255, choices=Groups.GROUPS_CHOICES, verbose_name='Группа')
+    subjects = models.ManyToManyField(Subject, verbose_name="Предметы", blank=True)
+    teacher = models.CharField(max_length=100, verbose_name="Преподаватель")
     weekday = models.IntegerField(choices=WEEKDAYS, verbose_name="День недели")
-    start_time = models.TimeField(verbose_name="Начало")
-    end_time = models.TimeField(verbose_name="Конец")
+    lesson_time = models.ManyToManyField(LessonTime, verbose_name="Время пары", blank=True)
     room = models.CharField(max_length=20, verbose_name="Аудитория")
 
-    def str(self):
-        return f"{self.group} - {self.subject} ({self.weekday()})"
+    def __str__(self):
+        return f"Пара: {self.weekday} - {self.group} - ({self.subjects})"
 
     class Meta:
         verbose_name = "Занятие"
         verbose_name_plural = "Расписание"
-        ordering = ["weekday", "start_time"]
+        ordering = ["weekday"]
