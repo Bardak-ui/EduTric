@@ -8,7 +8,7 @@ urlpatterns = [
     #path('', views.profile, name='profile'),
     #path('logout/', views.logout_view, name='logout_view'), # Страница выхода
     path('', LoginView.as_view(template_name = 'login.html'), name='login'), # Страница входа
-    path('home/', views.home, name='home'),
+    #path('home/', views.home, name='home'),
     path('profile/', views.profile, name='profile'),
     path('register/', views.register, name='register'),
     path('schedule/', views.schedule, name='schedule'),

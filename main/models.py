@@ -134,7 +134,7 @@ class Kurator(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile_user', unique=True)
-    familiy = models.CharField(max_length=255,  verbose_name='Фамилия')
+    familiy = models.CharField(max_length=255,verbose_name='Фамилия')
     name = models.CharField(max_length=255, verbose_name='Имя')
     otchestvo = models.CharField(max_length=255, verbose_name='Отчество')
     faculti = models.CharField(max_length=255, choices=Faculti.FACULTI_CHOICES, verbose_name='Факультет')

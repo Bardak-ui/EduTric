@@ -9,26 +9,14 @@ class CustomeUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'password1', 'password2']
-        # widgets = {
-        #     'username': TextInput(attrs={
-        #         'placeholder': 'Придумайте логин',
-        #     }),
-        #     'password1': PasswordInput(attrs={
-        #         'placeholder': 'Придумайте пароль',
-
-        #         'autocomplete': 'new-password',  # Отключаем автозаполнение
-        #     }),
-        #     'password2': PasswordInput(attrs={
-        #         'placeholder': 'Подтвердите пароль',
-        #         'autocomplete': 'new-password',  # Отключаем автозаполнение
-        #     })
-        # }
+        
         def save(self, commit=True):
             user = super().save(commit=False)
             user.set_password(self.cleaned_data['password1'])  # Хэширование пароля
             if commit:
                 user.save()
             return user
+        
 class CreateProfile(forms.ModelForm):
     class Meta:
         model = Profile
@@ -37,15 +25,15 @@ class CreateProfile(forms.ModelForm):
             'birthday': forms.DateInput(attrs={'type': 'date'}),  # Добавляем календарь
         }
 
+class EditProfile(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['familiy','name','otchestvo','faculti','avatar','phone','group','course','birthday']
+
 class CreateProfileTeacher(forms.ModelForm):
     class Meta:
         model = Teacher
         fields = ['fio','avatar','faculti','subjects','group']
-
-class EditProfile(forms.ModelForm):
-    class Meta:
-        model = Profile
-        fields = ['faculti','avatar','phone','kurator','group','course','birthday']
 
 class EditProfileTeacher(forms.ModelForm):
     class Meta:

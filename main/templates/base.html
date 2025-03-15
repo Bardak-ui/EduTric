@@ -8,24 +8,13 @@
     <title>{% block title %}Навигация{% endblock %}</title>
 </head>
 <body>
-    <div class="content">     
+    <div class="container">
+        <!-- Шапка -->
         <div class="header">
-            <div class="icon">
-                <a href="http://www.topcollege.ru/"> <img style="width: 90px; height: 90px;" src="{% static '/media/shrkt.png' %}"></a>
-                <a href="https://shakhty.donland.ru/"> <img style="width: 80px; height: 80px;" src="{% static '/media/shackty.png' %}"></a>
-            </div>
-            <div class="searche">
-                <input class="search" type="text" id="search" style="text-align: center; font-size: 30px;" placeholder="Поиск по сайту">
-                
-            </div>
-        </div>
-        <div class="left_panel">
             <div class="avatar">
                 {% if user.profile_user.avatar %}
                     <a href="{% url 'profile' %}">
-                        <div class="avatar-wrapper">
-                            <img src="{{ user.profile_user.avatar.url }}" alt="Аватар" class="avatar">
-                        </div>
+                        <img src="{{ user.profile_user.avatar.url }}" alt="Аватар" class="avatar">
                     </a>
                 {% else %}
                     <a href="{% url 'profile' %}">
@@ -33,21 +22,34 @@
                     </a>
                 {% endif %}
             </div>
+            <div class="icon">
+                <a href="http://www.topcollege.ru/"><img src="{% static '/media/shrkt.png' %}" alt="Логотип 1"></a>
+                <a href="https://shakhty.donland.ru/"><img src="{% static '/media/shackty.png' %}" alt="Логотип 2"></a>
+            </div>
+            <div class="searche">
+                <a href="{% url 'search_user' %}"><img style="width: 45px; height: 45px;" src="{% static '/media/searche.png' %}" >
+                </a>
+                <input class="search" type="text" id="search" placeholder="Поиск студента по фамилии">
+                
+            </div>
+        </div>
+
+        <!-- Левая панель -->
+        <div class="left_panel">
             <nav>
-                <a href="{% url 'home' %}"><img style="width: 80px; height: 80px;" src="{% static '/media/home.png' %}"></a>
-                <a href="{% url 'schedule' %}"><img src="{% static '/media/schedule.png' %}"></a>
-                <a href="{% url 'ads' %}"><img src="{% static '/media/ads.png' %}"></a>
-                <a href="{% url 'pay' %}"><img style="width: 100px; height: 90px;" src="{% static '/media/pay.png' %}"></a>
-                <br><br><br><br><br><br><br><br><br><br>
-                <a href="{% url 'search_user' %}"><img src="{% static '/media/searche.png' %}"></a>
-                <a href="{% url 'FAQ_LIST' %}"><img src="{% static '/media/faq.png' %}"></a>
+                <a href="{% url 'schedule' %}"><img src="{% static '/media/schedule.png' %}" alt="Расписание"></a>
+                <a href="{% url 'ads' %}"><img src="{% static '/media/ads.png' %}" alt="Объявления"></a>
+                <a href="{% url 'pay' %}"><img src="{% static '/media/pay.png' %}" alt="Оплата"></a>
+                <a href="{% url 'search_user' %}"><img src="{% static '/media/searche.png' %}" alt="Поиск"></a>
+                <a href="{% url 'FAQ_LIST' %}"><img src="{% static '/media/faq.png' %}" alt="FAQ"></a>
             </nav>
         </div>
-    </div>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
 
+        <!-- Основной контент -->
+        <main class="content">
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
 </body>
-</html> 
+</html>

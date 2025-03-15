@@ -1,109 +1,178 @@
+/* Общие стили */
 body {
     margin: 0;
     padding: 0;
     background-color: #ccc;
+    font-family: Arial, sans-serif;
 }
 
 .container {
-    position: absolute;
     width: 100%;
-    min-height: 100vh; /* Используем min-height вместо height */
+    min-height: 100vh;
 }
 
+/* Шапка */
 .header {
-    position: fixed; /* Фиксируем шапку */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 90px;
-    background-color: #666;
     display: flex;
-    align-items: center; /* Выравниваем по вертикали */
-    justify-content: center; /* Выравниваем по горизонтали */
-}
-
-.searche {
-    width: 80%; /* Ширина поиска */
-    max-width: 600px; /* Максимальная ширина */
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Расстояние между label и input */
-}
-
-.searche label {
-    color: #fff; /* Цвет текста */
-    font-size: 16px; /* Размер текста */
-}
-
-.searche .search {
-    flex-grow: 1; /* Растягиваем input на всё доступное пространство */
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.left_panel {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100px;
+    width: 100%;
+    height: 60px; /* Уменьшаем высоту для мобильных устройств */
+    background-color: #666;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px; /* Добавляем отступы */
+    z-index: 100; /* Убедимся, что шапка поверх других элементов */
+}
+
+.header .icon{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-self: left;
+    max-width: 10px;
+}
+
+.header .icon img {
+    width: 50px; /* Уменьшаем размер иконок */
+    height: 50px;
+    margin-right: 10px;
+}
+
+.searche {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    max-width: 350px; /* Уменьшаем максимальную ширину поиска */
+    max-height: 30px;  
+}
+
+.searche .search {
+    padding: 5px;
+    font-size: 14px; /* Уменьшаем размер шрифта */
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+/* Левая панель */
+.left_panel {
+    position: fixed;
+    top: 60px; /* Сдвигаем вниз, чтобы не перекрывала шапку */
+    left: 0;
+    width: 60px; /* Уменьшаем ширину для мобильных устройств */
     height: 100vh;
     background-color: #999;
-    z-index: 50; /* Убедимся, что панель под шапкой */
-}
-
-.content {
-    padding-top: 100px; /* Отступ для контента, чтобы не заезжал под шапку */
-    margin-left: 100px; /* Отступ для контента, чтобы не заезжал под левую панель */
-}
-
-.content .left_panel .avatar img {
-    top: 0;
-    left: 0;
-    width: 98px;
-    height: 88px;
-    background-color: #fff;
-    border: 1px solid #000;
-    object-fit: cover; /* Для корректного отображения аватарки */
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
 }
 
 .left_panel img {
-    display: flex; /* Исправлено с flex на block */
-    width: 85px;
-    height: 85px;
-
-    margin: 0 auto 25px; /* Упрощён синтаксис margin */
-}
-
-.FAQ{
     display: flex;
-    justify-content: left;
-    align-items: center;
-    justify-self: right;
-    background-color: #666;
-    border: 1px solid #000;
-    border-radius: 2%;
-    width: 1700px;
-    height: 700px;
-}
-
-.h1{
-    display: flex;
-    justify-self: center;
-    align-items: center;
     justify-content: center;
-    align-self: center;
+    align-items: center;
+    width: 40px; /* Уменьшаем размер иконок */
+    height: 40px;
+    top: 0;
+    left: 0;
 }
 
-.content_home {
-    display: flex;
-    padding-top: 50px; /* Отступ для контента, чтобы не заезжал под шапку */
-    margin-left: 100px; /* Отступ для контента, чтобы не заезжал под левую панель */
-    background-color: #cccccc;
-    border: #000;
-    width: 100px;
-    height: 100px;
-    margin-left: auto; /* Выталкивает элемент вправо */
-    margin-right: 10px; /* Отступ от других элементов */
+.header .avatar img {
+    top: 0px;
+    left: 0px;
+    margin: 0;
+    width: 55px; /* Уменьшаем размер аватарки */
+    height: 55px;
+    border: 1px solid #000;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+    .header {
+        height: 50px;
+    }
+
+    .header .icon img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .searche {
+        max-width: 200px;
+    }
+
+    .searche .search {
+        font-size: 12px;
+    }
+
+    .left_panel {
+        width: 50px;
+        top: 50px;
+        height: calc(100vh - 50px);
+    }
+
+    .left_panel img {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 10px;
+    }
+
+    .left_panel .avatar img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .content {
+        padding-top: 60px;
+        margin-left: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        height: 40px;
+        padding: 0 5px;
+    }
+
+    .header .icon img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .searche {
+        max-width: 150px;
+    }
+
+    .searche .search {
+        font-size: 10px;
+        padding: 3px;
+    }
+
+    .left_panel {
+        width: 40px;
+        top: 40px;
+        height: calc(100vh - 40px);
+    }
+
+    .left_panel img {
+        width: 25px;
+        height: 25px;
+        margin-bottom: 8px;
+    }
+
+    .left_panel .avatar img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .content {
+        padding-top: 50px;
+        margin-left: 50px;
+    }
 }

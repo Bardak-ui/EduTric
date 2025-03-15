@@ -56,7 +56,9 @@ def schedule(request):
 
 @login_required
 def search_user(request):
-    return render(request, 'search_user.html')
+    searche_user = request.GET.get('searche')
+    user = get_object_or_404(Profile, searche_user == Profile.familiy)
+    return render(request, 'search_user.html', {'profile':user})
 
 @login_required
 def ads(request):

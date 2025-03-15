@@ -8,27 +8,5 @@
     <link rel="stylesheet" href="{% static 'home.css' %}"> <!-- Подключение стилей -->
     <title>{% block title %}Главная страница{% endblock %}</title>
 </head>
-    <div class="schedule-container">
-        <h2>Ближайшее расписание</h2>
-        <table class="schedule-table">
-            <thead>
-                <tr>
-                    <th>Дата</th>
-                    <th>Время</th>
-                    <th>Предмет</th>
-                    <th>Аудитория</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in schedule %}
-                <tr>
-                    <td>{{ item.date|date:"d.m.Y" }}</td>
-                    <td>{{ item.time|time:"H:i" }}</td>
-                    <td>{{ item.subject.name }}</td>
-                    <td>{{ item.classroom }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    
 {% endblock %}

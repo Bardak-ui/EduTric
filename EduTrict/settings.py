@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 LOGIN_REDIRECT_URL = '/'  # Например, на главную страницу
 LOGIN_URL = '/'
-LOGIN_REDIRECT_URL = '/profile/' # имя функции из views, не маршрут
+LOGIN_REDIRECT_URL = '/schedule/' # имя функции из views, не маршрут
 
 MEDIA_URL = '/media/'  # URL для доступа к медиафайлам
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Папка для хранения медиафайлов
