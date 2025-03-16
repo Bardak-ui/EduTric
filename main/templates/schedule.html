@@ -16,9 +16,7 @@
             {% endfor %}
         </select>
     </div>
-    {% if user..role == "Administrator" %}
         <a href="{% url 'add_schedule' %}" class="add-button">Добавить пару</a>
-    {% endif %}
 </div>
 <hr>
 <h1>Расписание занятий</h1>

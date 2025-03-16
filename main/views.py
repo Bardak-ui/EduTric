@@ -50,10 +50,6 @@ def group_info(request):
     return render(request, 'group.html', {'group': group, 'students': students})
 
 @login_required
-def schedule(request):
-    return render(request, 'schedule.html')
-
-@login_required
 def search_user(request):
     search_query = request.GET.get('search', '')  # Получаем поисковый запрос из GET-параметра
     if search_query:  # Проверяем, что поисковый запрос не пустой
@@ -90,6 +86,7 @@ def schedule(request, group_id=None):
     schedule_by_day = {}
     for day in Schedule.WEEKDAYS:
         schedule_by_day[day[1]] = schedule.filter(weekday=day[0]).order_by('lesson_time__lesson_number')
+
 
     return render(request, 'schedule.html', {
         'groups': groups,

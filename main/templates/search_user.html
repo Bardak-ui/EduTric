@@ -24,11 +24,24 @@
         <ul>
             {% for profile in profiles %}
                 <li>
+                    <div class="avatar">
+                        {% if profile.avatar %}
+                            <img src="{{ profile.avatar.url }}" alt="Аватар" class="profile-avatar">
+                        {% else %}
+                            <img src="{% static 'media/no_avatar.jpeg' %}" alt="Аватар" class="profile-avatar">
+                        {% endif %}
+                    </div>
+                    <br>
                     <strong>{{ profile.familiy }} {{ profile.name }} {{ profile.otchestvo }}</strong>
+                    <br>
                     <p><span>Группа:</span> {{ profile.group }}</p>
+                    <br>
                     <p><span>Курс:</span> {{ profile.course }}</p>
+                    <br>
                     <p><span>Факультет:</span> {{ profile.faculti }}</p>
+                    <br>
                     <p><span>Телефон:</span> {{ profile.phone }}</p>
+                    <br>
                     <p><span>Дата рождения:</span> {{ profile.birthday }}</p>
                 </li>
             {% endfor %}

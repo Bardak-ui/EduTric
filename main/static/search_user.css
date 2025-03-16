@@ -1,10 +1,9 @@
 /* Основные стили для страницы поиска */
 .search-container {
-    padding: 30px;
-    margin-left: 100px;
-    padding-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
     max-width: 800px;
-    margin: 0 auto;
 }
 
 /* Стили для формы поиска */
@@ -14,20 +13,30 @@
     margin-bottom: 30px;
 }
 
+/* Аватарка */
+.avatar img {
+    display: flex;
+    justify-self: center;
+    width: 200px; /* Размер аватарки */
+    height: 200px;
+    border: 1px solid #000;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
 .left_panel .search_user {
     border-radius: 15px;
     background-color: #575757;
-    padding: 10px; /* Добавляем отступы */
     color: white; /* Белый текст для контраста */
 }
 
 .search-container .searche .search {
     border-radius: 15px;
     text-align: center;
-    font-size: 18px;
+    font-size: 15;
     width: 100%;
     height: 45px;
-    padding: 10px;
     border: 2px solid #ddd;
     outline: none;
     transition: border-color 0.3s ease;
@@ -47,17 +56,27 @@
 
 /* Стили для списка результатов */
 .search-container ul {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 15px;
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .search-container li {
+    display: flex;
+    flex-direction: column;
     background: #fff;
     border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     padding: 20px;
+    width: 300px;
+    min-height: 550px;
+    max-height: 800px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -95,13 +114,22 @@
 /* Адаптация для планшетов */
 @media (max-width: 768px) {
     .search-container {
+        display: flex;
+        flex-direction: column;
+        justify-self: center;
         padding: 20px;
         margin-left: 0;
         padding-top: 80px;
+        
     }
-
     .search-container .searche .search {
         font-size: 16px;
+        width: 90%;
+    }
+
+    .search-container ul {
+        display: flex;
+        flex-direction: column;
     }
 
     .search-container h2 {
@@ -124,6 +152,9 @@
 /* Адаптация для мобильных устройств */
 @media (max-width: 480px) {
     .search-container {
+        display: flex;
+        flex-direction: column;
+        justify-self: center;
         padding: 15px;
         padding-top: 60px;
     }
@@ -131,6 +162,11 @@
     .search-container .searche .search {
         font-size: 14px;
         height: 40px;
+    }
+
+    .search-container ul {
+        display: flex;
+        flex-direction: column;
     }
 
     .search-container h2 {
@@ -153,13 +189,22 @@
 /* Адаптация для очень маленьких экранов */
 @media (max-width: 320px) {
     .search-container {
+        display: flex;
+        flex-direction: column;
+        justify-self: center;
         padding: 10px;
         padding-top: 50px;
+        
     }
 
     .search-container .searche .search {
         font-size: 12px;
         height: 35px;
+    }
+
+    .search-container ul {
+        display: flex;
+        flex-direction: column;
     }
 
     .search-container h2 {

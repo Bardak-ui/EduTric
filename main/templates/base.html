@@ -21,7 +21,7 @@
                     {% endif %}
                 </div>
                 {% if user.is_staff %}
-                    <h1>Здравствуйте администратор</h1>
+                    <h1>Здравствуйте, вы в режиме Администратор!</h1>
                 {% else %}
                     <h1>Здравствуйте, {{ user.profile_user.name }} {{ user.profile_user.otchestvo }} </h1>
                 {% endif %}
@@ -39,7 +39,6 @@
                 <p>Расписание</p>
                 <a href="{% url 'news' %}"><img class="news" src="{% static '/media/ads.png' %}" alt="Объявления"></a>
                 <p>Новости</p>
-                <!-- <a href="{% url 'pay' %}"><img class="pay" src="{% static '/media/pay.png' %}" alt="Оплата"></a> -->
                 <a href="{% url 'search_user' %}"><img class="search_user" src="{% static '/media/searche.png' %}" alt="Поиск"></a>
                 <p>Поиск</p>
                 <a href="{% url 'FAQ_LIST' %}"><img class="FAQ_LIST" src="{% static '/media/faq.png' %}" alt="FAQ"></a>

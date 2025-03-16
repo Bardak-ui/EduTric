@@ -11,11 +11,16 @@ class Role(models.Model):
 
 class Course(models.Model):
     COURSE = [
-        ('1','1'),
-        ('2','2'),
-        ('3','3'),
-        ('4','4'),
-        ('5','5'),
+        ('11','11'),
+        ('11','12'),
+        ('21','21'),
+        ('22','22'),
+        ('31','31'),
+        ('32','32'),
+        ('41','41'),
+        ('42','42'),
+        ('51','51'),
+        ('52','52'),
     ]
 
 class Groups(models.Model):
@@ -75,7 +80,7 @@ class Profile(models.Model):
     faculti = models.CharField(max_length=255, choices=Faculti.FACULTI_CHOICES, verbose_name='Факультет')
     avatar = models.ImageField(upload_to='./profile_avatars/', blank=True, null=True)
     role = models.CharField(max_length=50, blank=True,null=True, choices=Role.ROLE_CHOICES, default='Student')
-    phone = models.CharField(max_length=11, verbose_name='Номер телефона')
+    phone = models.CharField(max_length=12, verbose_name='Номер телефона')
     kurator = models.ForeignKey(Teacher, null=True, blank=True,on_delete=models.CASCADE, related_name='profile_kurator_group', verbose_name='Куратор')
     group = models.ForeignKey(Groups,on_delete=models.CASCADE,verbose_name='Группа')
     course = models.CharField(max_length=2, choices=Course.COURSE, verbose_name='Курс')
