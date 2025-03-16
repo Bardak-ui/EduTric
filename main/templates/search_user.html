@@ -1,70 +1,42 @@
 {% extends "base.html" %}
 {% load static %}
 
-
 {% block content %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'search_user.css' %}">
-    <link rel="stylesheet" href="{% static 'profile.css' %}">
     <title>{% block title %}Поиск студента{% endblock %}</title>
 </head>
-<div class="searche">
-    <input class="search" value="searche" type="text" id="search" placeholder="Поиск студента по фамилии">
-</div>
-<div class="profile-container">
-    <div class="profile-card">
-        <div class="avatar-section">
-            <div class="avatar-wrapper">
-                {% if user.profile_user.avatar %}
-                    <img src="{{ user.profile_user.avatar.url }}" alt="Аватар" class="profile-avatar">
-                {% else %}
-                    <img src="{% static 'media/no_avatar.jpeg' %}" alt="Аватар" class="profile-avatar">
-                {% endif %}
-            </div>
-            <h2 class="user-name">{{ profile.familiy }} {{ profile.name }} {{ profile.otchestvo }}</h2>
-            <div class="user-role">{{ profile.role }}</div>
-        </div>
-
-        <div class="profile-info">
-            <div class="info-section">
-                <h3>Основная информация</h3>
-                <div class="info-row">
-                    <span>Факультет:</span>
-                    <p>{{ profile.faculti }}</p>
-                </div>
-                <div class="info-row">
-                    <span>Группа:</span>
-                    <p>{{ profile.group}}</p>
-                </div>
-                <div class="info-row">
-                    <span>Курс:</span>
-                    <p>{{ profile.course }}</p>
-                </div>
-                {% if profile.role == 'Student' and profile.kurator %}
-                <div class="info-row">
-                    <span>Куратор:</span>
-                    <p>{{ profile.kurator }}</p>
-                </div>
-                {% endif %}
-            </div>
-
-            <div class="info-section">
-                <h3>Контактные данные</h3>
-                <div class="info-row">
-                    <span>Телефон:</span>
-                    <p>{{ profile.phone|default:"Не указан" }}</p>
-                </div>
-                <div class="info-row">
-                    <span>Дата рождения:</span>
-                    <p>{{ profile.birthday|default:"Не указана" }}</p>
-                </div>
-            </div>
-            <button>Настройки профиля</button>
-        </div>
+<div class="search-container">
+    <!-- Форма поиска -->
+    <div class="searche">
+        <form method="get" action="{% url 'search_user' %}">
+            <input type="text" class="search" name="search" placeholder="Введите фамилию/имя/отчество" value="{{ search_query }}">
+        </form>
     </div>
+
+    <!-- Результаты поиска -->
+    <h2>Результаты поиска</h2>
+    <hr>
+    {% if profiles %}
+        
+        <ul>
+            {% for profile in profiles %}
+                <li>
+                    <strong>{{ profile.familiy }} {{ profile.name }} {{ profile.otchestvo }}</strong>
+                    <p><span>Группа:</span> {{ profile.group }}</p>
+                    <p><span>Курс:</span> {{ profile.course }}</p>
+                    <p><span>Факультет:</span> {{ profile.faculti }}</p>
+                    <p><span>Телефон:</span> {{ profile.phone }}</p>
+                    <p><span>Дата рождения:</span> {{ profile.birthday }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        {% if search_query %}
+            <p class="no-results">Студенты с фамилией "{{ search_query }}" не найдены.</p>
+        {% endif %}
+    {% endif %}
 </div>
-
-
 {% endblock %}

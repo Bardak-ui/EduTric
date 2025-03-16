@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'news.css' %}">
+<div class="content">
+    <h1>Новости ШРКТЭ</h1>
+    {% if profile.role == "Administrator" %}
+        <a href="{% url 'add_news' %}" class="add-news-button">Добавить новость</a>
+    {% endif %}
+    <div class="news-list">
+        {% for news in news_list %}
+            <div class="news-item">
+                <h2>{{ news.title }}</h2>
+                {% if news.image %}
+                    <img src="{{ news.image.url }}" alt="Фото заголовка" width="300">
+                {% else %}
+                    <p>Нет изображения</p>
+                {% endif %}
+                <p>{{ news.news }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

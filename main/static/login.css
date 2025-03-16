@@ -12,15 +12,24 @@ body {
     box-sizing: border-box;
 }
 
-/* Заголовки на странице */
-h1 {
-    font-size: 32px;
-    color: #000000;
-    margin-bottom: 20px;
-    text-align: center;
+/* Контейнер для формы и изображений */
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px; /* Расстояние между элементами */
+    width: 100%;
+    max-width: 1200px; /* Ограничение ширины для ПК */
 }
 
-/* Контейнер формы */
+/* Изображения */
+.shackty img,
+.shrkt img {
+    width: 300px;
+    height: auto;
+}
+
+/* Форма */
 form {
     display: flex;
     flex-direction: column;
@@ -29,6 +38,15 @@ form {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Темная тень */
     width: 100%;
     max-width: 400px;
+    background-color: #ffffff; /* Белый фон формы */
+}
+
+/* Заголовки на странице */
+h1 {
+    font-size: 32px;
+    color: #000000;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 /* Поля ввода и текстовые области */
@@ -107,30 +125,29 @@ form .error {
     text-align: center;
 }
 
-/* Изображения */
-.shackty img {
-    width: 300px;
-    height: 300px;
-}
-
-.shrkt img {
-    width: 330px;
-    height: 330px;
-}
-
 /* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
-    body {
-        padding: 20px; /* Добавляем отступы по краям */
+    .container {
+        flex-direction: column; /* Вертикальное расположение элементов */
+        gap: 10px; /* Уменьшаем расстояние между элементами */
     }
 
-    h1 {
-        font-size: 24px; /* Уменьшаем размер заголовка */
+    .shackty,
+    .shrkt {
+        order: -1; /* Перемещаем изображения вверх */
+    }
+
+    .shrkt {
+        order: 1; /* Перемещаем второе изображение вниз */
     }
 
     form {
         padding: 20px; /* Уменьшаем отступы формы */
-        max-width: 100%; /* Форма занимает всю ширину */
+        max-width: 90%; /* Форма занимает всю ширину */
+    }
+
+    h1 {
+        font-size: 24px; /* Уменьшаем размер заголовка */
     }
 
     form input,
@@ -148,7 +165,6 @@ form .error {
     .shackty img,
     .shrkt img {
         width: 100%; /* Изображения занимают всю ширину */
-        height: auto; /* Сохраняем пропорции */
         max-width: 300px; /* Ограничиваем максимальную ширину */
     }
 }

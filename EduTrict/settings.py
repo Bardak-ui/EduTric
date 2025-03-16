@@ -124,7 +124,7 @@ USE_TZ = True
 # settings.py
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # Указывает на папку со статическими файлами
+    os.path.join(BASE_DIR, 'main/static/'),  # Папка, где находятся статические файлы
 ]
 #STATICFILES_DIRS = [BASE_DIR / 'static']  # Указываем путь к папке static
 # Default primary key field type

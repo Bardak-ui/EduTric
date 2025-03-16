@@ -4,6 +4,7 @@
 {% block title %}Профиль{% endblock %}
 
 {% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="{% static 'profile.css' %}">
 <div class="profile-container">
     <div class="profile-card">
@@ -28,7 +29,7 @@
                 </div>
                 <div class="info-row">
                     <span>Группа:</span>
-                    <p>{{ profile.group}}</p>
+                    <p>{{ profile.group }}</p>
                 </div>
                 <div class="info-row">
                     <span>Курс:</span>
@@ -53,7 +54,7 @@
                     <p>{{ profile.birthday|default:"Не указана" }}</p>
                 </div>
             </div>
-            <button>Настройки профиля</button>
+            <a href="{% url 'edit_profile' %}" class="edit-profile-link">Редактировать профиль</a>
         </div>
     </div>
 </div>

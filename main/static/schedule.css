@@ -1,49 +1,121 @@
-/* Добавьте эти стили в ваш CSS-файл (например, static/schedule.css) */
-
-.content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+/* Общие стили для таблицы */
+/* Стили для контейнера с выпадающим списком и кнопкой */
+.group-select-container {
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center; /* Центрирование по вертикали */
+    gap: 20px; /* Расстояние между элементами */
+    margin: 20px 0; /* Отступы сверху и снизу */
 }
 
-h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 30px;
+.left_panel .schedule {
+    border-radius: 15px;
+    background-color: #575757;
+    padding: 10px; /* Добавляем отступы */
+    color: white; /* Белый текст для контраста */
 }
 
-form {
-    text-align: center;
-    margin-bottom: 20px;
+/* Стили для выпадающего списка */
+.group-select select {
+    appearance: none; /* Убираем стандартный стиль браузера */
+    -webkit-appearance: none; /* Для Safari и Chrome */
+    -moz-appearance: none; /* Для Firefox */
+    width: 250px; /* Ширина списка */
+    padding: 10px 15px; /* Отступы внутри */
+    font-size: 16px; /* Размер шрифта */
+    color: #333; /* Цвет текста */
+    background-color: #fff; /* Фон */
+    border: 2px solid #4CAF50; /* Зеленая рамка */
+    border-radius: 5px; /* Скругленные углы */
+    cursor: pointer; /* Курсор в виде указателя */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Анимация */
 }
 
-
-
-button:hover {
-    background-color: #45a049;
+/* Стили для кнопки "Добавить пару" */
+.add-button {
+    background-color: #4CAF50; /* Зеленый фон */
+    color: white; /* Белый текст */
+    border: none;
+    padding: 10px 20px; /* Отступы внутри */
+    font-size: 16px; /* Размер шрифта */
+    border-radius: 5px; /* Скругленные углы */
+    cursor: pointer; /* Курсор в виде указателя */
+    text-decoration: none; /* Убираем подчеркивание */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Анимация */
 }
 
-
-.group-select select, p{
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 4px;
+/* Стили при наведении на кнопку */
+.add-button:hover {
+    background-color: #45a049; /* Темно-зеленый фон */
+    transform: translateY(-2px); /* Поднимаем кнопку */
 }
 
+/* Стили для активного состояния кнопки */
+.add-button:active {
+    transform: translateY(0); /* Возвращаем кнопку в исходное положение */
+}
+
+/* Стили при наведении на выпадающий список */
+.group-select select:hover {
+    border-color: #45a049; /* Изменение цвета рамки */
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.3); /* Тень */
+}
+
+/* Стили для активного состояния (при открытии списка) */
+.group-select select:focus {
+    outline: none; /* Убираем стандартный контур */
+    border-color: #4CAF50; /* Цвет рамки */
+    box-shadow: 0 0 12px rgba(76, 175, 80, 0.5); /* Тень */
+}
+
+/* Стили для элементов списка (option) */
+.group-select option {
+    padding: 10px; /* Отступы внутри элементов */
+    font-size: 14px; /* Размер шрифта */
+    color: #333; /* Цвет текста */
+    background-color: #fff; /* Фон */
+    transition: background-color 0.3s ease; /* Анимация */
+}
+
+/* Стили для элементов списка при наведении */
+.group-select option:hover {
+    background-color: #f5f5f5; /* Подсветка при наведении */
+}
+
+/* Стили для выбранного элемента списка */
+.group-select option:checked {
+    background-color: #4CAF50; /* Зеленый фон */
+    color: white; /* Белый текст */
+}
+
+/* Кастомная стрелка для выпадающего списка */
+.group-select {
+    position: relative;
+    display: inline-block;
+}
+
+.group-select::after {
+    content: "▼"; /* Стрелка вниз */
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    pointer-events: none; /* Чтобы клик проходил через стрелку */
+    color: #4CAF50; /* Цвет стрелки */
+    font-size: 12px;
+}
 table {
-    justify-self: center;
-    align-self: center;
-    width: 50%;
-    border-collapse:separate;
+    width: 100%;
+    border-collapse: collapse;
     margin: 25px 0;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень */
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff; /* Белый фон */
 }
 
 thead tr {
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Зеленый фон для заголовков */
     color: white;
     text-align: center;
 }
@@ -52,45 +124,94 @@ th, td {
     padding: 15px;
     text-align: center;
     border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s ease; /* Анимация при наведении */
 }
 
 tbody tr:hover {
-    background-color: #f5f5f5;
+    background-color: #f5f5f5; /* Подсветка строки при наведении */
 }
 
 tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #f9f9f9; /* Чередование цвета строк */
 }
 
-/* Для центрирования селектора групп */
-.filter-container {
-    text-align: center;
-    margin: 20px 0;
-}
-
-.add-button {
-    display: flex;
-    justify-self: center;
-    align-self: center;
-    padding: 12px 24px;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    text-decoration: none;
-    font-size: 16px;
+/* Контейнер для таблицы с горизонтальной прокруткой */
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Горизонтальная прокрутка */
     margin-bottom: 20px;
-    transition: background-color 0.3s ease;
+    border-radius: 10px; /* Скругленные углы */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень */
 }
 
-.add-button:hover {
-    background-color: #37474f;
+/* Кнопки редактирования и удаления */
+.edit-button, .delete-button {
+    text-decoration: none;
+    color: #007bff; /* Синий цвет для кнопки редактирования */
+    margin: 0 5px;
+    transition: opacity 0.3s ease; /* Плавное изменение прозрачности */
 }
 
-h2{
-    display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
+.delete-button {
+    color: #dc3545; /* Красный цвет для кнопки удаления */
+}
+
+.edit-button:hover, .delete-button:hover {
+    opacity: 0.7; /* Эффект при наведении */
+}
+
+/* Адаптация для планшетов */
+@media (max-width: 768px) {
+    th, td {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    h2 {
+        font-size: 1.4rem; /* Уменьшаем размер заголовка */
+    }
+
+    .edit-button, .delete-button {
+        font-size: 14px; /* Уменьшаем размер иконок */
+    }
+    .add-button {
+        font-size: 10px; /* Размер шрифта */
+    }
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 480px) {
+    th, td {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    h2 {
+        font-size: 1.2rem; /* Уменьшаем размер заголовка */
+    }
+
+    /* Скрываем столбец "Действия" на очень маленьких экранах */
+    th:nth-child(5), td:nth-child(5) {
+        display: none;
+    }
+
+    .edit-button, .delete-button {
+        font-size: 12px; /* Уменьшаем размер иконок */
+    }
+}
+
+/* Адаптация для очень маленьких экранов */
+@media (max-width: 320px) {
+    th, td {
+        padding: 8px;
+        font-size: 10px;
+    }
+
+    h2 {
+        font-size: 1rem; /* Уменьшаем размер заголовка */
+    }
+
+    .edit-button, .delete-button {
+        font-size: 10px; /* Уменьшаем размер иконок */
+    }
 }

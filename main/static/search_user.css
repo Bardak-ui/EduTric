@@ -1,0 +1,180 @@
+/* Основные стили для страницы поиска */
+.search-container {
+    padding: 30px;
+    margin-left: 100px;
+    padding-top: 100px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Стили для формы поиска */
+.search-container .searche {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.left_panel .search_user {
+    border-radius: 15px;
+    background-color: #575757;
+    padding: 10px; /* Добавляем отступы */
+    color: white; /* Белый текст для контраста */
+}
+
+.search-container .searche .search {
+    border-radius: 15px;
+    text-align: center;
+    font-size: 18px;
+    width: 100%;
+    height: 45px;
+    padding: 10px;
+    border: 2px solid #ddd;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-container .searche .search:focus {
+    border-color: #4CAF50; /* Зеленая рамка при фокусе */
+}
+
+/* Стили для заголовка результатов */
+.search-container h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Стили для списка результатов */
+.search-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.search-container li {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-container li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.search-container li strong {
+    color: #333;
+    font-size: 20px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.search-container li p {
+    color: #666;
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.search-container li p span {
+    font-weight: 500;
+    color: #444;
+}
+
+/* Стили для сообщения "Не найдено" */
+.search-container p.no-results {
+    color: #666;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Адаптация для планшетов */
+@media (max-width: 768px) {
+    .search-container {
+        padding: 20px;
+        margin-left: 0;
+        padding-top: 80px;
+    }
+
+    .search-container .searche .search {
+        font-size: 16px;
+    }
+
+    .search-container h2 {
+        font-size: 22px;
+    }
+
+    .search-container li strong {
+        font-size: 18px;
+    }
+
+    .search-container li p {
+        font-size: 14px;
+    }
+
+    .search-container p.no-results {
+        font-size: 16px;
+    }
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 480px) {
+    .search-container {
+        padding: 15px;
+        padding-top: 60px;
+    }
+
+    .search-container .searche .search {
+        font-size: 14px;
+        height: 40px;
+    }
+
+    .search-container h2 {
+        font-size: 20px;
+    }
+
+    .search-container li strong {
+        font-size: 16px;
+    }
+
+    .search-container li p {
+        font-size: 12px;
+    }
+
+    .search-container p.no-results {
+        font-size: 14px;
+    }
+}
+
+/* Адаптация для очень маленьких экранов */
+@media (max-width: 320px) {
+    .search-container {
+        padding: 10px;
+        padding-top: 50px;
+    }
+
+    .search-container .searche .search {
+        font-size: 12px;
+        height: 35px;
+    }
+
+    .search-container h2 {
+        font-size: 18px;
+    }
+
+    .search-container li strong {
+        font-size: 14px;
+    }
+
+    .search-container li p {
+        font-size: 10px;
+    }
+
+    .search-container p.no-results {
+        font-size: 12px;
+    }
+}

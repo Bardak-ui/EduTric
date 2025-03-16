@@ -32,6 +32,7 @@ body {
     padding: 20px;
     border-radius: 6px;
     box-shadow: 0 4px 8px rgb(53, 53, 53);
+    background-color: rgba(255, 255, 255, 0.9); /* Полупрозрачный белый фон */
     width: calc(50% - 10px); /* Ширина блоков */
     box-sizing: border-box;
 }
@@ -68,8 +69,8 @@ form input, form textarea, form select {
     margin: 6px 0;
     border: 1px solid #444;
     border-radius: 4px;
-    background-color: #7c7c7c;
-    color: #e0e0e0;
+    background-color: #ffffff;
+    color: #000000;
     font-size: 14px;
     box-sizing: border-box;
     transition: border-color 0.3s, background-color 0.3s;
@@ -78,7 +79,7 @@ form input, form textarea, form select {
 /* Фокус на полях ввода */
 form input:focus, form textarea:focus, form select:focus {
     border-color: #6b6b6b;
-    background-color: #2a2a2a;
+    background-color: #f0f0f0;
     outline: none;
 }
 
@@ -117,12 +118,12 @@ form a:hover {
 
 /* Стили для сообщений об ошибках */
 .error {
-    color: #ff6b6b; /* Красный цвет для ошибок */
+    color: #ff0000; /* Красный цвет для ошибок */
     font-size: 12px; /* Размер шрифта */
     margin: 4px 0; /* Отступы */
     padding: 4px; /* Внутренние отступы */
     background-color: rgba(255, 0, 0, 0.1); /* Легкий красный фон */
-    border: 1px solid #ff6b6b; /* Красная рамка */
+    border: 1px solid #ff0000; /* Красная рамка */
     border-radius: 4px; /* Скругленные углы */
     text-align: left; /* Выравнивание текста по левому краю */
 }
@@ -131,7 +132,7 @@ form a:hover {
 form input.error-field,
 form select.error-field,
 form textarea.error-field {
-    border-color: #ff6b6b; /* Красная рамка для невалидных полей */
+    border-color: #ff0000; /* Красная рамка для невалидных полей */
     background-color: rgba(255, 0, 0, 0.1); /* Легкий красный фон */
 }
 
@@ -143,15 +144,14 @@ form textarea.error-field {
 }
 
 .errorlist li {
-    color: #ff6b6b; /* Красный цвет для ошибок */
+    color: #ff0000; /* Красный цвет для ошибок */
     font-size: 12px; /* Размер шрифта */
     margin: 4px 0; /* Отступы */
     padding: 4px; /* Внутренние отступы */
     background-color: rgba(255, 0, 0, 0.1); /* Легкий красный фон */
-    border: 1px solid #ff6b6b; /* Красная рамка */
+    border: 1px solid #ff0000; /* Красная рамка */
     border-radius: 4px; /* Скругленные углы */
 }
-
 
 /* Стили для меток */
 form label {
@@ -169,5 +169,23 @@ form label {
 
     .submit-block {
         margin-top: 10px;
+    }
+
+    h1 {
+        font-size: 18px; /* Уменьшаем размер заголовка */
+    }
+
+    form input, form textarea, form select {
+        padding: 6px; /* Уменьшаем отступы */
+        font-size: 12px; /* Уменьшаем размер шрифта */
+    }
+
+    form button {
+        padding: 8px; /* Уменьшаем отступы кнопки */
+        font-size: 12px; /* Уменьшаем размер шрифта */
+    }
+
+    .error {
+        font-size: 10px; /* Уменьшаем размер шрифта для ошибок */
     }
 }

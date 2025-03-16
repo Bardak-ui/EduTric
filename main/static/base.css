@@ -3,12 +3,8 @@ body {
     margin: 0;
     padding: 0;
     background-color: #ccc;
-    font-family: Arial, sans-serif;
-}
-
-.container {
-    width: 100%;
-    min-height: 100vh;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16px; /* Базовый размер шрифта */
 }
 
 /* Шапка */
@@ -18,42 +14,29 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px; /* Уменьшаем высоту для мобильных устройств */
-    background-color: #666;
-    justify-content: center;
+    height: 60px; /* Высота шапки */
+    background-color: #666666;
+    padding: 0 10px; /* Отступы по бокам */
     align-items: center;
-    padding: 0 10px; /* Добавляем отступы */
-    z-index: 100; /* Убедимся, что шапка поверх других элементов */
+    justify-content: space-between;
+    z-index: 1000; /* Шапка поверх других элементов */
 }
 
-.header .icon{
+.header h1 {
+    color: rgb(228, 228, 228);
+    font-size: 1.5rem; /* Размер шрифта */
+    margin: 0;
+}
+
+.header .icon {
     display: flex;
-    flex: 1;
-    flex-direction: row;
-    justify-self: left;
-    max-width: 10px;
+    align-items: center;
 }
 
 .header .icon img {
-    width: 50px; /* Уменьшаем размер иконок */
-    height: 50px;
-    margin-right: 10px;
-}
-
-.searche {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    max-width: 350px; /* Уменьшаем максимальную ширину поиска */
-    max-height: 30px;  
-}
-
-.searche .search {
-    padding: 5px;
-    font-size: 14px; /* Уменьшаем размер шрифта */
-    border: 1px solid #cccccc;
-    border-radius: 4px;
+    width: 40px; /* Размер иконок */
+    height: 40px;
+    margin-right: 10px; /* Отступ между иконками */
 }
 
 /* Левая панель */
@@ -61,118 +44,125 @@ body {
     position: fixed;
     top: 60px; /* Сдвигаем вниз, чтобы не перекрывала шапку */
     left: 0;
-    width: 60px; /* Уменьшаем ширину для мобильных устройств */
-    height: 100vh;
+    width: 65px; /* Ширина левой панели */
+    height: 200vh; /* Высота минус высота шапки */
     background-color: #999;
-    z-index: 50;
+    z-index: 999; /* Левая панель поверх контента */
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding-top: 10px;
+    align-items: center; /* Центрирование по горизонтали */
+    justify-content: flex-start; /* Выравнивание по верхнему краю */
+    padding-top: 20px; /* Отступ сверху */
+    gap: 20px; /* Расстояние между иконками */
 }
 
-.left_panel img {
+/* Контейнер для иконки и текста */
+.left_panel nav {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px; /* Уменьшаем размер иконок */
-    height: 40px;
-    top: 0;
-    left: 0;
+    flex-direction: column;
+    align-items: center; /* Центрирование по горизонтали */
+    gap: 5px; /* Расстояние между иконкой и текстом */
 }
 
+/* Иконки */
+.left_panel img {
+    width: 40px; /* Фиксированный размер иконок */
+    height: 40px;
+    cursor: pointer; /* Курсор при наведении */
+    transition: transform 0.2s ease; /* Плавное увеличение при наведении */
+    object-fit: contain; /* Сохраняет пропорции изображения */
+}
+
+.left_panel img:hover {
+    transform: scale(1.1); /* Увеличение иконки при наведении */
+}
+
+/* Текст под иконками */
+.left_panel p {
+    font-size: 10px;
+    margin: 0; /* Убираем отступы */
+    text-align: center; /* Центрирование текста */
+}
+
+.left_panel img:hover {
+    transform: scale(1.1); /* Увеличение иконки при наведении */
+}
+
+/* Аватарка */
 .header .avatar img {
-    top: 0px;
-    left: 0px;
-    margin: 0;
-    width: 55px; /* Уменьшаем размер аватарки */
-    height: 55px;
+    width: 50px; /* Размер аватарки */
+    height: 50px;
     border: 1px solid #000;
     border-radius: 50%;
     object-fit: cover;
 }
 
-/* Адаптация для мобильных устройств */
+/* Основной контент */
+.content {
+    margin-left: 65px; /* Отступ для левой панели */
+    margin-top: 60px; /* Отступ для шапки */
+    padding: 20px; /* Внутренний отступ */
+    transition: margin-left 0.3s ease; /* Плавное изменение отступа */
+}
+/* Адаптация для планшетов */
 @media (max-width: 768px) {
-    .header {
-        height: 50px;
-    }
-
-    .header .icon img {
-        width: 40px;
-        height: 40px;
-    }
-
-    .searche {
-        max-width: 200px;
-    }
-
-    .searche .search {
-        font-size: 12px;
-    }
-
     .left_panel {
-        width: 50px;
+        position: fixed;
+        width: 65px; /* Ширина левой панели */
         top: 50px;
         height: calc(100vh - 50px);
+        padding-top: 20px;
+        gap: 15px;
     }
 
     .left_panel img {
-        width: 30px;
-        height: 30px;
-        margin-bottom: 10px;
+        width: 35px; /* Размер иконок */
+        height: 35px;
     }
 
-    .left_panel .avatar img {
-        width: 40px;
-        height: 40px;
-    }
-
-    .content {
-        padding-top: 60px;
-        margin-left: 60px;
+    .left_panel p {
+        font-size: 9px; /* Уменьшаем размер текста */
     }
 }
 
+/* Адаптация для мобильных устройств */
 @media (max-width: 480px) {
-    .header {
-        height: 40px;
-        padding: 0 5px;
-    }
-
-    .header .icon img {
-        width: 30px;
-        height: 30px;
-    }
-
-    .searche {
-        max-width: 150px;
-    }
-
-    .searche .search {
-        font-size: 10px;
-        padding: 3px;
-    }
-
     .left_panel {
-        width: 40px;
+        position: fixed;
+        width: 65px; /* Ширина левой панели */
         top: 40px;
         height: calc(100vh - 40px);
+        padding-top: 40px;
+        gap: 10px;
     }
 
     .left_panel img {
-        width: 25px;
-        height: 25px;
-        margin-bottom: 8px;
-    }
-
-    .left_panel .avatar img {
-        width: 30px;
+        width: 30px; /* Размер иконок */
         height: 30px;
     }
 
-    .content {
-        padding-top: 50px;
-        margin-left: 50px;
+    .left_panel p {
+        font-size: 8px; /* Уменьшаем размер текста */
+    }
+}
+
+/* Адаптация для очень маленьких экранов */
+@media (max-width: 320px) {
+    .left_panel {
+        position: fixed;
+        width: 65px; /* Ширина левой панели */
+        top: 35px;
+        height: calc(100vh - 35px);
+        padding-top: 8px;
+        gap: 8px;
+    }
+
+    .left_panel img {
+        width: 25px; /* Размер иконок */
+        height: 25px;
+    }
+
+    .left_panel p {
+        font-size: 7px; /* Уменьшаем размер текста */
     }
 }

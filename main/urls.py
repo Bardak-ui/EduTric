@@ -10,14 +10,21 @@ urlpatterns = [
     path('', LoginView.as_view(template_name = 'login.html'), name='login'), # Страница входа
     #path('home/', views.home, name='home'),
     path('profile/', views.profile, name='profile'),
+    path('edit-profile/', views.edit_profile, name='edit_profile'),
     path('register/', views.register, name='register'),
-    path('schedule/', views.schedule, name='schedule'),
-    path('schedule/group/<str:group_id>/', views.schedule, name='schedule_group'),
+    path('schedule/', views.schedule, name='schedule'),  # Без group_id
+    path('schedule/group/<int:group_id>/', views.schedule, name='schedule_group'),
     path("schedule/add/", views.add_schedule, name="add_schedule"),
     path('search_user/', views.search_user, name='search_user'),
     path('FAQ/', views.FAQ_LIST, name='FAQ_LIST'),
-    path('ads/', views.ads, name='ads'),
+    path('FAQ/add/', views.add_faq, name='add_faq'),
+    path('FAQ/edit/<int:faq_id>/', views.edit_faq, name='edit_faq'),
+    path('FAQ/delete/<int:faq_id>/', views.delete_faq, name='delete_faq'),
     path('pay/', views.pay, name='pay'),
+    path('news/', views.news, name='news'),
+    path('news/add/', views.add_news, name='add_news'),
+    path('schedule/edit/<int:schedule_id>/', views.edit_schedule, name='edit_schedule'),
+    path('schedule/delete/<int:schedule_id>/', views.delete_schedule, name='delete_schedule'),
     #path('edit_evalutions/', views.edit_evalutions, name='edit_evalutions'),
 ]
 

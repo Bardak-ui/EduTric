@@ -1,5 +1,5 @@
 from django import forms
-from .models import Teacher,Profile, Schedule, LessonTime, Groups, Subject
+from .models import Teacher,Profile, Schedule, LessonTime, Groups, Subject, News, FAQ
 from django.forms import TextInput, DateInput, Textarea, PasswordInput, IntegerField,CharField,ChoiceField
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -29,7 +29,9 @@ class EditProfile(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['familiy','name','otchestvo','faculti','avatar','phone','group','course','birthday']
-
+        widgets = {
+            'birthday': forms.DateInput(attrs={'type': 'date'}),  # Поле для выбора даты
+        }
 class CreateProfileTeacher(forms.ModelForm):
     class Meta:
         model = Teacher
@@ -45,7 +47,6 @@ class ScheduleForm(forms.ModelForm):
         model = Schedule
         fields = ['group', 'subjects', 'teacher', 'weekday', 'lesson_time', 'room']
         widgets = {
-            'subjects': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'weekday': forms.Select(attrs={'class': 'form-control'}),
             'lesson_time': forms.Select(attrs={'class': 'form-control'}),
             'room': forms.TextInput(attrs={'class': 'form-control'}),
@@ -54,25 +55,27 @@ class ScheduleForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        # Фильтрация учителей по группе
-        if 'group' in self.data:
-            try:
-                group_name = self.data.get('group')
-                self.fields['teacher'].queryset = Teacher.objects.filter(group=group_name)
-            except (ValueError, TypeError):
-                pass
-        elif self.instance.pk and self.instance.group:
-            self.fields['teacher'].queryset = Teacher.objects.filter(group=self.instance.group)
+        # Фильтрация lesson_time, чтобы исключить объекты с пустым временем
+        self.fields['lesson_time'].queryset = LessonTime.objects.exclude(
+            start_time__isnull=True,
+            start_time_1__isnull=True,
+            start_time_2__isnull=True
+        ).order_by('lesson_number')
 
-        # Фильтрация предметов по учителю
-        if 'teacher' in self.data:
-            try:
-                teacher_name = self.data.get('teacher')
-                self.fields['subjects'].queryset = Subject.objects.filter(teacher=teacher_name)
-            except (ValueError, TypeError):
-                pass
-        elif self.instance.pk and self.instance.teacher:
-            self.fields['subjects'].queryset = Subject.objects.filter(teacher=self.instance.teacher)
+class NewsForm(forms.ModelForm):
+    class Meta:
+        model = News
+        fields = ['title', 'image', 'news']
+        widgets = {
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
 
-        # Упорядочиваем lesson_time
-        self.fields['lesson_time'].queryset = LessonTime.objects.all().order_by('lesson_number')
+class AddFAQ(forms.ModelForm):
+    class Meta:
+        model = FAQ
+        fields = ['question', 'answer']
+
+class EditFAQ(forms.ModelForm):
+    class Meta:
+        model = FAQ
+        fields = ['question', 'answer']

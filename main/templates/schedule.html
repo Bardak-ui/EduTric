@@ -2,104 +2,59 @@
 {% load static %}
 {% block title %}Расписание занятий{% endblock %}
 
-<div class="group-select">
-    <p>Выберите группу</p>
-    <select id="group-select" onchange="location = this.value;">
-        <option value="{% url 'schedule' %}">Все группы</option>
-        {% for group in groups %}
-            <option value="{% url 'schedule_group' group.id %}" 
-                {% if group.id == selected_group.id %}selected{% endif %}>
-                {{ group.name }} 
-            </option>
-        {% endfor %}
-    </select>
-</div>
-
-<!-- Таблица с расписанием -->
-{% for day, lessons in schedule_by_day.items %}
-    <h2>{{ day }}</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Время</th>
-                <th>Предмет</th>
-                <th>Преподаватель</th>
-                <th>Аудитория</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for lesson in lessons %}
-                <tr>
-                    <td>{{ lesson.lesson_time.start_time }} - {{ lesson.lesson_time.end_time }}</td>
-                    <td>{{ lesson.subject.name }}</td>
-                    <td>{{ lesson.teacher }}</td>
-                    <td>{{ lesson.room }}</td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="4">Нет занятий</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endfor %}
-
 {% block content %}
 <link rel="stylesheet" href="{% static 'schedule.css' %}">
-<br><br>
-<!-- Выбор группы -->
-<div class="group-select">
-    <select id="group-select" onchange="location = this.value;">
-        <option value="{% url 'schedule' %}">Выберите группу</option>
-        {% for group_id, group_name in groups %}
-            <option value="{% url 'schedule_group' group_id %}" 
-                {% if group_id == selected_group %}selected{% endif %}>
-                {{ group_name }} - (Курс {{ course.number }})
-            </option>
-        {% endfor %}
-    </select>
+<div class="group-select-container">
+    <div class="group-select">
+        <select id="group-select" onchange="location = this.value;">
+            <option value="{% url 'schedule' %}">Выберите группу</option>
+            {% for group in groups %}
+                <option value="{% url 'schedule_group' group.id %}" 
+                    {% if group.id == selected_group.id %}selected{% endif %}>
+                    {{ group.name }}-{{ group.course }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    {% if user..role == "Administrator" %}
+        <a href="{% url 'add_schedule' %}" class="add-button">Добавить пару</a>
+    {% endif %}
 </div>
-
-<!-- Кнопка для добавления новой пары -->
-<a href="{% url 'add_schedule' %}" class="add-button">Добавить пару</a>
 <hr>
 <h1>Расписание занятий</h1>
 <!-- Таблица с расписанием -->
 {% for day, lessons in schedule_by_day.items %}
     <h2>{{ day }}</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Время</th>
-                <th>Предмет</th>
-                <th>Преподаватель</th>
-                <th>Аудитория</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for lesson in lessons %}
+    <div class="table-container"> <!-- Контейнер для горизонтальной прокрутки -->
+        <table>
+            <thead>
                 <tr>
-                    <td>
-                        {{ lesson.lesson_time.start_time_1 }} - {{ lesson.lesson_time.end_time_1 }}
-                        <br><br>
-                        {{ lesson.lesson_time.start_time_2 }} - {{ lesson.lesson_time.end_time_2 }}
-                    </td>
-                    <td>
-                        {% for subject in lesson.subjects.all %}
-                            {{ subject.name }}{% if not forloop.last %}, {% endif %}
-                        {% empty %}
-                            Нет данных
-                        {% endfor %}
-                    </td>
-                    <td>{{ lesson.teacher }}</td>
-                    <td>{{ lesson.room }}</td>
+                    <th>Время</th>
+                    <th>Предмет</th>
+                    <th>Преподаватель</th>
+                    <th>Аудитория</th>
+                    <th>Действия</th>
                 </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="4">Нет занятий</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for lesson in lessons %}
+                    <tr>
+                        <td>{{ lesson.lesson_time.get_formatted_time }}</td>
+                        <td>{{ lesson.subjects }}</td>
+                        <td>{{ lesson.teacher }}</td>
+                        <td>{{ lesson.room }}</td>
+                        <td>
+                            <a href="{% url 'edit_schedule' lesson.id %}" class="edit-button">✏️</a>
+                            <a href="{% url 'delete_schedule' lesson.id %}" class="delete-button">🗑️</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">Нет занятий</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endfor %}
 {% endblock %}
