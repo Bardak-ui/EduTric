@@ -11,6 +11,13 @@
     margin-left: auto; /* Центрируем ленту по центру экрана */
 }
 
+.left_panel .news {
+    border-radius: 15px;
+    background-color: #575757;
+    padding: 10px; /* Добавляем отступы */
+    color: white; /* Белый текст для контраста */
+}
+
 /* Стили для заголовка страницы */
 .content h1 {
     background: linear-gradient(135deg, #7b6c88, #4d5a75); /* Градиентный фон */
