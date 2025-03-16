@@ -15,6 +15,24 @@
     color: white; /* Белый текст для контраста */
 }
 
+.no-group-selected {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 18px;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+h1{
+    text-align: center;
+}
+
+h2{
+    text-align: center;
+}
+
 /* Стили для выпадающего списка */
 .group-select select {
     appearance: none; /* Убираем стандартный стиль браузера */
