@@ -6,7 +6,6 @@
 }
 /* Основные стили профиля */
 .profile-container {
-    padding: 20px;
     padding-top: 80px; /* Уменьшаем отступ сверху */
     margin-left: 0; /* Убираем отступ слева */
 }
