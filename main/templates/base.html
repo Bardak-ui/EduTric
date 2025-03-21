@@ -15,7 +15,7 @@
                             <a href="{% url 'profile' %}">
                                 <img src="{{ user.profile_user.avatar.url }}" alt="Аватар" class="avatar">
                             </a>
-                        {% elif user.profile.role == 'Administrator' %}
+                        {% elif profile.role == 'Administrator' %}
                             <a href="{% url 'profile' %}">
                                 <img src="{{ user.profile_user.avatar.url }}" alt="Аватар" class="avatar">
                             </a>
