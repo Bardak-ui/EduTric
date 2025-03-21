@@ -58,11 +58,15 @@ class Faculti(models.Model):
     
 class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacher_user', unique=True)
-    fio = models.CharField(max_length=255)
+    fio = models.CharField(max_length=255, verbose_name='ФИО')
     avatar = models.ImageField(upload_to='./teacher_avatars/', blank=True, null=True, default="./static/media/no_avatar.jpeg")
-    faculti = models.CharField(max_length=255, choices=Faculti.FACULTI_CHOICES)
-    subjects = models.TextField()
+    faculti = models.CharField(max_length=255, choices=Faculti.FACULTI_CHOICES, verbose_name='Факультет')
+    subjects = models.TextField(verbose_name='Ведущие предметы')
     group = models.ForeignKey(Groups, on_delete=models.CASCADE,verbose_name='Группа')
+    role = models.CharField(max_length=50, choices=Role.ROLE_CHOICES, default='Teacher')
+
+    def __str__(self):
+        return self.fio
 
 class Kurator(models.Model):
     KURATOR_CHOICES = [

@@ -36,6 +36,11 @@ class CreateProfileTeacher(forms.ModelForm):
     class Meta:
         model = Teacher
         fields = ['fio','avatar','faculti','subjects','group']
+        widgets = {
+            'subjects': Textarea(attrs={
+                'style': 'resize: vertical;', # Inline-стили (запрет изменения размера и цвет границы)
+            }),
+        }
 
 class EditProfileTeacher(forms.ModelForm):
     class Meta:

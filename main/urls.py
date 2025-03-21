@@ -7,8 +7,12 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', LoginView.as_view(template_name = 'login.html'), name='login'), # Страница входа
     path('profile/', views.profile, name='profile'),
+    path('vbr/', views.vbr, name='vbr'),
+    path('profile/teacher/', views.profile_teacher, name='profile_teacher'),
     path('edit-profile/', views.edit_profile, name='edit_profile'),
+    path('edit-profile/teacher/', views.edit_profile_teacher, name='edit_profile_teacher'),
     path('register/', views.register, name='register'),
+    path('register/teacher/', views.register_teacher, name='register_teacher'),
     path('schedule/', views.schedule, name='schedule'),  # Без group_id
     path('schedule/group/<int:group_id>/', views.schedule, name='schedule_group'),
     path("schedule/add/", views.add_schedule, name="add_schedule"),

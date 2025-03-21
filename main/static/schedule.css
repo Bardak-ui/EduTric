@@ -26,9 +26,11 @@
 }
 
 h1{
+    color: black;
     text-align: center;
 }
 h2{
+    color: black;
     text-align: center;
 }
 
@@ -154,11 +156,12 @@ tbody tr:nth-child(even) {
 
 /* Контейнер для таблицы с горизонтальной прокруткой */
 .table-container {
+    display: flex;
+    justify-self:center;
     width: 100%;
     overflow-x: auto; /* Горизонтальная прокрутка */
     margin-bottom: 20px;
     border-radius: 10px; /* Скругленные углы */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень */
 }
 
 /* Кнопки редактирования и удаления */
@@ -189,8 +192,12 @@ tbody tr:nth-child(even) {
     }
 
     .edit-button, .delete-button {
-        font-size: 14px; /* Уменьшаем размер иконок */
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin: 5px 0; /* Отступы между кнопками */
     }
+
     .add-button {
         font-size: 10px; /* Размер шрифта */
     }
@@ -207,13 +214,11 @@ tbody tr:nth-child(even) {
         font-size: 1.2rem; /* Уменьшаем размер заголовка */
     }
 
-    /* Скрываем столбец "Действия" на очень маленьких экранах */
-    th:nth-child(5), td:nth-child(5) {
-        display: none;
-    }
-
     .edit-button, .delete-button {
-        font-size: 12px; /* Уменьшаем размер иконок */
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin: 5px 0; /* Отступы между кнопками */
     }
 }
 
@@ -229,6 +234,9 @@ tbody tr:nth-child(even) {
     }
 
     .edit-button, .delete-button {
-        font-size: 10px; /* Уменьшаем размер иконок */
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin: 5px 0; /* Отступы между кнопками */
     }
 }

@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from time import timezone
 from .models import Profile, Teacher, FAQ, Schedule, Performance,Groups, News
 from django.contrib.auth.decorators import login_required,  user_passes_test
 from .forms import CustomeUserForm, CreateProfile, CreateProfileTeacher, EditProfile, EditProfileTeacher,ScheduleForm, NewsForm, AddFAQ, EditFAQ
-from django.db.models import Q  # Импортируем Q для сложных запросов
+from django.db.models import Q 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def is_staff(user):
@@ -12,6 +12,36 @@ def is_staff(user):
 @login_required
 def home(request):
     return render(request,'home.html')
+
+def vbr(request):
+    return render(request, 'vbr.html')
+
+def register_teacher(request):
+    secure_code = request.POST.get('secure_code')
+    if request.method == 'POST':
+        form_acc = CustomeUserForm(request.POST)
+        form_prof = CreateProfileTeacher(request.POST)
+        if secure_code == 'Gt$0X1hS%_':
+            if form_acc.is_valid() and form_prof.is_valid():
+                user = form_acc.save()  # Создаем пользователя
+                profile = form_prof.save(commit=False)
+                profile.user = user
+                profile.role = 'Teacher'
+                profile.save()  # Обновляем профиль с данными из формы
+                return redirect('/')
+            else:
+                print("Ошибки в форме учителя:", form_acc.errors)
+                print("Ошибки в форме профиля:", form_prof.errors)
+        else:
+            return HttpResponse('Секретный код неверный')
+    else:
+        form_acc = CustomeUserForm()
+        form_prof = CreateProfileTeacher()
+    
+        return render(request, 'register_teacher.html', {
+            'form_acc': form_acc,
+            'form_prof': form_prof,
+        })
 
 def register(request):
     if request.method == 'POST':
@@ -134,6 +164,14 @@ def profile(request):
     return render(request, 'profile.html', {'profile': profile})
 
 @login_required
+def profile_teacher(request):
+    profile = Teacher.objects.filter(user=request.user).first()  # Оптимизированный запрос
+    if not profile:
+        return redirect('register')  # Перенаправляем, если профиль не существует
+    return render(request, 'profile_teacher.html', {'profile': profile})
+
+
+@login_required
 def edit_profile(request):
     # Получаем профиль текущего пользователя
     profile = get_object_or_404(Profile, user=request.user)
@@ -149,6 +187,23 @@ def edit_profile(request):
         form = EditProfile(instance=profile)
 
     return render(request, 'edit_profile.html', {'form': form})
+
+@login_required
+def edit_profile_teacher(request):
+    # Получаем профиль текущего пользователя
+    profile = get_object_or_404(Profile, user=request.user)
+
+    if request.method == 'POST':
+        # Передаем данные из запроса и файлы (если есть) в форму
+        form = EditProfileTeacher(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()  # Сохраняем изменения
+            return redirect('profile/teacher/')  # Перенаправляем на страницу профиля
+    else:
+        # Если запрос GET, отображаем форму с текущими данными профиля
+        form = EditProfileTeacher(instance=profile)
+
+    return render(request, 'edit_profile_teacher.html', {'form': form})
 
 @login_required
 @user_passes_test(is_staff)

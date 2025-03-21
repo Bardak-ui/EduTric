@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,17 +11,37 @@
         <div class="header">
                 <div class="avatar">
                     {% if user.profile_user.avatar %}
-                        <a href="{% url 'profile' %}">
-                            <img src="{{ user.profile_user.avatar.url }}" alt="Аватар" class="avatar">
-                        </a>
+                        {% if user.profile.role == 'Student' %}
+                            <a href="{% url 'profile' %}">
+                                <img src="{{ user.profile_user.avatar.url }}" alt="Аватар" class="avatar">
+                            </a>
+                        {% elif user.profile.role == 'Administrator' %}
+                            <a href="{% url 'profile' %}">
+                                <img src="{{ user.profile_user.avatar.url }}" alt="Аватар" class="avatar">
+                            </a>
+                        {% elif user.profile.role == 'Teacher' %}    
+                            <a href="{% url 'profile_teacher' %}">
+                                <img src="{{ user.profile_user.avatar.url }}" alt="Аватар" class="avatar">
+                            </a>
+                        {% endif %}
                     {% else %}
-                        <a href="{% url 'profile' %}">
-                            <img src="{% static 'media/no_avatar.jpeg' %}" alt="Аватар" class="avatar">
-                        </a>
+                        {% if profile.role == 'Student' %}
+                            <a href="{% url 'profile' %}">
+                                <img src="{% static 'media/no_avatar.jpeg' %}" alt="Аватар" class="avatar">
+                            </a>
+                        {% elif profile.role == 'Administrator' %}
+                            <a href="{% url 'profile' %}">
+                                <img src="{% static 'media/no_avatar.jpeg' %}" alt="Аватар" class="avatar">
+                            </a>
+                        {% elif profile.role == 'Teacher'  %}    
+                            <a href="{% url 'profile_teacher' %}">
+                                <img src="{% static 'media/no_avatar.jpeg' %}" alt="Аватар" class="avatar">
+                            </a>  
+                        {% endif %}
                     {% endif %}
                 </div>
                 {% if user.is_staff %}
-                    <h1>Здравствуйте, вы в режиме Администратор!</h1>
+                    <h1>Здравствуйте, Администратор!</h1>
                 {% else %}
                     <h1>Здравствуйте, {{ user.profile_user.name }} {{ user.profile_user.otchestvo }} </h1>
                 {% endif %}
