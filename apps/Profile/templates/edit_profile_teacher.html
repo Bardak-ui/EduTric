@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'edit_profile.css' %}">
+<div class="edit-profile-container">
+    <h1>Редактирование профиля</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save-button">Сохранить изменения</button>
+        <a href="{% url 'profile' %}" class="cancel-button">Отмена</a>
+    </form>
+</div>
+{% endblock %}

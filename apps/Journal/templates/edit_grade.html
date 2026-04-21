@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0" style="border-radius: 15px; overflow: hidden;">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>Редактирование оценки
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    
+                    <div class="row mb-4">
+                        <div class="col-12 mb-3">
+                            <label class="text-muted small fw-bold text-uppercase">Студент</label>
+                            <h5 class="border-bottom pb-2">
+                                {{ student.familiy }} {{ student.name }}
+                            </h5>
+                        </div>
+                        <div class="col-12">
+                            <label class="text-muted small fw-bold text-uppercase">Предмет</label>
+                            <h5 class="text-primary">{{ subject.name }}</h5>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{{ form.grade.label }}</label>
+                            
+                            <select name="grade" class="form-select" id="id_grade">
+                                <option value="">— (пусто)</option>
+                                
+                                {% if is_teacher_flag %}
+                                    {# Только для преподавателя #}
+                                    <option value="5" {% if form.grade.value == "5" %}selected{% endif %}>5</option>
+                                    <option value="4" {% if form.grade.value == "4" %}selected{% endif %}>4</option>
+                                    <option value="3" {% if form.grade.value == "3" %}selected{% endif %}>3</option>
+                                    <option value="2" {% if form.grade.value == "2" %}selected{% endif %}>2</option>
+                                {% endif %}
+                                
+                                {# Доступно и старосте, и преподавателю #}
+                                <option value="Н" {% if form.grade.value == "Н" %}selected{% endif %}>Н (Отсутствие)</option>
+                            </select>
+
+                            {% if form.grade.errors %}
+                                <div class="text-danger small">{{ form.grade.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">{{ form.date.label }}</label>
+                            {{ form.date }}
+                            {% if form.date.errors %}
+                                <div class="text-danger small">{{ form.date.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            {# Исправлено обращение к группе #}
+                            {% if student.group %}
+                                <a href="{% url 'journal:group_info' student.group.id %}" class="btn btn-light border px-4">
+                                    Отмена
+                                </a>
+                            {% else %}
+                                <a href="javascript:history.back()" class="btn btn-light border px-4">
+                                    Назад
+                                </a>
+                            {% endif %}
+                            
+                            <button type="submit" class="btn btn-primary px-4">
+                                Сохранить изменения
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    {# Добавлена проверка типа сообщения для цвета алерта #}
+                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} mt-3 shadow-sm border-start border-4">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-select {
+        border-radius: 8px;
+        padding: 10px;
+        border: 1px solid #dee2e6;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+    }
+</style>
+{% endblock %}

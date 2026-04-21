@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'vbr.css' %}">
+    <title>Кто вы?</title>
+</head>
+<body>
+    <div class="vbr">
+        <h1>Кто вы?</h1> 
+    </div>
+    
+    <div class="blok_vbr">
+        <a href="{% url 'register' %} " ><button class="student" type="submit" value="student">Я студент</button></a>
+        <a href="{% url 'register_teacher' %}" ><button class="teacher" type="submit" value="teacher">Я преподаватель</button></a>
+    </div>
+</body>
+</html>

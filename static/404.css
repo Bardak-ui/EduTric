@@ -1,0 +1,89 @@
+/* 1. Делаем контейнер прозрачным, чтобы просвечивал фон из base.html */
+    .error-wrapper {
+        position: relative;
+        height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: transparent; /* УБРАЛИ ЛИШНИЙ ЦВЕТ */
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* 2. Убираем лишние градиентовые фигуры, которые перекрывали твой фон */
+    .bg-shape, .custom-bg {
+        display: none; 
+    }
+
+    .error-main {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+    }
+
+    /* 3. Оставляем Глитч-эффект (он круто смотрится на темном фоне) */
+    .glitch {
+        font-size: 150px;
+        font-weight: 900;
+        line-height: 1;
+        color: #ffffff; /* Белый цвет для контраста с твоим черным фоном */
+        position: relative;
+        margin: 0;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        animation: glitch-skew 1s infinite linear alternate-reverse;
+    }
+
+    .error-info h2 {
+        font-size: 28px;
+        color: #ffffff;
+        margin-top: 10px;
+    }
+
+    .error-info p {
+        color: #aaaaaa; /* Светло-серый текст */
+        max-width: 450px;
+        margin: 15px auto 30px;
+    }
+
+    /* Кнопки оставляем как были */
+    .btn-group {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .btn-filled {
+        padding: 12px 25px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        background: #ffffff;
+        color: #000000;
+        transition: all 0.3s ease;
+    }
+
+    .btn-filled:hover {
+        background: #dddddd;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 20px rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-outline {
+        padding: 12px 25px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        border: 2px solid #ffffff;
+        color: #ffffff;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes glitch-skew {
+        0% { transform: skew(1deg); }
+        20% { transform: skew(-2deg); }
+        100% { transform: skew(0deg); }
+    }

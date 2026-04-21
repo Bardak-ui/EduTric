@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Профиль {{ user.get_role_display }}{% endblock %}
+
+{% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'profile.css' %}">
+
+<div class="profile-container">
+    
+    <div class="student-id-card">
+        <div class="qr-section">
+            <div class="qr-placeholder">
+                {% if qr_code_image %}
+                    <img src="{{ qr_code_image }}" class="QR-code">
+                {% else %}
+                    <div style="color: black; font-size: 10px;">QR PASS</div>
+                {% endif %}
+            </div>
+            <div class="text-center mt-2" style="color: rgba(255,255,255,0.6); font-size: 14px;">
+                {{ user.get_role_display }}
+            </div>
+        </div>
+
+        <div class="card-visuals">
+            <div class="visual-box student-photo-pass">
+                <img src="{% static 'no_avatar.jpeg' %}" alt="Фото">
+            </div>
+            
+            <div class="visual-box student-data-pass">
+                <div class="pass-fio">
+                    {{ teacher.user.last_name }}<br>
+                    {{ teacher.user.first_name }}
+                </div>
+                <div class="pass-id">
+                    {% if teacher.department %}
+                        {{ teacher.department }}
+                    {% else %}
+                        СОТРУДНИК
+                    {% endif %}
+                </div>
+                <img src="{% static 'university_logo_white.png' %}" class="pass-logo" alt="Logo">
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-main-card">
+        <div class="avatar-wrapper">
+            <a href="{% url 'edit_profile_teacher' %}">
+                <img src="{% static 'no_avatar.jpeg' %}" alt="Аватар" class="profile-avatar">
+            </a>
+        </div>
+        
+        <div class="profile-info">
+            <h2 class="user-familiy">{{ teacher.user.last_name|default:user.username }}</h2>
+            <h3 class="user-name">{{ teacher.user.first_name }} {{ teacher.user.otchestvo|default:"" }}</h3>
+            
+            <div class="details-list">
+                {% if teacher.department %}
+                    <p><strong>Кафедра:</strong> {{ teacher.department }}</p>
+                {% endif %}
+                
+                {% if teacher.curated_group %}
+                    <p><strong>Куратор:</strong> {{ teacher.curated_group }}</p>
+                {% endif %}
+
+                {% if user.role == 'DEAN' %}<p><strong>Статус:</strong> Деканат</p>{% endif %}
+                {% if user.role == 'DIRECTOR' %}<p><strong>Статус:</strong> Директор</p>{% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="actions">
+    <a href="{% url 'journal:performance' %}" class="btn-record-book">Открыть журналы</a>
+</div>
+{% endblock %}

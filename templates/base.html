@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <title>{% block title %}Навигация{% endblock %}</title>
+</head>
+<body>
+    <div class="header-top-ui">
+        <div class="search-wrapper">
+            <form method="get" action="{% url 'search_user' %}" class="search-form">
+                <div class="search-input-container">
+                    <input type="text" class="search-field" name="search" placeholder="ВВЕДИТЕ ЗАПРОС..." value="{{ search_query|default:'' }}">
+                </div>
+                <div class="search-divider"></div>
+                <button type="submit" class="search-btn">
+                    <img src="{% static 'search.png' %}" alt="🔍" class="search-icon-img"> 
+                    </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="menu-container">
+        <div class="menu-static">
+            <div class="menu-toggle" id="toggle">
+                <img src="{% static 'full.png' %}" class="arrow ui-icon" alt="toggle">
+            </div>
+        </div>
+        <div class="menu-expanded" id="menu-content">
+            <div class="navigation-group">
+                <a href="{% url 'profile' %}" class="menu-item {% if request.resolver_match.url_name == 'profile' %}active-link{% endif %}" style="--order: 1;">
+                    <img class="avatar ui-icon" src="{% static 'no_avatar.ico' %}" alt="avatar">
+                </a>
+
+                <a href="{% url 'journal:performance' %}" class="menu-item {% if 'journal' in request.resolver_match.namespaces %}active-link{% endif %}" style="--order: 2;">
+                    <img src="{% static 'journal.png' %}" alt="journal">
+                </a>
+
+                <a href="{% url 'schedule' %}" class="menu-item {% if request.resolver_match.url_name == 'schedule' %}active-link{% endif %}" style="--order: 3;">
+                    <img src="{% static 'schedule.png' %}" alt="schedule">
+                </a>
+
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="menu-item" style="--order: 4; background:none; border:none; padding:0; cursor:pointer;">
+                        <img src="{% static 'logout.png' %}" alt="logout">
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+
+    </body>
+</html>
+
+    <!-- ТВОЙ ОРИГИНАЛЬНЫЙ JS (БЕЗ ИЗМЕНЕНИЙ) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuContainer = document.querySelector('.menu-container');
+            const toggle = document.getElementById('toggle');
+            const menuLinks = document.querySelectorAll('.menu-expanded a, .menu-static .profile-link');
+
+            toggle.addEventListener('click', function() {
+                menuContainer.classList.toggle('active');
+            });
+
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (menuContainer.classList.contains('active')) {
+                        e.preventDefault();
+                        const targetUrl = this.href;
+                        menuContainer.classList.remove('active');
+                        setTimeout(() => {
+                            window.location.href = targetUrl;
+                        }, 500); 
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

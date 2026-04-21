@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}404 - Путь потерян{% endblock %}
+
+{% block content %}
+<div class="error-wrapper">
+    <!-- Все лишние фоны удалены, чтобы видеть твой conic-gradient из base.html -->
+    <div class="error-content">
+        <!-- Оставляем glass-text для эффекта стекла на темном фоне -->
+        <h1 class="glass-text">404</h1>
+        <div class="info-box">
+            <h2>Страница <a style="text-decoration: none; color: #ffffff;" href="https://vk.com/video-16784_456240616">вне зоны доступа</a></h2>
+            <p>Возможно, вы перешли по битой ссылке или группа была переименована. Вернитесь назад или в свой профиль.</p>
+        </div>
+        <div class="actions">
+            <a href="javascript:history.back()" class="btn-glass">Вернуться назад</a>
+            <a href="{% url 'profile' %}" class="btn-neon">В профиль</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Контейнер прозрачный, чтобы видеть фон родителя */
+    .error-wrapper {
+        position: relative;
+        height: 85vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: transparent; 
+        font-family: 'Inter', sans-serif;
+    }
+
+    .error-content {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+    }
+
+    /* Стеклянный эффект для цифр (Glassmorphism) */
+    .glass-text {
+        font-size: clamp(100px, 15vw, 180px);
+        font-weight: 900;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.9);
+        /* Размытие заднего фона прямо под цифрами */
+        backdrop-filter: blur(8px);
+        background: rgba(255, 255, 255, 0.05);
+        padding: 0 40px;
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        display: inline-block;
+        animation: float 4s ease-in-out infinite;
+    }
+
+    .info-box h2 {
+        color: #ffffff;
+        font-size: 2.2rem;
+        margin-top: 25px;
+        font-weight: 700;
+    }
+
+    .info-box p {
+        color: #b0b0b0;
+        max-width: 500px;
+        margin: 15px auto 40px;
+        font-size: 1.1rem;
+    }
+
+    /* Кнопки */
+    .actions {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .btn-glass {
+        padding: 14px 35px;
+        color: #ffffff;
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 50px;
+        font-weight: 600;
+        transition: 0.3s all ease;
+    }
+
+    .btn-glass:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #ffffff;
+        transform: translateY(-3px);
+    }
+
+    .btn-neon {
+        padding: 14px 35px;
+        color: #000000;
+        background: #ffffff;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 700;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        transition: 0.3s all ease;
+    }
+
+    .btn-neon:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 255, 255, 0.5);
+        background: #f0f0f0;
+    }
+
+    /* Анимация "Парение" */
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+</style>
+{% endblock %}

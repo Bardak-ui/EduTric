@@ -1,0 +1,148 @@
+.edit-profile-container {
+    display: flex;
+    justify-content: right;
+    flex-direction: column;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 36.5%;
+    width: 100%;
+    margin-left: auto; 
+    margin-top: 0px;
+}
+
+/* Заголовок */
+.edit-profile-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-align: center;
+}
+
+/* Поля формы */
+.edit-profile-container form p {
+    margin-bottom: 15px;
+}
+
+.edit-profile-container label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+
+.edit-profile-container input[type="text"],
+.edit-profile-container input[type="date"],
+.edit-profile-container select,
+.edit-profile-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.edit-profile-container input[type="file"] {
+    margin-bottom: 20px;
+}
+
+/* Кнопка сохранения */
+.save-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+    background-color: #45a049;
+}
+
+/* Кнопка отмены */
+.cancel-button {
+    background-color: #6c757d;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+    background-color: #5a6268;
+}
+
+/* ===== АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ ===== */
+/* Планшеты и телефоны (ширина ≤ 768px) */
+@media (max-width: 768px) {
+    .edit-profile-container {
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;      
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .edit-profile-container h1 {
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+
+    /* Поля ввода – больше для удобства нажатия */
+    .edit-profile-container input[type="text"],
+    .edit-profile-container input[type="date"],
+    .edit-profile-container select,
+    .edit-profile-container textarea {
+        font-size: 16px;         /*防止 зума на iOS */
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    .edit-profile-container label {
+        font-size: 14px;
+    }
+
+    /* Кнопки – на всю ширину, одна под другой */
+    .save-button,
+    .cancel-button {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin: 8px 0;
+        padding: 12px;
+    }
+
+    .cancel-button {
+        margin-left: 0;          /* убираем отступ, который был на десктопе */
+    }
+}
+
+/* Очень маленькие телефоны (≤ 480px) */
+@media (max-width: 480px) {
+    .edit-profile-container {
+        max-width: 95%;
+        margin-top: 0px;
+        padding: 16px;
+    }
+
+    .edit-profile-container h1 {
+        font-size: 20px;
+    }
+
+    .edit-profile-container input[type="text"],
+    .edit-profile-container input[type="date"],
+    .edit-profile-container select,
+    .edit-profile-container textarea {
+        padding: 10px;
+        font-size: 15px;
+    }
+}
