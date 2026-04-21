@@ -1,0 +1,327 @@
+/* === 1. ОБНУЛЕНИЕ И ШРИФТЫ === */
+@font-face {
+    font-family: 'BOWLER-Regular';
+    src: url('/static/BOWLER-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    font-family: 'BOWLER-Regular', sans-serif;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* Убираем синий блик при тапе на мобилках */
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #444; /* Фон как в твоем проекте */
+    overflow-x: hidden;
+}
+
+/* === 2. СТРУКТУРА КОНТЕНТА === */
+.content {
+    padding: 20px;
+    padding-top: 100px; /* Отступ, чтобы контент начинался под поиском/меню */
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+/* === 3. МЕНЮ (ЛЕВАЯ ЧАСТЬ) === */
+.menu-container {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1500; /* Самый высокий приоритет */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu-static {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    width: 65px;
+    background: linear-gradient(180deg, #5f5f5f, #000000);
+    border-radius: 15px;
+    border: 2px solid #000;
+}
+
+.avatar {
+    width: 45px !important;
+    height: 45px !important;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.menu-expanded {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    overflow: hidden;
+}
+
+.menu-container.active .menu-expanded {
+    max-height: 1000px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.navigation-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 15px 10px;
+    background: linear-gradient(180deg, #5f5f5f, #000000);
+    border-radius: 15px;
+    width: 65px;
+    border: 2px solid #000;
+}
+
+.menu-item {
+    opacity: 0;
+    transform: translateY(-15px);
+    transition: all 0.3s ease;
+}
+
+.menu-container.active .menu-item {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(var(--order) * 0.1s);
+}
+
+.arrow {
+    width: 30px !important;
+    height: auto;
+    transform: rotate(90deg);
+    transition: transform 0.4s ease;
+    cursor: pointer;
+}
+
+.menu-container.active .arrow {
+    transform: rotate(-90deg);
+}
+
+/* === 4. ПОИСК (ПРАВАЯ ЧАСТЬ) === */
+.header-top-ui {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 1400; /* Чуть ниже меню */
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 15px;
+    padding: 4px 10px;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+.search-field {
+    border: none;
+    outline: none;
+    padding: 8px;
+    font-size: 14px;
+    width: 150px; /* Базовая ширина */
+    transition: width 0.3s ease;
+}
+
+.search-field:focus {
+    width: 200px; /* Расширяется при клике */
+}
+
+.search-divider {
+    width: 2px;
+    height: 20px;
+    background: #000;
+    margin: 0 8px;
+}
+
+.search-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.search-icon-img {
+    width: 20px;
+    height: 20px;
+}
+
+/* === 5. ТЕРМИНАЛЬНЫЕ КНОПКИ === */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    background: #000;
+    color: #fff;
+    border: 3px solid #000;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    background: #fff;
+    color: #000;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.3);
+}
+
+.btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px transparent;
+}
+
+/* === 6. ФОРМЫ (INPUTS) === */
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 3px solid #000;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.2);
+}
+
+/* === ФИКС ИКОНОК (ВСТАВИТЬ В САМЫЙ КОНЕЦ ФАЙЛА) === */
+
+/* --- ЭФФЕКТ СВЕЧЕНИЯ ДЛЯ АКТИВНОЙ СТРАНИЦЫ --- */
+
+/* Базовый стиль иконок: убираем всё лишнее */
+.menu-item img {
+    transition: filter 0.3s ease, transform 0.3s ease;
+    filter: drop-shadow(0 0 0px transparent); /* Изначально свечения нет */
+}
+
+/* Эффект для активной ссылки */
+.active-link img {
+    /* Твой зеленый или белый свет — выбери подходящий цвет */
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8)); 
+    transform: scale(1.1); /* Слегка увеличиваем активную иконку */
+}
+
+/* Специально для аватара в профиле, если он активен */
+.active-link .avatar {
+    border: none !important; /* Убираем ту белую обводку */
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6)) !important;
+}
+
+/* Эффект при наведении (hover) */
+.menu-item:hover img {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4));
+}
+
+/* 1. Возвращаем иконкам в меню их родной размер */
+.menu-container img:not(.avatar):not(.arrow) {
+    width: 35px !important;
+    height: 35px !important;
+    object-fit: contain !important;
+    display: block;
+    margin: 0 auto;
+    box-shadow: none !important; /* Убираем тени, если они прилипли */
+    border: none !important;    /* Убираем рамки */
+    background: none !important;
+}
+
+/* 2. Чиним стрелку-переключатель */
+.arrow {
+    width: 30px !important;
+    height: auto !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: none !important;
+}
+
+/* 3. Чиним кнопку выхода (удаляем стили стандартных кнопок) */
+.navigation-group form button {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    transform: none !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+/* 4. Чиним иконку поиска */
+.search-icon-img {
+    width: 20px !important;
+    height: 20px !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: none !important;
+    transform: none !important;
+}
+
+/* === 7. МОБИЛЬНАЯ АДАПТАЦИЯ (MEDIA QUERIES) === */
+
+@media (max-width: 600px) {
+    .header-top-ui {
+        right: 10px;
+        top: 10px;
+    }
+
+    .search-field {
+        width: 100px; /* Узкий поиск на мобилках */
+    }
+
+    .search-field:focus {
+        width: 140px;
+    }
+
+    /* Таблицы превращаем в скроллящиеся контейнеры */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        border: 3px solid #000;
+        border-radius: 15px;
+        background: white;
+    }
+}
+
+@media (max-width: 400px) {
+    .search-field {
+        width: 80px;
+    }
+    .search-field:focus {
+        width: 110px;
+    }
+}
+
+/* === 8. УТИЛИТЫ === */
+.alert {
+    padding: 15px;
+    border: 3px solid #000;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    background: #fff;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+}

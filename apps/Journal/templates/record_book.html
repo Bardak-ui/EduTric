@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load journal_extras %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'record_book.css' %}">
+<div class="record-book-wrapper">
+    <div class="header-info">
+        <h1>Зачетная книжка</h1>
+        <div class="user-meta">
+            <div class="user-fio">
+                {{ profile.familiy|default:"" }} {{ profile.name|default:"" }} {{ profile.otchestvo|default:"" }}
+            </div>
+            <div class="user-group">
+                <span class="badge">Группа: {{ profile.group.name|default:"Не указана" }}-{{ profile.group.course }}</span>
+            </div>
+        </div>
+    </div>
+
+    {% for sem in semesters_data %}
+    <div class="semester-card">
+        <div class="sem-header">
+            <h3>{{ sem.number }} Семестр</h3>
+            <div class="sem-avg">Средний балл: <span>{{ sem.avg }}</span></div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="grades-table">
+                <thead>
+                    <tr>
+                        <th>Дисциплина</th>
+                        <th class="text-center">Оценка</th>
+                        <th class="text-right">Дата выставления</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for g in sem.grades %}
+                    <tr>
+                        <td data-label="Дисциплина" class="subject-name">{{ g.subject.name }}</td>
+                        <td data-label="Оценка" class="text-center">
+                            {% if g.grade|stringformat:"s" == "Зачет" %}
+                                <span class="grade-badge high">Зачет</span>
+                            {% else %}
+                                <span class="grade-circle {% if g.grade >= 4 %}high{% elif g.grade == 3 %}mid{% else %}low{% endif %}">
+                                    {{ g.grade }}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td data-label="Дата" class="text-right">
+                            <div class="date-main">{{ g.date_signed|date:"d.m.Y" }}</div>
+                            <div class="time-sub">{{ g.time_signed|time:"H:i" }}</div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% empty %}
+    <div class="empty-state">
+        <p>Оценок пока нет. Учись прилежно! 🎓</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

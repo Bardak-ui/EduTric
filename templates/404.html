@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}404 - Страница потерялась{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static '404.css' %}">
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <div class="error-icon">
+            <!-- Анимированная иконка (твоя иконка журнала) -->
+            <img src="{% static 'journal.png' %}" class="floating-icon">
+        </div>
+        <h1 class="error-title">Упс! Группа не найдена</h1>
+        <p class="error-text">Похоже, это расписание еще не составили или вы ошиблись в адресе.</p>
+        <a href="{% url 'profile' %}" class="back-home">Вернуться в профиль</a>
+    </div>
+{% endblock %}

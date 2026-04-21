@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'schedule.css' %}">
+<title>{% block title %}Расписание{% endblock %}</title>
+<div class="schedule-stack">
+    <div class="group-select-container" style="margin-bottom: 30px; text-align: center;">
+        <label for="group-select" style="color: white; font-weight: 800; margin-right: 10px;">ВЫБЕРИТЕ ГРУППУ:</label>
+        <select id="group-select" style="padding: 10px; border-radius: 10px; font-weight: 800; cursor: pointer;">
+            {% for group in groups %}
+                <option value="{% url 'schedule_group' group.id %}" {% if selected_group and group.id == selected_group.id %}selected{% endif %}>
+                    {{ group.name }} ({{ group.course }} курс)
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    {% if request.user.role == 'ACADEMIC_OFFICE' and selected_group %}
+    <div class="hint-text" style="margin-bottom:20px; text-align:center; color:#fff; font-weight:700;">
+        Нажмите на название дня, чтобы добавить пару, или на саму пару для редактирования.
+    </div>
+    {% endif %}
+
+    {% for day, lessons in schedule_by_day.items %}
+    <div class="day-card-wrapper">
+        <div class="terminal-card">
+            {% if request.user.role == 'ACADEMIC_OFFICE' and selected_group %}
+                <a href="{% url 'add_schedule' selected_group.id %}?weekday={{ forloop.counter }}" class="day-title-it">{{ day|upper }}</a>
+            {% else %}
+                <div class="day-title-it">{{ day|upper }}</div>
+            {% endif %}
+
+            <div class="day-content-it">
+                {% for lesson in lessons %}
+                    <div class="lesson-row-it" 
+                        data-start="{{ lesson.lesson_time.start_time|time:'H:i' }}" 
+                        data-end="{{ lesson.lesson_time.end_time|time:'H:i' }}"
+                        {% if request.user.role == 'ACADEMIC_OFFICE' %}
+                        onclick="window.location.href='{% url 'edit_schedule' lesson.id %}'"
+                        style="cursor: pointer;"
+                        title="Нажмите для редактирования"
+                        {% endif %}>
+                        
+                        <div class="lesson-idx">{{ lesson.lesson_time.lesson_number }}</div>
+                        
+                        <div class="lesson-time-inline">
+                            <span>{{ lesson.lesson_time.start_time|time:"H:i" }}</span>
+                            <span>{{ lesson.lesson_time.end_time|time:"H:i" }}</span>
+                        </div>
+
+                        <div class="lesson-info-it">
+                            <div class="name-it">{{ lesson.subject.name|upper|default:"БЕЗ ПРЕДМЕТА" }}</div>
+                            <div class="teacher-name">
+                                {{ lesson.teacher.user.last_name }} 
+                                {{ lesson.teacher.user.first_name|slice:":1" }}.
+                                {% if lesson.teacher.patronymic %}
+                                    {{ lesson.teacher.patronymic|slice:":1" }}.
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="room-it">К. {{ lesson.room|default:"--" }}</div>
+                        
+                        {% if request.user.role == 'ACADEMIC_OFFICE' %}
+                        <div class="admin-btns" onclick="event.stopPropagation();">
+                             <a href="{% url 'delete_schedule' lesson.id %}" 
+                                onclick="return confirm('Удалить эту пару?')" 
+                                style="text-decoration: none; margin-left: 10px;">🗑️</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <div style="text-align: center; color: #555; padding: 20px;">ПАР НЕТ</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+// Твоя логика JS остается прежней, она рабочая.
+document.addEventListener('DOMContentLoaded', function() {
+    const groupSelect = document.querySelector('#group-select');
+    if (groupSelect) {
+        groupSelect.addEventListener('change', function() {
+            if (this.value) window.location.href = this.value;
+        });
+    }
+
+    function updateCurrentLesson() {
+        const now = new Date();
+        const days = ['ВОСКРЕСЕНЬЕ', 'ПОНЕДЕЛЬНИК', 'ВТОРНИК', 'СРЕДА', 'ЧЕТВЕРГ', 'ПЯТНИЦА', 'СУББОТА'];
+        const todayName = days[now.getDay()];
+        const currentTime = now.getHours() * 60 + now.getMinutes();
+
+        document.querySelectorAll('.day-card-wrapper').forEach(dayCard => {
+            const titleEl = dayCard.querySelector('.day-title-it');
+            const dayTitle = titleEl ? titleEl.innerText.toUpperCase() : "";
+            
+            if (dayTitle === todayName) {
+                dayCard.querySelectorAll('.lesson-row-it').forEach(row => {
+                    const startStr = row.getAttribute('data-start');
+                    const endStr = row.getAttribute('data-end');
+
+                    if (startStr && endStr) {
+                        const [sH, sM] = startStr.split(':').map(Number);
+                        const [eH, eM] = endStr.split(':').map(Number);
+                        const startTime = sH * 60 + sM;
+                        const endTime = eH * 60 + eM;
+
+                        if (currentTime >= startTime && currentTime <= endTime) {
+                            row.style.boxShadow = "0 0 15px rgba(187, 134, 252, 0.4)";
+                            row.style.borderColor = "var(--accent-color)";
+                            row.style.background = "rgba(187, 134, 252, 0.15)"; // Чуть ярче для текущей
+                        }
+                    }
+                });
+            }
+        });
+    }
+    setInterval(updateCurrentLesson, 60000);
+    updateCurrentLesson();
+});
+</script>
+{% endblock %}

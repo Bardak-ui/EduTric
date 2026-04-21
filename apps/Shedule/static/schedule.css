@@ -1,0 +1,226 @@
+/* Переменные для легкой настройки */
+:root {
+    --card-bg: #1e1e1e;
+    --text-main: #e0e0e0;
+    --text-dim: #a0a0a0;
+    --border-color: #333333;
+    --now-playing: #cf6679; /* Цвет текущей пары */ы
+}
+
+.schedule-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 0px 0px 50px 15px;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--bg-dark);
+}
+
+/* Контейнер карточки дня */
+.day-card-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 180px; 
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    justify-content: center;
+}
+
+/* Левая темная карточка */
+.terminal-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 25px;
+    color: var(--text-main);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid var(--border-color);
+}
+
+.day-title-it {
+    display: block;
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--accent-color);
+    margin: 0 auto 25px auto;
+    padding-bottom: 8px;
+    width: fit-content;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.day-title-it:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+/* Контент внутри карточки (строки пар) */
+.day-content-it {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.lesson-row-it {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s;
+}
+
+.lesson-idx {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--accent-color);
+    min-width: 40px;
+    text-align: center;
+    opacity: 0.7;
+}
+
+.lesson-info-it {
+    flex: 2;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.name-it {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.teacher-name {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+.room-it {
+    background: rgba(187, 134, 252, 0.1);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    min-width: 70px;
+    text-align: center;
+}
+
+/* Правая колонка: Звонки */
+.bells-side-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    height: fit-content;
+}
+
+.bells-label {
+    font-weight: 900;
+    font-size: 1rem;
+    text-align: center;
+    color: var(--text-dim);
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.bell-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.bell-item:last-child { border-bottom: none; }
+
+.bell-num {
+    color: var(--accent-color);
+    font-weight: 900;
+}
+
+.bell-time {
+    color: var(--text-main);
+    font-size: 0.85rem;
+    text-align: right;
+    font-family: 'Courier New', monospace; /* Моноширинный шрифт для времени */
+}
+
+/* Селектор группы */
+.group-select {
+    background: var(--card-bg);
+    color: white;
+    border: 1px solid var(--accent-color);
+    padding: 12px 20px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.lesson-time-inline {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 55px;
+    padding: 0 10px;
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    font-family: 'Courier New', monospace; /* Чтобы цифры не «прыгали» */
+}
+
+.lesson-time-inline span:first-child {
+    color: var(--accent-color); /* Время начала поярче */
+    font-weight: 800;
+    font-size: 0.9rem;
+}
+
+.lesson-time-inline span:last-child {
+    color: var(--text-dim); /* Время конца чуть приглушенно */
+    font-size: 0.75rem;
+}
+
+.lesson-row-it[style*="cursor: pointer"]:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+}
+
+/* ==========================================
+   MEDIA QUERIES
+   ========================================== */
+
+@media (max-width: 850px) {
+    .day-card-wrapper {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+    .bells-side-card {
+        display: none; /* Прячем боковые звонки на мобилках для чистоты */
+    }
+}
+
+@media (max-width: 480px) {
+    .lesson-row-it {
+        flex-wrap: wrap;
+        padding: 15px;
+    }
+    .lesson-time-inline {
+        border: none;
+        padding: 0 5px;
+        min-width: 45px;
+    }
+    .lesson-idx { order: 1; }
+    .room-it { order: 2; margin-left: auto; }
+    .lesson-info-it { order: 3; flex: 1 1 100%; margin-top: 10px; border-top: 1px dashed #444; pt: 10px; }
+}

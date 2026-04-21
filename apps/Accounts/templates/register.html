@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="{% static 'register.css' %}">
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    <div class="container">
+        <div class="form-block login-block">
+            <h1>Создание аккаунта</h1>
+            {{ form.username.label_tag }} {{ form.username }}
+            {{ form.password1.label_tag }} {{ form.password1 }}
+            {{ form.password2.label_tag }} {{ form.password2 }}
+            {{ form.role.label_tag }} {{ form.role }}
+        </div>
+
+        <div class="form-block profile-block" id="student-fields">
+            <h1>Создание профиля</h1>
+            {{ form.familiy.label_tag }} {{ form.familiy }}
+            {{ form.name.label_tag }} {{ form.name }}
+            {{ form.otchestvo.label_tag }} {{ form.otchestvo }}
+            {{ form.faculti.label_tag }} {{ form.faculti }}
+            {{ form.group.label_tag }} {{ form.group }}
+            {{ form.phone.label_tag }} {{ form.phone }}
+            {{ form.birthday.label_tag }} {{ form.birthday }}
+        </div>
+
+        <div class="form-block profile-block" id="teacher-fields" style="display: none;">
+            <h1>Профиль персонала</h1>
+            {{ form.secure_code.label_tag }} {{ form.secure_code }}
+
+            <div id="department-field">
+                {{ form.department.label_tag }} {{ form.department }}
+            </div>
+
+            <div id="dean-checkbox-field">
+                {{ form.is_dean.label_tag }} {{ form.is_dean }}
+            </div>
+
+            <div id="curated-group-field">
+                {{ form.curated_group.label_tag }} {{ form.curated_group }}
+            </div>
+
+            <div id="subjects-field">
+                {{ form.subjects.label_tag }} {{ form.subjects }}
+            </div>
+        </div>
+
+        <div class="form-block submit-block">
+            <button type="submit">Зарегистрироваться</button>
+            <a href="{% url 'login' %}">Уже есть аккаунт?</a>
+        </div>
+    </div>
+</form>
+
+<script>
+    function updateProfileFields() {
+        var role = document.getElementById('id_role').value;
+        var studentFields = document.getElementById('student-fields');
+        var teacherFields = document.getElementById('teacher-fields');
+        var departmentField = document.getElementById('department-field');
+        var deanCheckboxField = document.getElementById('dean-checkbox-field');
+        var curatedGroupField = document.getElementById('curated-group-field');
+        var subjectsField = document.getElementById('subjects-field');
+        var isDeanCheckbox = document.getElementById('id_is_dean');
+
+        var teacherRoles = ['TEACHER', 'DEAN', 'DIRECTOR', 'ACADEMIC_OFFICE'];
+        var isTeacher = teacherRoles.includes(role);
+
+        // Переключаем основные блоки
+        studentFields.style.display = isTeacher ? 'none' : 'block';
+        teacherFields.style.display = isTeacher ? 'block' : 'none';
+
+        // Логика внутри блока персонала
+        if (isTeacher) {
+            departmentField.style.display = (role === 'TEACHER' || role === 'DEAN') ? 'block' : 'none';
+            deanCheckboxField.style.display = (role === 'DEAN') ? 'block' : 'none';
+            subjectsField.style.display = (role === 'TEACHER' || role === 'DEAN') ? 'block' : 'none';
+            
+            // Курируемая группа видна только если роль Декан И стоит галочка
+            curatedGroupField.style.display = (role === 'DEAN' && isDeanCheckbox.checked) ? 'block' : 'none';
+        }
+    }
+
+    document.getElementById('id_role').addEventListener('change', updateProfileFields);
+    document.getElementById('id_is_dean').addEventListener('change', updateProfileFields);
+    updateProfileFields(); // Запуск при загрузке
+</script>
+</body>
+</html>

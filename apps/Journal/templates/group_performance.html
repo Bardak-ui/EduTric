@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load journal_extras %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'grades.css' %}">
+<div class="table-container">
+    <div class="group-select-container">
+        <div class="group-select">
+            <select id="group-select" onchange="location = this.value;">
+                <option value="">Выберите группу</option>
+                {% for g in groups %}
+                    <option value="{% url 'journal:group_info' g.id %}" {% if g.id == group.id %}selected{% endif %}>
+                        {{ g.name }}-{{ g.course }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <h1>Журнал {{ group.name }}-{{ group.course }}</h1>
+
+    {% if merged_groups %}
+        <div class="merged-groups-nav">
+            <span style="color: #fff; margin-right: 10px;">⚡ Совмещенные группы:</span>
+            {% for m_group in merged_groups %}
+                <a href="{% url 'journal:group_info' m_group.id %}" class="btn-group-link">{{ m_group.name }}-{{m_group.course}}</a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="action-buttons">
+        {% if is_teacher_flag %}
+            <form method="get" style="display: flex; gap: 10px; align-items: center;">
+                <label style="color: white; margin-bottom: 0;">Дата:</label>
+                <input type="date" name="date_filter" value="{{ request.GET.date_filter }}" class="group-select">
+                <button type="submit" class="btn btn-primary btn-sm">Фильтр</button>
+                <a href="?" class="btn btn-secondary btn-sm">Сброс</a>
+            </form>
+        {% endif %}
+        
+        {% if is_student_flag %}
+            <a href="{% url 'journal:record_book_view' %}" class="btn btn-outline-info btn-sm">Моя зачетная книжка</a>
+        {% endif %}
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="sticky-col">Студент</th>
+                    {% for subject in subjects %}
+                        <th>{{ subject.name }}</th>
+                    {% endfor %}
+                    <th>Ср. балл</th>
+                    <th>Н</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in performance_data %}
+                    <tr>
+                        <td class="sticky-col student-name">
+                            {{ item.student.familiy }} {{ item.student.name|slice:":1" }}.
+                        </td>
+                        
+                        {% for subject in subjects %}
+                            <td data-label="{{ subject.name }}">
+                                <div class="grades-wrapper">
+                                    {% with marks=item.subjects_marks|get_item:subject.id %}
+                                        <div class="marks-list" style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
+                                            {% if marks %}
+                                                {% for m in marks %}
+                                                    <a href="{% url 'journal:edit_specific_grade' m.id %}" class="grade-link">
+                                                        <span class="grade-badge val-{{ m.val }}">{{ m.val }}</span>
+                                                    </a>
+                                                {% endfor %}
+                                            {% else %}
+                                                <span style="color: #444;">—</span>
+                                            {% endif %}
+                                        </div>
+                                    {% endwith %}
+                                    
+                                    {# Условие: Декан НЕ может менять, а Преподаватель и Староста — могут #}
+                                    {% if user.role != "DEKAN" %}
+                                        {% if is_teacher_flag or user.role == "STAROSTA" %}
+                                            <div class="teacher-controls" style="margin-top: 8px; display: flex; gap: 10px; justify-content: center;">
+                                                <!-- <a href="{% url 'journal:edit_grade' item.student_user.id subject.id %}" 
+                                                title="Редактировать" style="text-decoration:none">✏️</a>  -->
+                                                
+                                                <a href="{% url 'journal:add_grade_page' item.student_user.id subject.id %}" 
+                                                    class="btn-add-grade" title="Добавить оценку">
+                                                    <span style="color: #81c784; font-weight: bold; font-size: 1.2rem;">+</span>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </td>
+                        {% endfor %}
+                        
+                        <td data-label="Средний балл" class="fw-bold">{{ item.average_grade|floatformat:1 }}</td>
+                        <td data-label="Пропуски (Н)" style="color: #ef9a9a; font-weight: bold;">{{ item.total_absences }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

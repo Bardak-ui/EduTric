@@ -1,0 +1,348 @@
+/* === ОСНОВНОЙ КОНТЕЙНЕР === */
+.profile-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+/* === КАРТОЧКА-ПРОПУСК (ID Card / Digital Pass) === */
+.student-id-card {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05); /* Стеклянный эффект */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 580px;
+    min-height: 280px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    gap: 20px;
+    color: white;
+}
+
+.qr-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.qr-placeholder {
+    width: 100%;
+    max-width: 220px;
+    aspect-ratio: 1 / 1;
+    background-color: white;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.QR-code {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.card-visuals {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Блоки внутри пропуска */
+.visual-box {
+    background-color: #45a049; /* Твой фирменный зеленый */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.student-photo-pass {
+    height: 140px;
+}
+
+.student-photo-pass img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+.student-data-pass {
+    flex-grow: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pass-fio {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.pass-id {
+    font-size: 14px;
+    opacity: 0.9;
+    font-family: monospace;
+    margin-top: 5px;
+}
+
+.pass-logo {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    height: 25px;
+    width: auto;
+    opacity: 0.5;
+}
+
+/* === ГЛАВНАЯ КАРТОЧКА ПРОФИЛЯ === */
+.profile-main-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 350px;
+    padding: 20px;
+}
+
+.profile-avatar {
+    width: 220px;
+    height: 220px;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.05);
+}
+
+.profile-info {
+    text-align: center;
+    margin-top: 20px;
+    color: white;
+}
+
+.user-familiy {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.user-name {
+    font-size: 20px;
+    font-weight: 300;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.details-list p {
+    font-size: 17px;
+    margin: 8px 0;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 15px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+/* === КНОПКИ ДЕЙСТВИЙ === */
+.actions {
+    text-align: center;
+    margin: 30px auto;
+    padding-bottom: 50px;
+}
+
+.btn-record-book {
+    display: inline-block;
+    padding: 12px 35px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-record-book:hover {
+    background-color: #388E3C;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+}
+
+/* Стиль для самого QR в профиле (добавляем курсор лупы) */
+.QR-code {
+    cursor: zoom-in;
+    transition: 0.3s;
+}
+
+.QR-code:hover {
+    opacity: 0.8;
+}
+
+/* Фоновый слой (затемнение) */
+.qr-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+}
+
+/* Обертка для изображения */
+.qr-expanded-wrapper {
+    width: 90%;
+    max-width: 500px;
+    background: white;
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+    transform: scale(0.5); /* Начальное состояние для анимации */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.qr-overlay.active .qr-expanded-wrapper {
+    transform: scale(1); /* Конечное состояние */
+}
+
+#qr-expanded-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+/* ===== АДАПТАЦИЯ (MOBILE) ===== */
+
+/* ===== ПРОФЕССИОНАЛЬНАЯ АДАПТАЦИЯ (КАК В ОРИГИНАЛЕ) ===== */
+
+/* Планшеты и смартфоны (до 850px) */
+@media (max-width: 850px) {
+    .profile-container {
+        flex-direction: column; 
+        align-items: center;
+        gap: 25px;
+        margin-top: 20px;
+        padding: 15px;
+    }
+
+    /* Инфо-карточка идет ПЕРВОЙ */
+    .profile-main-card {
+        order: 1;
+        width: 100%;
+        max-width: 400px;
+        padding: 10px;
+    }
+
+    /* Пропуск идет ВТОРЫМ (СНИЗУ) */
+    .student-id-card {
+        order: 2;
+        flex-direction: column; /* Элементы пропуска теперь друг под другом */
+        width: 95%;
+        max-width: 380px; /* Сужаем, чтобы выглядело как карта в кошельке */
+        min-height: auto;
+        padding: 25px 20px;
+        gap: 20px;
+    }
+
+    /* Центрируем QR и делаем его удобным для сканера */
+    .qr-section {
+        width: 100%;
+        order: 2; /* QR теперь под фото и данными */
+    }
+
+    .qr-placeholder {
+        max-width: 200px;
+        margin: 0 auto;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Блок с фото и данными на мобилках */
+    .card-visuals {
+        width: 100%;
+        order: 1;
+        gap: 10px;
+    }
+
+    .student-photo-pass {
+        height: 160px; /* Чуть увеличиваем фото для наглядности */
+    }
+
+    .student-data-pass {
+        text-align: center; /* Центрируем текст на мобильном пропуске */
+        padding: 10px 0;
+    }
+
+    .pass-fio {
+        font-size: 20px;
+    }
+
+    /* Логотип на мобилке лучше по центру снизу */
+    .pass-logo {
+        position: static;
+        display: block;
+        margin: 10px auto 0;
+        height: 20px;
+    }
+
+    /* Кнопка действий */
+    .actions {
+        order: 3;
+        width: 100%;
+        padding: 0 20px;
+    }
+    
+    .btn-record-book {
+        width: 100%; /* Кнопка на всю ширину экрана */
+        box-sizing: border-box;
+    }
+}
+
+/* Очень маленькие экраны (iPhone SE и подобные) */
+@media (max-width: 400px) {
+    .profile-avatar {
+        width: 180px;
+        height: 180px;
+    }
+
+    .user-familiy {
+        font-size: 22px;
+    }
+
+    .user-name {
+        font-size: 18px;
+    }
+
+    .student-id-card {
+        padding: 15px;
+    }
+
+    .qr-placeholder {
+        max-width: 160px;
+    }
+}

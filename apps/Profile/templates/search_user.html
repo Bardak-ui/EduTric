@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Поиск студента{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'search_user.css' %}">
+
+<div class="search-container">
+    <h2>Результаты поиска</h2>
+    
+    {% if profiles %}
+        <ul class="block_student_card">
+            {% for profile in profiles %}
+                <li class="student-card">
+                    <div class="avatar-container">
+                        {% if profile.avatar %}
+                            <img src="{{ profile.avatar.url }}" alt="Аватар">
+                        {% else %}
+                            <img src="{% static 'no_avatar.jpeg' %}" alt="Аватар">
+                        {% endif %}
+                    </div>
+                    <strong>{{ profile.familiy }} {{ profile.name }}</strong>
+                    <p><span>Группа:</span> {{ profile.group }}</p>
+                    <p><span>Факультет:</span> {{ profile.faculti }}</p>
+                    <p><span>Телефон:</span> {{ profile.phone }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-results">Студенты не найдены</p>
+    {% endif %}
+</div>
+{% endblock %}

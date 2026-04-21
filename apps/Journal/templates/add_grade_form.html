@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="semester-card" style="max-width: 500px; margin: 50px auto;">
+    <h2 style="color: #fff; margin-bottom: 20px;">Добавить оценку</h2>
+    <p style="color: #aaa;">Студент: <strong>{{ student.familiy }} {{ student.name }}</strong></p>
+    <p style="color: #aaa;">Предмет: <strong>{{ subject.name }}</strong></p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px;">
+            <label style="color: #fff; display: block; margin-bottom: 5px;">Оценка или Н:</label>
+            <select name="grade" class="group-select" style="width: 100%; padding: 10px;">
+                <option value="5">5 (Отлично)</option>
+                <option value="4">4 (Хорошо)</option>
+                <option value="3">3 (Удовл.)</option>
+                <option value="2">2 (Неуд.)</option>
+                <option value="Н">Н (Отсутствие)</option>
+            </select>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="color: #fff; display: block; margin-bottom: 5px;">Дата:</label>
+            <input type="date" name="date" value="{{ current_date }}" class="group-select" style="width: 100%;">
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <a href="{% url 'journal:group_info' group_id %}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

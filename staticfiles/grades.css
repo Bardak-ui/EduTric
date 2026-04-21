@@ -1,0 +1,104 @@
+/* Переменные для удобства (стиль терминала) */
+:root {
+    --border-bold: 2px solid #000;
+    --card-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.table-container {
+    max-width: 1200px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+/* Скролл-контейнер */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 30px;
+}
+
+/* Таблица */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+/* Фиксация колонки с ФИО (Sticky) */
+.sticky-col {
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background: #fff !important;
+    border-right: 2px solid #000 !important;
+    min-width: 140px;
+}
+
+.table thead th.sticky-col {
+    background-color: #343a40 !important;
+    color: white;
+}
+
+/* Оформление оценок */
+.grades-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+    align-items: center;
+}
+
+.sticky-col {
+    position: sticky;
+    left: 0;
+    background-color: #f8f9fa; /* Должен быть непрозрачный фон */
+    z-index: 1;
+    border-right: 2px solid #dee2e6;
+}
+
+.grade-badge {
+    padding: 2px 5px;
+    border-radius: 4px;
+    margin-right: 2px;
+    font-size: 0.85em;
+}
+
+form p label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+form p input, form p select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    }
+
+/* Раскрасим оценки */
+.val-5 { background-color: #28a745; color: white; }
+.val-4 { background-color: #94d3a2; }
+.val-Н { background-color: #dc3545; color: white; }
+
+/* Твои адаптивные стили из примера */
+@media (max-width: 768px) {
+    .table, .table thead th, .table tbody td {
+        font-size: 12px;
+    }
+    
+    .group-select select {
+        width: 100%;
+    }
+
+    .action-buttons form {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .grade-link {
+        padding: 8px;
+        font-size: 16px; /* Крупнее для пальцев */
+    }
+}

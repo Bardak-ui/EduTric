@@ -1,0 +1,200 @@
+/* === БАЗОВЫЕ НАСТРОЙКИ (ТЕМНАЯ ТЕМА) === */
+.record-book-wrapper { 
+    padding: clamp(10px, 3vw, 25px); 
+    max-width: 1100px; 
+    margin: 0 auto; 
+    color: #e0e0e0; /* Светло-серый текст для глаз */
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: transparent;
+}
+
+/* === ШАПКА === */
+.header-info { 
+    margin-bottom: 35px; 
+    border-left: 3px solid rgba(255, 255, 255, 0.2); 
+    padding-left: 20px; 
+}
+
+.header-info h1 { 
+    font-size: clamp(1.4rem, 4vw, 2.2rem); 
+    margin: 0; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ffffff; /* Всегда белый */
+    font-weight: 600;
+}
+
+.user-meta { 
+    color: #999; 
+    margin-top: 12px; 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 12px; 
+}
+
+.badge { 
+    background: rgba(255, 255, 255, 0.07); 
+    color: #eee;
+    padding: 6px 14px; 
+    border-radius: 8px; 
+    font-size: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* === КАРТОЧКА СЕМЕСТРА (GLASSMORPHISM) === */
+.semester-card { 
+    background: rgba(25, 25, 25, 0.75) !important; 
+    backdrop-filter: blur(12px); 
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08); 
+    border-radius: 20px; 
+    padding: clamp(15px, 4vw, 30px); 
+    margin-bottom: 30px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.sem-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+    padding-bottom: 18px; 
+    margin-bottom: 20px; 
+    gap: 15px;
+}
+
+.sem-header h3 { margin: 0; font-size: 1.25rem; color: #ffffff; }
+.sem-avg { font-size: 0.9rem; color: #888; }
+.sem-avg span { color: #81c784; font-weight: 700; font-size: 1.1rem; }
+
+/* === ТАБЛИЦА (ДЛЯ ПК И НОУТБУКОВ) === */
+.grades-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    background: transparent !important;
+}
+
+.grades-table th { 
+    color: #555; 
+    text-align: left; 
+    padding: 12px 10px; 
+    font-size: 0.7rem; 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.grades-table td { 
+    padding: 16px 10px; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03); 
+    color: #d1d1d1;
+}
+
+/* === ОЦЕНКИ (ЦВЕТОВЫЕ СТАТУСЫ) === */
+.high { 
+    background: rgba(129, 199, 132, 0.15) !important; 
+    color: #81c784 !important; 
+    border: 1px solid rgba(129, 199, 132, 0.3); 
+}
+
+.mid { 
+    background: rgba(255, 202, 40, 0.1) !important; 
+    color: #ffca28 !important; 
+    border: 1px solid rgba(255, 202, 40, 0.2); 
+}
+
+.low { 
+    background: rgba(239, 83, 80, 0.12) !important; 
+    color: #ef5350 !important; 
+    border: 1px solid rgba(239, 83, 80, 0.25); 
+}
+
+.grade-circle {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    line-height: 34px; /* Учет границы */
+    text-align: center;
+    border-radius: 50%;
+    font-weight: 700;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    border: 3px solid #000;
+    border-radius: 15px;
+    background: rgb(0, 0, 0);
+    }
+
+/* === АДАПТАЦИЯ (ПЛАНШЕТЫ И ТЕЛЕФОНЫ) === */
+@media (max-width: 850px) {
+    .header-info {
+        text-align: center;
+        padding-left: 0;
+        border-left: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 20px;
+    }
+
+    .user-meta { justify-content: center; }
+
+    .grades-table thead { display: none; } /* Убираем шапку таблицы */
+
+    .grades-table tr { 
+        display: block; 
+        background: rgba(255, 255, 255, 0.02) !important;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 18px;
+    }
+
+    .grades-table td { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        border: none; 
+        padding: 10px 0;
+        background: transparent !important;
+        text-align: right !important;
+        color: #ffffff !important;
+    }
+
+    .grades-table td:not(:last-child) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    /* Название предмета - Акцент */
+    .subject-name { 
+        display: block !important;
+        text-align: center !important;
+        font-size: 1.1rem !important; 
+        color: #ffffff !important; /* Исправлено: теперь точно белый */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        margin-bottom: 10px;
+        padding-bottom: 12px !important;
+        font-weight: 700;
+    }
+
+    .subject-name::before { content: none !important; }
+
+    /* Метки слева через data-label */
+    .grades-table td::before { 
+        content: attr(data-label); 
+        font-size: 0.65rem; 
+        color: #ffffff; /* Неяркий цвет для подписи */
+        text-transform: uppercase;
+        font-weight: 600;
+        text-align: left;
+    }
+
+    .sem-header { flex-direction: column; text-align: center; }
+}
+
+/* МАЛЕНЬКИЕ ЭКРАНЫ */
+@media (max-width: 400px) {
+    .semester-card { padding: 12px; }
+    .grade-circle { width: 32px; height: 32px; line-height: 30px; font-size: 0.85rem; }
+    .header-info h1 { font-size: 1.3rem; }
+}
