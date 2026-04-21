@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'profile.css' %}">
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="avatar-section">
+            <div class="avatar-wrapper">
+                {% if user.profile_user.avatar %}
+                    <img src="{{ user.profile_user.avatar.url }}" alt="Аватар" class="profile-avatar">
+                {% else %}
+                    <img src="{% static 'media/no_avatar.jpeg' %}" alt="Аватар" class="profile-avatar">
+                {% endif %}
+            </div>
+            <h2 class="user-name">{{ profile.familiy }} {{ profile.name }} {{ profile.otchestvo }}</h2>
+            <div class="user-role">{{ profile.role }}</div>
+        </div>
+
+        <div class="profile-info">
+            <div class="info-section">
+                <h3>Основная информация</h3>
+                <div class="info-row">
+                    <span>Факультет:</span>
+                    <p>{{ profile.faculti }}</p>
+                </div>
+                <div class="info-row">
+                    <span>Группа:</span>
+                    <p>{{ profile.group }}</p>
+                </div>
+                <div class="info-row">
+                    <span>Курс:</span>
+                    <p>{{ profile.course }}</p>
+                </div>
+                {% if profile.role == 'Student' and profile.kurator %}
+                <div class="info-row">
+                    <span>Куратор:</span>
+                    <p>{{ profile.kurator }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="info-section">
+                <h3>Контактные данные</h3>
+                <div class="info-row">
+                    <span>Телефон:</span>
+                    <p>{{ profile.phone|default:"Не указан" }}</p>
+                </div>
+                <div class="info-row">
+                    <span>Дата рождения:</span>
+                    <p>{{ profile.birthday|default:"Не указана" }}</p>
+                </div>
+            </div>
+            <a href="{% url 'edit_profile' %}" class="edit-profile-link">Редактировать профиль</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация для преподователя</title>
+    <link rel="stylesheet" href="{% static 'register.css' %}">
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        {{user_input }}
+        <div class="container">
+            <!-- Блок данных для входа -->
+            <div class="form-block login-block">
+                <h1>Создание аккаунта</h1>
+                {{ form_acc.username.label_tag }}
+                {{ form_acc.username }}
+                {% if form_acc.username.errors %}
+                    <div class="error">{{ form_acc.username.errors }}</div>
+                {% endif %}
+
+                {{ form_acc.password1.label_tag }}
+                {{ form_acc.password1 }}
+                {% if form_acc.password1.errors %}
+                    <div class="error">{{ form_acc.password1.errors }}</div>
+                {% endif %}
+
+                {{ form_acc.password2.label_tag }}
+                {{ form_acc.password2 }}
+                {% if form_acc.password2.errors %}
+                    <div class="error">{{ form_acc.password2.errors }}</div>
+                {% endif %}
+                <input type="text" name="secure_code" placeholder="Секретный код преподователя">
+            </div>  
+
+            <!-- Блок данных профиля -->
+            <div class="form-block profile-block">
+                <h1>Создание профиля</h1>
+                {{ form_prof.fio.label_tag }}
+                {{ form_prof.fio }}
+                {% if form_prof.familiy.errors %}
+                    <div class="error">{{ form_prof.fio.errors }}</div>
+                {% endif %}
+
+                {{ form_prof.faculti.label_tag }}
+                {{ form_prof.faculti }}
+                {% if form_prof.faculti.errors %}
+                    <div class="error">{{ form_prof.faculti.errors }}</div>
+                {% endif %}
+
+                {{ form_prof.group.label_tag }}
+                {{ form_prof.group }}
+                {% if form_prof.group.errors %}
+                    <div class="error">{{ form_prof.group.errors }}</div>
+                {% endif %}
+
+                {{ form_prof.subjects.label_tag }}
+                {{ form_prof.subjects }}
+                {% if form_prof.subjects.errors %}
+                    <div class="error">{{ form_prof.subjects.errors }}</div>
+                {% endif %}
+            <!-- Блок кнопки регистрации -->
+        </div>
+        <div class="form-block submit-block">
+            <button type="submit">Зарегистрироваться</button>
+            <a href="/">Уже есть аккаунт?</a>
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Добавить новость{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'news_form.css' %}">
+<div class="form-container">
+    <h1>Добавить новость</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_title">Заголовок:</label>
+            {{ form.title }}
+        </div>
+        <div class="form-group">
+            <label for="id_news">Текст новости:</label>
+            {{ form.news }}
+        </div>
+        <div class="form-group file-upload">
+            <label for="id_image" class="file-upload-label">
+                <span class="file-upload-text">Загрузить фото</span>
+                <span class="file-upload-button">Выбрать файл</span>
+            </label>
+            {{ form.image }}
+        </div>
+        <button type="submit" class="submit-button">Сохранить</button>
+    </form>
+    <br>
+    <form method="get" action="{% url 'news' %}">
+        <button type="submit" class="back-button">Вернуться к новостям</button>
+    </form>
+</div>
+{% endblock  %}

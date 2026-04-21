@@ -1,0 +1,51 @@
+/* Общие стили для контейнера */
+.schedule-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для таблицы */
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.schedule-table th,
+.schedule-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.schedule-table th {
+    background-color: #6b6b6b;
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.schedule-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .schedule-container {
+        padding: 10px;
+    }
+
+    .schedule-table th,
+    .schedule-table td {
+        padding: 8px;
+    }
+
+    .schedule-table {
+        font-size: 14px;
+    }
+}

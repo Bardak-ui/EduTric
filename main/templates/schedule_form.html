@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Добавить пару{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'base.css' %}">
+<link rel="stylesheet" href="{% static 'shedule_form.css' %}">
+
+<div class="form-container">
+    <h1>Добавить пару</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.group.id_for_label }}">Группа:</label>
+            {{ form.group }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.subject_name.id_for_label }}">Предмет:</label>
+            {{ form.subjects }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.teacher.id_for_label }}">Преподаватель:</label>
+            {{ form.teacher }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.weekday.id_for_label }}">День недели:</label>
+            {{ form.weekday }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.lesson_time.id_for_label }}">Время пары:</label>
+            {{ form.lesson_time }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.room.id_for_label }}">Аудитория:</label>
+            {{ form.room }}
+        </div>
+        <div class="form-actions">
+            <button type="submit">Сохранить</button>
+            <a href="{% url 'schedule' %}" class="delete-link">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

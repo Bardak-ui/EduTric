@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Расписание занятий{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'schedule.css' %}">
+<div class="group-select-container">
+    <div class="group-select">
+        <select id="group-select" onchange="location = this.value;">
+            <option value="{% url 'schedule' %}">Выберите группу</option>
+            {% for group in groups %}
+                <option value="{% url 'schedule_group' group.id %}" 
+                    {% if group.id == selected_group.id %}selected{% endif %}>
+                    {{ group.name }}-{{ group.course }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <a href="{% url 'add_schedule' %}" class="add-button">Добавить пару</a>
+</div>
+<hr>
+
+{% if selected_group %}
+    <h1>Расписание занятий группы {{ selected_group.name }}-{{ selected_group.course }}</h1>
+    
+    {% for day, lessons in schedule_by_day.items %}
+        <h2>{{ day }}</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Время</th>
+                        <th>Предмет</th>
+                        <th>Преподаватель</th>
+                        <th>Аудитория</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lesson in lessons %}
+                        <tr>
+                            <td>{{ lesson.lesson_time.get_formatted_time }}</td>
+                            <td>{{ lesson.subjects }}</td>
+                            <td>{{ lesson.teacher }}</td>
+                            <td>{{ lesson.room }}</td>
+                            <td>
+                                <a href="{% url 'edit_schedule' lesson.id %}" class="edit-button">✏️</a>
+                                <a href="{% url 'delete_schedule' lesson.id %}" class="delete-button">🗑️</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5">Нет занятий</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+
+{% else %}
+    <div class="no-group-selected">
+        <p>Пожалуйста, выберите группу из списка выше чтобы просмотреть расписание</p>
+    </div>
+{% endif %}
+
+{% endblock %}

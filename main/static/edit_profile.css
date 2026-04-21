@@ -1,0 +1,96 @@
+/* Контейнер для формы редактирования профиля */
+.edit-profile-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+/* Заголовок */
+.edit-profile-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+/* Поля формы */
+.edit-profile-container form p {
+    margin-bottom: 15px;
+}
+
+.edit-profile-container label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.edit-profile-container input[type="text"],
+.edit-profile-container input[type="date"],
+.edit-profile-container select,
+.edit-profile-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.edit-profile-container input[type="file"] {
+    margin-bottom: 20px;
+}
+
+/* Кнопка сохранения */
+.save-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+    background-color: #45a049;
+}
+
+/* Кнопка отмены */
+.cancel-button {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+    background-color: #5a6268;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 600px) {
+    .edit-profile-container {
+        padding: 20px;
+    }
+
+    .edit-profile-container h1 {
+        font-size: 20px;
+    }
+
+    .save-button,
+    .cancel-button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}

@@ -1,0 +1,133 @@
+/* Основные стили для формы */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px; /* Отступ слева, чтобы не перекрывать левую панель */
+    margin-top: 80px; /* Отступ сверху, чтобы не перекрывать шапку */
+    padding: 20px;
+    justify-self: center;
+    border-radius: 8px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    max-width: 600px;
+}
+
+.form-container h1 {
+    font-size: 1.6em;
+    margin-bottom: 20px;
+    color: #4b4b4b;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555555;
+}
+
+.form-group input[type="text"],
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #000000;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group select:focus {
+    border-color: #4a76a8;
+    background-color: #2a2a2a;
+    outline: none;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+button, .delete-link {
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button {
+    background-color: #4a76a8;
+    color: white;
+    border: none;
+}
+
+button:hover {
+    background-color: #37474f;
+}
+
+.delete-link {
+    background-color: #d9534f;
+    color: white;
+}
+
+.delete-link:hover {
+    background-color: #c9302c;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+    .form-container {
+        margin-left: 60px; /* Уменьшаем отступ для мобильных устройств */
+        margin-top: 60px;
+        padding: 15px;
+    }
+
+    .form-container h1 {
+        font-size: 1.4em;
+    }
+
+    .form-group input[type="text"],
+    .form-group select {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    button, .delete-link {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        margin-left: 50px; /* Еще меньше отступ для очень маленьких экранов */
+        margin-top: 50px;
+        padding: 10px;
+    }
+
+    .form-container h1 {
+        font-size: 1.2em;
+    }
+
+    .form-group input[type="text"],
+    .form-group select {
+        padding: 6px;
+        font-size: 10px;
+    }
+
+    button, .delete-link {
+        padding: 6px 12px;
+        font-size: 10px;
+    }
+}
