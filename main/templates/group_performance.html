@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Журнал оценок{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'grades.css' %}">
+<div class="group-select-container">
+    <div class="group-select">
+        <select id="group-select" onchange="location = this.value;">
+            <option value="{% url 'performance' %}">Выберите группу</option>
+            {% for g in groups %}
+                <option value="{% url 'group_performance' g.id %}" 
+                    {% if g.id == group.id %}selected{% endif %}>
+                    {{ g.name }}-{{ g.course }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<hr>
+<h1>Журнал оценок группы {{ group.name }}-{{ group.course }}</h1>
+
+{# Блок действий и фильтров #}
+<div class="action-buttons mb-4">
+    {% if request.user.is_staff or request.user.profile.role == 'Teacher' %}
+    <div class="d-flex gap-3 align-items-center">  
+        {# Форма фильтрации по дате #}
+        <form method="get" class="d-flex gap-2 align-items-center">
+            <input type="date" name="date_filter" 
+                   value="{{ request.GET.date_filter }}" 
+                   class="form-control"
+                   style="max-width: 200px;">
+            <button type="submit" class="btn btn-secondary">
+                <i class="bi bi-filter"></i> Фильтр
+            </button>
+            <a href="?" class="btn btn-warning">
+                <i class="bi bi-arrow-counterclockwise"></i> Сброс
+            </a>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+{# Основная таблица с оценками #}
+<div class="table-container">
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Студент</th>
+                {% for subject in subjects %}
+                    <th>{{ subject.name }}</th>
+                {% endfor %}
+                <th>Средний балл</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student_data in performance_data.values %}
+                <tr>
+                    <td>{{ student_data.student.get_full_name }}</td>
+                    {% for subject in subjects %}
+                        <td class="grade-cell">
+                            {% if request.user.is_staff or request.user.profile.role == 'Teacher' %}
+                                <a href="{% url 'edit_grade' student_data.student.id subject.id %}" 
+                                   class="grade-link"
+                                   title="Редактировать оценку">
+                                </a>
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                    <td class="fw-bold">
+                        {{ student_data.average_grade|floatformat:1 }}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="{{ subjects|length|add:2 }}">Нет данных для отображения</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <title>{% block title %}Навигация{% endblock %}</title>
+</head>
+<body>
+        <div class="header">
+                <div class="avatar">
+                    {% if user.profile_user.avatar %}
+                        {% if user.profile.role == 'Student' %}
+                            <a href="{% url 'profile' %}">
+                                <img src="{{ user.profile_user.avatar.url }}" alt="Аватар" class="avatar">
+                            </a>
+                        {% elif profile.role == 'Administrator' %}
+                            <a href="{% url 'profile' %}">
+                                <img src="{{ user.profile_user.avatar.url }}" alt="Аватар" class="avatar">
+                            </a>
+                        {% elif user.profile.role == 'Teacher' %}    
+                            <a href="{% url 'profile_teacher' %}">
+                                <img src="{{ user.profile_user.avatar.url }}" alt="Аватар" class="avatar">
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        {% if profile.role == 'Student' %}
+                            <a href="{% url 'profile' %}">
+                                <img src="{% static 'media/no_avatar.jpeg' %}" alt="Аватар" class="avatar">
+                            </a>
+                        {% elif profile.role == 'Administrator' %}
+                            <a href="{% url 'profile' %}">
+                                <img src="{% static 'media/no_avatar.jpeg' %}" alt="Аватар" class="avatar">
+                            </a>
+                        {% elif profile.role == 'Teacher'  %}    
+                            <a href="{% url 'profile_teacher' %}">
+                                <img src="{% static 'media/no_avatar.jpeg' %}" alt="Аватар" class="avatar">
+                            </a>  
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {% if user.is_staff %}
+                    <h1>Здравствуйте, Администратор!</h1>
+                {% else %}
+                    <h1>Здравствуйте, {{ user.profile_user.name }} {{ user.profile_user.otchestvo }} </h1>
+                {% endif %}
+                <div class="icon">
+                    <a href="http://www.topcollege.ru/"><img src="{% static '/media/shrkt.png' %}" alt="Логотип 1"></a>
+                    <a href="https://shakhty.donland.ru/"><img src="{% static '/media/shackty.png' %}" alt="Логотип 2"></a>
+                </div>
+            
+        </div>
+    
+        <!-- Левая панель -->
+        <div class="left_panel">
+            <nav>
+                <a href="{% url 'schedule' %}"><img class="schedule" src="{% static '/media/schedule.png' %}" alt="Расписание"></a>
+                <p>Расписание</p>
+                <a href="{% url 'news' %}"><img class="news" src="{% static '/media/ads.png' %}" alt="Объявления"></a>
+                <p>Новости</p>
+                <a href="{% url 'search_user' %}"><img class="search_user" src="{% static '/media/searche.png' %}" alt="Поиск"></a>
+                <p>Поиск</p>
+                <a href="{% url 'FAQ_LIST' %}"><img class="FAQ_LIST" src="{% static '/media/faq.png' %}" alt="FAQ"></a>
+                <p>FAQ</p>
+            </nav>
+        </div>
+
+        <!-- Основной контент -->
+        <main class="content">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+</body>
+</html>

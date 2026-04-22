@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'profile.css' %}">
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="avatar-section">
+            <div class="avatar-wrapper">
+                {% if user.teacher_user.avatar %}
+                    <img src="{{ user.teacher_user.avatar.url }}" alt="Аватар" class="profile-avatar">
+                {% else %}
+                    <img src="{% static 'media/no_avatar.jpeg' %}" alt="Аватар" class="profile-avatar">
+                {% endif %}
+            </div>
+            <h2 class="user-name">{{ profile.fio }}</h2>
+            <div class="user-role">{{ profile.role }}</div>
+        </div>
+
+        <div class="profile-info">
+            <div class="info-section">
+                <h3>Основная информация</h3>
+                <div class="info-row">
+                    <span>Предметы:</span>
+                    <p>{{ profile.subjects }}</p>
+                </div>
+                <div class="info-row">
+                    <span>Факультет:</span>
+                    <p>{{ profile.faculti }}</p>
+                </div>
+                <div class="info-row">
+                    <span>Курирует группу:</span>
+                    <p>{{ profile.group }}</p>
+                </div>
+            </div>
+            <a href="{% url 'edit_profile_teacher' %}" class="edit-profile-link">Редактировать профиль</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

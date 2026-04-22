@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="{% static 'register.css' %}">
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <div class="container">
+            <!-- Блок данных для входа -->
+            <div class="form-block login-block">
+                <h1>Создание аккаунта</h1>
+                {{ form_acc.username.label_tag }}
+                {{ form_acc.username }}
+                {% if form_acc.username.errors %}
+                    <div class="error">{{ form_acc.username.errors }}</div>
+                {% endif %}
+
+                {{ form_acc.password1.label_tag }}
+                {{ form_acc.password1 }}
+                {% if form_acc.password1.errors %}
+                    <div class="error">{{ form_acc.password1.errors }}</div>
+                {% endif %}
+
+                {{ form_acc.password2.label_tag }}
+                {{ form_acc.password2 }}
+                {% if form_acc.password2.errors %}
+                    <div class="error">{{ form_acc.password2.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Блок данных профиля -->
+            <div class="form-block profile-block">
+                <h1>Создание профиля</h1>
+                {{ form_prof.familiy.label_tag }}
+                {{ form_prof.familiy }}
+                {% if form_prof.familiy.errors %}
+                    <div class="error">{{ form_prof.familiy.errors }}</div>
+                {% endif %}
+
+                {{ form_prof.name.label_tag }}
+                {{ form_prof.name }}
+                {% if form_prof.name.errors %}
+                    <div class="error">{{ form_prof.name.errors }}</div>
+                {% endif %}
+
+                {{ form_prof.otchestvo.label_tag }}
+                {{ form_prof.otchestvo }}
+                {% if form_prof.otchestvo.errors %}
+                    <div class="error">{{ form_prof.otchestvo.errors }}</div>
+                {% endif %}
+
+                {{ form_prof.faculti.label_tag }}
+                {{ form_prof.faculti }}
+                {% if form_prof.faculti.errors %}
+                    <div class="error">{{ form_prof.faculti.errors }}</div>
+                {% endif %}
+
+                {{ form_prof.group.label_tag }}
+                {{ form_prof.group }}
+                {% if form_prof.group.errors %}
+                    <div class="error">{{ form_prof.group.errors }}</div>
+                {% endif %}
+
+                {{ form_prof.course.label_tag }}
+                {{ form_prof.course }}
+                {% if form_prof.course.errors %}
+                    <div class="error">{{ form_prof.course.errors }}</div>
+                {% endif %}
+
+                {{ form_prof.phone.label_tag }}
+                {{ form_prof.phone }}
+                {% if form_prof.phone.errors %}
+                    <div class="error">{{ form_prof.phone.errors }}</div>
+                {% endif %}
+
+                {{ form_prof.birthday.label_tag }}
+                {{ form_prof.birthday }}
+                {% if form_prof.birthday.errors %}
+                    <div class="error">{{ form_prof.birthday.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Блок кнопки регистрации -->
+            <div class="form-block submit-block">
+                <button type="submit">Зарегистрироваться</button>
+                <a href="/">Уже есть аккаунт?</a>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

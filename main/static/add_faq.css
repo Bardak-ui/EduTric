@@ -1,0 +1,141 @@
+/* Общие стили для страницы */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+/* Контейнер для формы */
+.add-faq-container {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+
+}
+
+/* Заголовок */
+.add-faq-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+/* Поля формы */
+.add-faq-container form p {
+    margin-bottom: 15px;
+}
+
+.add-faq-container label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.add-faq-container input[type="text"],
+.add-faq-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.add-faq-container textarea {
+    resize: vertical;  /* Позволяет изменять высоту текстового поля */
+    min-height: 100px;
+}
+
+/* Кнопка сохранения */
+.save-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Кнопка занимает всю ширину на маленьких экранах */
+    margin-bottom: 10px; /* Отступ между кнопками */
+}
+
+.save-button:hover {
+    background-color: #45a049;
+}
+
+/* Кнопка отмены */
+.cancel-button {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    min-width: 100px; /* Кнопка занимает всю ширину на маленьких экранах */
+}
+
+.cancel-button:hover {
+    background-color: #5a6268;
+}
+
+/* Адаптивность для планшетов */
+@media (max-width: 768px) {
+    .add-faq-container {
+        width: 300px;
+        padding: 40px;
+    }
+
+    .add-faq-container h1 {
+        font-size: 22px;
+    }
+
+    .add-faq-container input[type="text"],
+    .add-faq-container textarea {
+        font-size: 14px;
+    }
+
+    .save-button,
+    .cancel-button {
+        font-size: 14px;
+    }
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 480px) {
+    .add-faq-container {
+        width: 300px;
+        padding: 40px;
+    }
+
+    .add-faq-container h1 {
+        font-size: 20px;
+    }
+
+    .add-faq-container input[type="text"],
+    .add-faq-container textarea {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .save-button,
+    .cancel-button {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+}

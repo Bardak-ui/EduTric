@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'confirm_delete.css' %}">  <!-- Подключите ваш CSS-файл -->
+</head>
+<div class="confirm-delete-container">
+    <h1>Вы уверены, что хотите удалить эту пару?</h1>
+    <p>{{ schedule }}</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="delete-button">Удалить</button>
+        <a href="{% url 'schedule' %}" class="cancel-button">Отмена</a>
+    </form>
+</div>
+{% endblock %}

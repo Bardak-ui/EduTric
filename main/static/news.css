@@ -1,0 +1,213 @@
+/* Общие стили для контента */
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрируем контент по горизонтали */
+    padding: 20px;
+    margin-left: 80px; /* Учитываем ширину левой панели */
+    margin-top: 10px; /* Учитываем высоту шапки */
+    max-width: 1855px; /* Ширина контента */
+    margin-right: auto;
+    margin-left: auto; /* Центрируем ленту по центру экрана */
+}
+
+.left_panel .news {
+    border-radius: 15px;
+    background-color: #575757;
+    padding: 10px; /* Добавляем отступы */
+    color: white; /* Белый текст для контраста */
+}
+
+/* Стили для заголовка страницы */
+.content h1 {
+    background: linear-gradient(135deg, #7b6c88, #4d5a75); /* Градиентный фон */
+    color: white;
+    font-size: 24px;
+    padding: 15px 30px;
+    border-radius: 50px;
+    text-align: center;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Тень */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.content h1:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Стили для блока новостей */
+.news-list {
+    width: 100%; /* Занимает всю доступную ширину */
+    display: flex;
+    flex-wrap: wrap; /* Перенос на новую строку при нехватке места */
+    gap: 20px; /* Расстояние между новостями */
+    justify-content: center; /* Центрирование новостей */
+}
+
+/* Стили для каждой новости */
+.news-item {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 500px; /* Максимальная ширина для каждой новости */
+}
+
+.news-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.news-item h2 {
+    word-wrap: break-word;
+    overflow-wrap: anywhere;  /* Более современная альтернатива */
+    word-break: break-word;   /* Принудительный перенос слов */
+    hyphens: auto;            /* Автоматические переносы (для поддержки в FF/Safari) */
+    -webkit-hyphens: auto;    /* Вендорный префикс для Safari */
+    -ms-hyphens: auto;        /* Вендорный префикс для Edge */
+    max-width: 100%;          /* Гарантирует, что заголовок не выходит за пределы контейнера */
+    white-space: normal;      /* Отменяет возможное nowrap */
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+    box-sizing: border-box;   /* Учитывает padding в ширине */
+}
+
+.news-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.news-item p {
+    color: #555;
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    text-align: center;
+    margin: 0;
+}
+
+/* Стили для кнопки "Добавить новость" */
+.add-news-button {
+    background: linear-gradient(135deg, #aba5b1, #525861); /* Градиентный фон */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+    text-decoration: none; /* Убираем подчеркивание */
+    display: inline-block; /* Чтобы кнопка не занимала всю ширину */
+}
+
+.add-news-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Адаптация для планшетов */
+@media (max-width: 768px) {
+    .content {
+        margin-left: 60px;
+        padding: 20px;
+        max-width: 90%;
+    }
+
+    .content h1 {
+        font-size: 20px;
+        padding: 12px 24px;
+    }
+
+    .news-item {
+        flex: 1 1 calc(50% - 40px); /* Две новости в ряд */
+        max-width: calc(50% - 40px);
+    }
+
+    .news-item h2 {
+        font-size: 20px;
+    }
+
+    .news-item p {
+        font-size: 14px;
+    }
+
+    .add-news-button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 480px) {
+    .content {
+        margin-left: 50px;
+        padding: 15px;
+        max-width: 95%;
+    }
+
+    .content h1 {
+        font-size: 18px;
+        padding: 10px 20px;
+    }
+
+    .news-item {
+        flex: 1 1 100%; /* Одна новость в ряд */
+        max-width: 100%;
+    }
+
+    .news-item h2 {
+        font-size: 18px;
+    }
+
+    .news-item p {
+        font-size: 12px;
+    }
+
+    .add-news-button {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+}
+
+/* Адаптация для очень маленьких экранов */
+@media (max-width: 320px) {
+    .content {
+        margin-left: 40px;
+        padding: 13px;
+        max-width: 100%;
+    }
+
+    .content h1 {
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+
+    .news-item h2 {
+        font-size: 16px;
+    }
+
+    .news-item p {
+        font-size: 10px;
+    }
+
+    .add-news-button {
+        padding: 6px 12px;
+        font-size: 10px;
+    }
+}

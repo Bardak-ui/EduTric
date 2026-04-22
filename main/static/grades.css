@@ -1,0 +1,30 @@
+.grade-cell {
+    min-width: 100px;
+    text-align: center;
+}
+
+.grade-link {
+    color: #0d6efd;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.grade-link:hover {
+    color: #0a58ca;
+    transform: scale(1.2);
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+.action-buttons .btn {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.action-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}

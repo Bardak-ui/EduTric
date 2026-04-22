@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Часто задаваемые вопросы{% endblock %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'add_faq.css' %}">
+</head>
+<div class="add-faq-container">
+    <h1>Добавить FAQ</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save-button">Добавить</button>
+        <a href="{% url 'FAQ_LIST' %}" class="cancel-button">Назад</a>
+    </form>
+</div>
+{% endblock %}

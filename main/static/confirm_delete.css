@@ -1,0 +1,91 @@
+/* Общие стили для страницы */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Контейнер для формы */
+.confirm-delete-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Заголовок */
+.confirm-delete-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Текст с информацией о паре */
+.confirm-delete-container p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+/* Кнопка удаления */
+.delete-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #e60000;
+}
+
+/* Кнопка отмены */
+.cancel-button {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+    background-color: #5a6268;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 600px) {
+    .confirm-delete-container {
+        padding: 20px;
+    }
+
+    .confirm-delete-container h1 {
+        font-size: 20px;
+    }
+
+    .confirm-delete-container p {
+        font-size: 16px;
+    }
+
+    .delete-button,
+    .cancel-button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}

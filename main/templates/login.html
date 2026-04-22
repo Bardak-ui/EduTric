@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'login.css' %}">
+    <title>Добро пожаловать на "ШРКТЭ Портал"</title>
+</head>
+<body>
+    <div class="container">
+        <div class="shackty">
+            <a href="https://shakhty.donland.ru/"><img src="{% static '/media/shackty.png' %}" alt="Логотип 2"></a>
+        </div>
+        <form method="POST">
+            <h1>Добро пожаловать!</h1>
+            {% csrf_token %}
+            {{ user_input }}
+            {{ form.as_p }}
+            <button type="submit">Войти</button>
+            <a href="/vbr/">Нет аккаунта?</a>
+        </form>
+        <div class="shrkt">
+            <a href="http://www.topcollege.ru/"><img src="{% static '/media/shrkt.png' %}" alt="Логотип 1"></a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'search_user.css' %}">
+    <title>{% block title %}Поиск студента{% endblock %}</title>
+</head>
+<div class="search-container">
+    <!-- Форма поиска -->
+    <div class="searche">
+        <form method="get" action="{% url 'search_user' %}">
+            <input type="text" class="search" name="search" placeholder="Введите фамилию/имя/отчество" value="{{ search_query }}">
+        </form>
+    </div>
+
+    <!-- Результаты поиска -->
+    <h2>Результаты поиска</h2>
+    <hr>
+    {% if profiles %}
+        
+        <ul>
+            {% for profile in profiles %}
+                <li>
+                    <div class="avatar">
+                        {% if profile.avatar %}
+                            <img src="{{ profile.avatar.url }}" alt="Аватар" class="profile-avatar">
+                        {% else %}
+                            <img src="{% static 'media/no_avatar.jpeg' %}" alt="Аватар" class="profile-avatar">
+                        {% endif %}
+                    </div>
+                    <br>
+                    <strong>{{ profile.familiy }} {{ profile.name }} {{ profile.otchestvo }}</strong>
+                    <br>
+                    <p><span>Группа:</span> {{ profile.group }}</p>
+                    <br>
+                    <p><span>Курс:</span> {{ profile.course }}</p>
+                    <br>
+                    <p><span>Факультет:</span> {{ profile.faculti }}</p>
+                    <br>
+                    <p><span>Телефон:</span> {{ profile.phone }}</p>
+                    <br>
+                    <p><span>Дата рождения:</span> {{ profile.birthday }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        {% if search_query %}
+            <p class="no-results">Студенты с фамилией "{{ search_query }}" не найдены.</p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
