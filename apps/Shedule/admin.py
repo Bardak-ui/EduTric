@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Faculti, Groups, Kurator, LessonTime, Schedule, Subject, Course
+from .models import Faculty, Groups, Kurator, LessonTime, Schedule, Subject, Course
 
 
 @admin.register(LessonTime)
@@ -13,8 +13,8 @@ class LessonTimeAdmin(admin.ModelAdmin):
 
 @admin.register(Groups)
 class GroupsAdmin(admin.ModelAdmin):
-    list_display = ['name', 'course', 'faculti']
-    list_filter = ['faculti', 'course']
+    list_display = ['name', 'course', 'faculty']
+    list_filter = ['faculty', 'course']
     filter_horizontal = ['subjects'] # Удобный выбор учебного плана
     search_fields = ['name']
 
@@ -25,7 +25,7 @@ class GroupsInline(admin.TabularInline):
     fields = ['name', 'course', 'subjects']
     filter_horizontal = ['subjects'] # Делает выбор предметов удобным (два окна)
 
-@admin.register(Faculti)
+@admin.register(Faculty)
 class FacultiAdmin(admin.ModelAdmin):
     list_display = ['name']
     inlines = [GroupsInline] # Добавляем группы внутрь страницы факультета
@@ -49,5 +49,10 @@ class ScheduleAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Kurator)
-admin.site.register(Subject)
+
+@admin.register(Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    list_display = ("name", "teacher")
+    search_fields = ("name",)
+
 admin.site.register(Course)

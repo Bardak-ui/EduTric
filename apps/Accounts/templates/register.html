@@ -21,10 +21,10 @@
 
         <div class="form-block profile-block" id="student-fields">
             <h1>Создание профиля</h1>
-            {{ form.familiy.label_tag }} {{ form.familiy }}
+            {{ form.surname.label_tag }} {{ form.surname }}
             {{ form.name.label_tag }} {{ form.name }}
-            {{ form.otchestvo.label_tag }} {{ form.otchestvo }}
-            {{ form.faculti.label_tag }} {{ form.faculti }}
+            {{ form.patronymic.label_tag }} {{ form.patronymic }}
+            {{ form.faculty.label_tag }} {{ form.faculty }}
             {{ form.group.label_tag }} {{ form.group }}
             {{ form.phone.label_tag }} {{ form.phone }}
             {{ form.birthday.label_tag }} {{ form.birthday }}
@@ -34,16 +34,22 @@
             <h1>Профиль персонала</h1>
             {{ form.secure_code.label_tag }} {{ form.secure_code }}
 
+            <div id="teacher-name-fields">
+                {{ form.teacher_surname.label_tag }} {{ form.teacher_surname }}
+                {{ form.teacher_name.label_tag }} {{ form.teacher_name }}
+                {{ form.teacher_patronymic.label_tag }} {{ form.teacher_patronymic }}
+            </div>
+
             <div id="department-field">
                 {{ form.department.label_tag }} {{ form.department }}
             </div>
 
-            <div id="dean-checkbox-field">
-                {{ form.is_dean.label_tag }} {{ form.is_dean }}
-            </div>
-
             <div id="curated-group-field">
                 {{ form.curated_group.label_tag }} {{ form.curated_group }}
+            </div>
+
+            <div id="dean-checkbox-field">
+                {{ form.is_dean.label_tag }} {{ form.is_dean }}
             </div>
 
             <div id="subjects-field">
@@ -63,6 +69,7 @@
         var role = document.getElementById('id_role').value;
         var studentFields = document.getElementById('student-fields');
         var teacherFields = document.getElementById('teacher-fields');
+        var teacherNameFields = document.getElementById('teacher-name-fields');
         var departmentField = document.getElementById('department-field');
         var deanCheckboxField = document.getElementById('dean-checkbox-field');
         var curatedGroupField = document.getElementById('curated-group-field');
@@ -76,12 +83,23 @@
         teacherFields.style.display = isTeacher ? 'block' : 'none';
 
         if (isTeacher) {
+            // ФИО и телефон — всем сотрудникам
+            teacherNameFields.style.display = 'block';
+            
+            // Факультет — TEACHER и DEAN
             departmentField.style.display = (role === 'TEACHER' || role === 'DEAN') ? 'block' : 'none';
-            deanCheckboxField.style.display = (role === 'DEAN') ? 'block' : 'none';
+            
+            // Предметы — TEACHER и DEAN
             subjectsField.style.display = (role === 'TEACHER' || role === 'DEAN') ? 'block' : 'none';
             
-            if (isDeanCheckbox) {
-                curatedGroupField.style.display = (role === 'DEAN' && isDeanCheckbox.checked) ? 'block' : 'none';
+            // Декан (галочка) — только DEAN
+            deanCheckboxField.style.display = (role === 'DEAN') ? 'block' : 'none';
+            
+            // Куратируемая группа — всем, у кого нет галочки "Декан" или DEAN без галочки
+            if (role === 'DEAN') {
+                curatedGroupField.style.display = (isDeanCheckbox && isDeanCheckbox.checked) ? 'block' : 'none';
+            } else {
+                curatedGroupField.style.display = (role === 'TEACHER') ? 'block' : 'none';
             }
         }
     }

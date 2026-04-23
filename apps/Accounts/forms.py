@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
 from .models import Student, Teacher, Role
-from apps.Shedule.models import Groups, Faculti
+from apps.Shedule.models import Groups, Faculty
 
 User = get_user_model()
 
@@ -40,7 +40,10 @@ class ExtendedRegistrationForm(UserCreationForm):
     birthday = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}), label="Дата рождения")
     
     # Поля Преподавателя / Декана
-    department = forms.ModelChoiceField(queryset=Faculti.objects.all(), required=False, label="Факультет / Кафедра")
+    teacher_surname = forms.CharField(max_length=100, required=False, label="Фамилия")
+    teacher_name = forms.CharField(max_length=100, required=False, label="Имя")
+    teacher_patronymic = forms.CharField(max_length=100, required=False, label="Отчество")
+    department = forms.ModelChoiceField(queryset=Faculty.objects.all(), required=False, label="Факультет / Кафедра")
     is_dean = forms.BooleanField(required=False, label="Декан")
     curated_group = forms.ModelChoiceField(queryset=Groups.objects.all(), required=False, label="Куратируемая группа")
     subjects = forms.ModelMultipleChoiceField(
@@ -69,7 +72,7 @@ class ExtendedRegistrationForm(UserCreationForm):
         if role in staff_roles and code != "Gt$0X1hS%_":
             self.add_error('secure_code', "Неверный секретный код")
 
-        if role == "TEACHER" and not cleaned_data.get('department'):
+        if role in ["TEACHER", "DEAN"] and not cleaned_data.get('department'):
             self.add_error('department', "Выберите факультет")
 
         return cleaned_data
@@ -89,7 +92,6 @@ class CreateStudent(forms.ModelForm):
 class CreateProfileTeacher(forms.ModelForm):
     class Meta:
         model = Teacher
-        # ЗАМЕНЯЕМ "department" на "faculti"
         fields = ["faculty", "is_dean", "curated_group", "subjects"]
         widgets = {
             "faculty": forms.Select(attrs={'class': 'form-control'}),

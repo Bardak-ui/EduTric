@@ -1,3 +1,11 @@
+body, h1, h2, h3, h4, h5, h6, p, a, label, div, span, li, td, th, button {
+    font-family: 'BOWLER-Regular';
+}
+
+input, textarea, select {
+    font-family: 'Times New Roman', Times, serif;
+}
+
 /* Общие стили для сайта */
 body {
     margin: 0;
@@ -128,9 +136,6 @@ form .error {
     text-align: center;
 }
 
-* {
-    font-family: 'BOWLER-Regular';
-}
 
 @font-face {
     font-family: 'BOWLER-Regular';

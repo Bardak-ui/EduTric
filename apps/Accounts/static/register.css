@@ -1,3 +1,4 @@
+
 /* Общие стили для сайта */
 body {
     font-family: 'Roboto', sans-serif;
@@ -165,9 +166,14 @@ form label {
 }
 
 
-* {
+body, h1, h2, h3, h4, h5, h6, p, a, label, div, span, li, td, th, button {
     font-family: 'BOWLER-Regular';
 }
+
+input, textarea, select {
+    font-family: 'Times New Roman', Times, serif;
+}
+
 
 @font-face {
     font-family: 'BOWLER-Regular';

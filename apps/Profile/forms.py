@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from apps.Accounts.models import Student, Teacher
-from apps.Shedule.models import Faculti
+from apps.Shedule.models import Faculty
 
 User = get_user_model()
 

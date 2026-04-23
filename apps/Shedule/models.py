@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Faculti(models.Model):
+class Faculty(models.Model):
     # Убираем choices, чтобы любой колледж мог вписать свои факультеты
     name = models.CharField(max_length=255, unique=True, verbose_name="Название факультета")
 
@@ -9,6 +9,7 @@ class Faculti(models.Model):
         return self.name
 
     class Meta:
+        db_table = 'Shedule_faculty'
         verbose_name = "Факультет"
         verbose_name_plural = "Факультеты"
 
@@ -59,8 +60,7 @@ class Subject(models.Model):
 
 class Groups(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название группы")
-    # faculti = models.ForeignKey(Faculti, on_delete=models.CASCADE, related_name="groups")
-    faculti = models.ForeignKey(Faculti, on_delete=models.CASCADE, related_name="groups", null=True, blank=True)
+    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name="groups", null=True, blank=True)
     
     # ЗАМЕНЯЕМ CharField на ForeignKey к нашей новой модели
     course = models.ForeignKey(

@@ -39,14 +39,14 @@ class StudentAdmin(admin.ModelAdmin):
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
-    # Исправляем отображение в списке
-    list_display = ("user", "faculty", "is_dean", "curated_group")
+    list_display = ("user", "surname", "name", "faculty", "is_dean", "curated_group", "get_subjects")
+    search_fields = ("user__username", "surname", "name", "faculty__name")
+    list_filter = ("faculty", "is_dean", "subjects")
+    filter_horizontal = ("subjects",)
     
-    # Исправляем поиск (теперь ищем по названию связанного факультета)
-    search_fields = ("user__username", "user__name", "faculty__name")
-    
-    # Исправляем фильтры в правой колонке
-    list_filter = ("faculty", "is_dean")
+    def get_subjects(self, obj):
+        return ", ".join([s.name for s in obj.subjects.all()])
+    get_subjects.short_description = "Предметы"
 
 
 @admin.register(Role)

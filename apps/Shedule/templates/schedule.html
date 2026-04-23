@@ -16,7 +16,7 @@
         </select>
     </div>
 
-    {% if request.user.role == 'ACADEMIC_OFFICE' and selected_group %}
+    {% if request.user.is_academic_office and selected_group %}
     <div class="hint-text" style="margin-bottom:20px; text-align:center; color:#fff; font-weight:700;">
         Нажмите на название дня, чтобы добавить пару, или на саму пару для редактирования.
     </div>
@@ -25,7 +25,7 @@
     {% for day, lessons in schedule_by_day.items %}
     <div class="day-card-wrapper">
         <div class="terminal-card">
-            {% if request.user.role == 'ACADEMIC_OFFICE' and selected_group %}
+            {% if request.user.is_academic_office and selected_group %}
                 <a href="{% url 'add_schedule' selected_group.id %}?weekday={{ forloop.counter }}" class="day-title-it">{{ day|upper }}</a>
             {% else %}
                 <div class="day-title-it">{{ day|upper }}</div>
@@ -52,8 +52,8 @@
                         <div class="lesson-info-it">
                             <div class="name-it">{{ lesson.subject.name|upper|default:"БЕЗ ПРЕДМЕТА" }}</div>
                             <div class="teacher-name">
-                                {{ lesson.teacher.user.last_name }} 
-                                {{ lesson.teacher.user.first_name|slice:":1" }}.
+                                {{ lesson.teacher.surname }} 
+                                {{ lesson.teacher.name|slice:":1" }}.
                                 {% if lesson.teacher.patronymic %}
                                     {{ lesson.teacher.patronymic|slice:":1" }}.
                                 {% endif %}
