@@ -9,7 +9,7 @@
         <h1>Зачетная книжка</h1>
         <div class="user-meta">
             <div class="user-fio">
-                {{ profile.familiy|default:"" }} {{ profile.name|default:"" }} {{ profile.otchestvo|default:"" }}
+                {{ profile.surname|default:"" }} {{ profile.name|default:"" }} {{ profile.patronymic|default:"" }}
             </div>
             <div class="user-group">
                 <span class="badge">Группа: {{ profile.group.name|default:"Не указана" }}-{{ profile.group.course }}</span>

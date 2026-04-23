@@ -8,30 +8,36 @@
     <h1>Редактирование профиля</h1>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <!-- {{ form.as_p }} -->
-        {{ form.familiy.label_tag }}
-        {{ form.familiy }}
+        
+        {{ form.surname.label_tag }}
+        {{ form.surname }}
+        
         {{ form.name.label_tag }}
         {{ form.name }}
-        {{ form.otchestvo.label_tag }}
-        {{ form.otchestvo }}
-        {{ form.faculti.label_tag }}
-        {{ form.faculti }}
+        
+        {{ form.patronymic.label_tag }}
+        {{ form.patronymic }}
+        
+        {{ form.faculty.label_tag }}
+        {{ form.faculty }}
+        
         {{ form.avatar.label_tag }}
-        {% if user.profile.avatar %}
+        {% if form.instance.avatar %}
             <div class="current-avatar">
-                <img src="{{ user.profile.avatar.url }}" alt="Текущая аватарка" class="avatar-preview">
+                <img src="{{ form.instance.avatar.url }}" alt="Текущая аватарка" class="avatar-preview">
             </div>
         {% endif %}
         <input type="file" name="avatar" accept="image/*" id="id_avatar">
+        
         {{ form.phone.label_tag }}
         {{ form.phone }}
+        
         {{ form.group.label_tag }}
         {{ form.group }}
-        {{ form.dean.label_tag }}
-        {{ form.dean }}
+        
         {{ form.birthday.label_tag }}
         {{ form.birthday }}
+        
         <button type="submit" class="save-button">Сохранить изменения</button>
         <a href="{% url 'profile' %}" class="cancel-button">Отмена</a>
     </form>

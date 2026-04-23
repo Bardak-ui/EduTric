@@ -23,20 +23,14 @@ def get_item(dictionary, key):
 def is_teacher(user):
     if not user.is_authenticated:
         return False
-    # УЧЕБНЫЙ ОТДЕЛ (ACADEMIC_OFFICE) ИСКЛЮЧЕН ИЗ ЖУРНАЛА
-    allowed = [
-        User.Roles.TEACHER, 
-        User.Roles.DEAN, 
-        User.Roles.DIRECTOR, 
-    ]
-    return user.role in allowed
+    return user.is_teacher or user.is_dean or user.is_director
 
 @login_required
 def performance_view(request):
     user = request.user
     
     # 1. ЗАПРЕТ ДЛЯ УЧЕБНОГО ОТДЕЛА
-    if user.role == User.Roles.ACADEMIC_OFFICE:
+    if user.is_academic_office:
         messages.error(request, "У учебного отдела доступ только к расписанию.")
         return redirect('profile')
 
@@ -50,16 +44,16 @@ def performance_view(request):
         teacher = getattr(user, 'teacher_profile', None)
         
         # Директор видит всё
-        if user.role == User.Roles.DIRECTOR:
+        if user.is_director:
             first_group = Groups.objects.first()
             if first_group:
                 return redirect("journal:group_info", group_id=first_group.id)
             return redirect("profile")
 
         # Декан по факультету
-        if user.role == User.Roles.DEAN:
-            if teacher and teacher.faculti:
-                first_fac_group = Groups.objects.filter(faculti=teacher.faculti).first()
+        if user.is_dean:
+            if teacher and teacher.faculty:
+                first_fac_group = Groups.objects.filter(faculty=teacher.faculty).first()
                 if first_fac_group:
                     return redirect("journal:group_info", group_id=first_fac_group.id)
 
@@ -88,16 +82,14 @@ def performance_view(request):
 def confirm_grades(request, student_id, subject_id, semester):
     user = request.user
     
-    # Проверка прав: только TEACHER, DEAN или DIRECTOR. 
-    # Учебный отдел и Студенты — мимо.
-    if user.role not in [User.Roles.TEACHER, User.Roles.DEAN, User.Roles.DIRECTOR]:
+    # Проверка прав
+    if not (user.is_teacher or user.is_dean or user.is_director):
         messages.error(request, "У вас нет прав для подтверждения оценок.")
         return redirect('journal:performance')
 
     student_user = get_object_or_404(User, id=student_id)
     subject = get_object_or_404(Subject, id=subject_id)
     
-    # Вызываем метод модели (убедись, что в RecordBook есть этот метод)
     record = RecordBook.confirm_grades(
         student=student_user,
         subject=subject,
@@ -116,26 +108,31 @@ def confirm_grades(request, student_id, subject_id, semester):
 def add_grade(request, student_id, subject_id):
     user = request.user 
     
-    # СТУДЕНТ НЕ МОЖЕТ ДОБАВЛЯТЬ (кроме Старосты для "Н")
-    if user.role == User.Roles.STUDENT or user.role == User.Roles.ACADEMIC_OFFICE:
+    # СТУДЕНТ И УЧЕБНЫЙ ОТДЕЛ НЕ МОГУТ
+    if user.is_student or user.is_academic_office:
         messages.error(request, "У вас нет прав для добавления оценок.")
         return redirect('journal:performance')
 
     student_user = get_object_or_404(User, id=student_id)
     subject = get_object_or_404(Subject, id=subject_id)
     student_profile = getattr(student_user, 'student_profile', None)
-    target_group_id = student_profile.group.id if student_profile else None
+    target_group_id = student_profile.group.id if student_profile and student_profile.group else None
+
+    # Если у студента нет группы — некуда редиректить
+    if not target_group_id:
+        messages.error(request, "Студент не привязан к группе.")
+        return redirect('journal:performance')
 
     if request.method == "POST":
         # Директор и Декан — только просмотр
-        if user.role in [User.Roles.DIRECTOR, User.Roles.DEAN]:
+        if user.is_director or user.is_dean:
             messages.error(request, "Вы в режиме просмотра.")
             return redirect("journal:group_info", group_id=target_group_id)
 
         grade_val = request.POST.get('grade')
         selected_date = request.POST.get('date') or timezone.now().date()
 
-        if user.role == User.Roles.STAROSTA and grade_val != "Н":
+        if user.system_role and user.system_role.name == "STAROSTA" and grade_val != "Н":
             messages.error(request, "Староста отмечает только отсутствие.")
             return redirect("journal:group_info", group_id=target_group_id)
 
@@ -153,8 +150,8 @@ def edit_specific_grade(request, grade_id):
     grade_obj = get_object_or_404(Performance, id=grade_id)
     user = request.user
 
-    # ЗАЩИТА: Только препод или староста. Директор, Декан, Студент, Учебный отдел — НЕТ.
-    if user.role in [User.Roles.STUDENT, User.Roles.DIRECTOR, User.Roles.DEAN, User.Roles.ACADEMIC_OFFICE]:
+    # Только препод или староста
+    if user.is_student or user.is_director or user.is_dean or user.is_academic_office:
         messages.error(request, "Редактирование запрещено.")
         return redirect("journal:group_info", group_id=grade_obj.student.student_profile.group.id)
 
@@ -164,7 +161,7 @@ def edit_specific_grade(request, grade_id):
             return redirect("journal:group_info", group_id=grade_obj.student.student_profile.group.id)
 
         new_val = request.POST.get('grade')
-        if user.role == User.Roles.STAROSTA and new_val != "Н":
+        if user.system_role and user.system_role.name == "STAROSTA" and new_val != "Н":
             messages.error(request, "Староста может ставить только 'Н'")
             return redirect(request.META.get('HTTP_REFERER'))
 
@@ -173,12 +170,15 @@ def edit_specific_grade(request, grade_id):
         return redirect("journal:group_info", group_id=grade_obj.student.student_profile.group.id)
 
     return render(request, "edit_grade_form.html", {
-        "grade_obj": grade_obj, "student": grade_obj.student.student_profile, "subject": grade_obj.subject,
+        "grade_obj": grade_obj, 
+        "student": grade_obj.student.student_profile, 
+        "subject": grade_obj.subject,
+        "group_id": grade_obj.student.student_profile.group.id,  # ← добавить
     })
 
 @login_required
 def record_book_view(request):
-    if request.user.role == User.Roles.ACADEMIC_OFFICE:
+    if request.user.is_academic_office:
         messages.error(request, "Доступ к зачеткам запрещен.")
         return redirect('profile')
         
@@ -199,8 +199,9 @@ def record_book_view(request):
 @login_required
 def edit_evaluations(request, group_id, subject_id):
     user = request.user
-    # Только TEACHER или STAROSTA. Все остальные роли — в сад.
-    if user.role not in [User.Roles.TEACHER, User.Roles.STAROSTA]:
+    # Только TEACHER или STAROSTA
+    is_starosta = user.system_role and user.system_role.name == "STAROSTA"
+    if not (user.is_teacher or is_starosta):
         messages.error(request, "У вас нет прав на массовое редактирование.")
         return redirect('journal:group_info', group_id=group_id)
 
@@ -218,7 +219,7 @@ def edit_evaluations(request, group_id, subject_id):
             if raw_grades:
                 grades_list = [g.strip() for g in raw_grades.split(',') if g.strip()]
                 for grade_val in grades_list:
-                    if user.role == User.Roles.STAROSTA and grade_val != "Н":
+                    if is_starosta and grade_val != "Н":
                         continue 
                     Performance.objects.create(student=student_profile.user, subject=subject, date=selected_date, grade=grade_val)
         
@@ -242,31 +243,35 @@ def group_info(request, group_id):
     subjects = current_group.subjects.all()
     user = request.user
     
+    if user.is_academic_office:
+        messages.error(request, "У учебного отдела доступ только к расписанию.")
+        return redirect('profile')
+
     date_filter = request.GET.get('date_filter')
     
     is_teacher_flag = is_teacher(user)
-    is_student_flag = user.role in [User.Roles.STUDENT, User.Roles.STAROSTA]
+    is_student_flag = user.is_student or (user.system_role and user.system_role.name == "STAROSTA")
 
-    # --- УЛУЧШЕННАЯ ПРОВЕРКА ДОСТУПА ---
+    # ПРОВЕРКА ДОСТУПА
     has_access = False
     
     if is_teacher_flag:
         teacher_profile = getattr(user, 'teacher_profile', None)
         
-        # 1. Супер-роли (Директор и Учебная часть) видят вообще всё
-        if user.role in [User.Roles.DIRECTOR, User.Roles.ACADEMIC_OFFICE]:
+        # Директор видет все
+        if user.is_director:
             has_access = True
             
-        # 2. Декан видит только группы своего факультета
-        elif user.role == User.Roles.DEAN:
-            if teacher_profile and teacher_profile.faculti == current_group.faculti:
+        # Декан видит группы своего факультета
+        elif user.is_dean:
+            if teacher_profile and teacher_profile.faculty == current_group.faculty:
                 has_access = True
                 
-        # 3. Куратор видит свою группу
+        # Куратор видит свою группу
         elif teacher_profile and teacher_profile.curated_group == current_group:
             has_access = True
             
-        # 4. Преподаватель видит группы, в которых ведет пары по расписанию
+        # Преподаватель видит группы по расписанию
         else:
             from apps.Shedule.models import Schedule
             has_access = Schedule.objects.filter(
@@ -274,7 +279,7 @@ def group_info(request, group_id):
                 teacher=teacher_profile
             ).exists()
             
-    # 5. Студент видит только свою группу
+    # Студент видит только свою группу
     else:
         if hasattr(user, 'student_profile') and user.student_profile.group == current_group:
             has_access = True
@@ -283,7 +288,7 @@ def group_info(request, group_id):
         messages.error(request, "У вас нет прав для просмотра журнала этой группы.")
         return redirect("profile")
 
-    # --- ОСТАЛЬНАЯ ЛОГИКА (БЕЗ ИЗМЕНЕНИЙ) ---
+    # ОСТАЛЬНАЯ ЛОГИКА (без изменений)
     merged_with_me = Groups.objects.filter(
         models.Q(merged_schedules__group=current_group) | 
         models.Q(schedule__merged_groups=current_group)
@@ -350,16 +355,18 @@ def group_info(request, group_id):
 
 @login_required
 def edit_grade(request, student_id, subject_id):
-    if request.user.role not in ['DEAN', 'DIRECTOR']:
+    user = request.user
+    
+    if not (user.is_dean or user.is_director):
         messages.error(request, "У вас нет прав для выполнения этого действия.")
         return redirect('journal:performance')
+        
     student_user = get_object_or_404(User, id=student_id)
     subject = get_object_or_404(Subject, id=subject_id)
-    user = request.user
 
-    # Проверка доступа: только учитель или староста ЭТОЙ группы
+    # Проверка доступа
     is_teacher_val = is_teacher(user)
-    is_starosta = (user.role == User.Roles.STAROSTA and 
+    is_starosta = (user.system_role and user.system_role.name == "STAROSTA" and 
                    hasattr(user, 'student_profile') and 
                    user.student_profile.group == student_user.student_profile.group)
 
@@ -374,8 +381,7 @@ def edit_grade(request, student_id, subject_id):
         if form.is_valid():
             grade_obj = form.save(commit=False)
             
-            # ГЛАВНАЯ ЗАЩИТА: Если староста пытается сохранить что-то, кроме "Н"
-            if not is_teacher_val and user.role == User.Roles.STAROSTA:
+            if not is_teacher_val and is_starosta:
                 if grade_obj.grade not in ["Н", "", None]:
                     messages.error(request, "Староста может только отмечать отсутствие (Н)!")
                     return render(request, "edit_grade.html", {
@@ -394,53 +400,25 @@ def edit_grade(request, student_id, subject_id):
         "form": form, 
         "student": student_user.student_profile,
         "subject": subject,
-        "is_teacher_flag": is_teacher_val # Передаем флаг в шаблон
-    })
-
-@login_required
-def record_book_view(request):
-    # Пытаемся получить профиль студента
-    student_profile = getattr(request.user, 'student_profile', None)
-    
-    # Получаем оценки
-    records = request.user.record_entries.select_related("subject", "teacher").order_by("semester")
-    
-    semesters_data = []
-    existing_semesters = records.values_list("semester", flat=True).distinct().order_by("semester")
-
-    for sem_num in existing_semesters:
-        sem_records = records.filter(semester=sem_num)
-        grades_list = [r.grade for r in sem_records if r.grade]
-        avg = sum(grades_list) / len(grades_list) if grades_list else 0
-
-        semesters_data.append({
-            "number": sem_num,
-            "grades": sem_records,
-            "avg": round(avg, 2),
-        })
-
-    return render(request, "record_book.html", {
-        "semesters_data": semesters_data,
-        "profile": student_profile, # Теперь тут объект Student с полями familiy, name и group
+        "is_teacher_flag": is_teacher_val
     })
 
 @login_required
 def mass_performance_update(request, group_id, subject_id):
-    if request.user.role not in ['DIRECTOR']:
-        messages.error(request, "У вас нет прав для выполнения этого действия.")
-        return redirect('journal:performance')
-    group = get_object_or_404(Groups, id=group_id)
-    subject = get_object_or_404(Subject, id=subject_id)
     user = request.user
     
-    # Определяем роли
+    if not user.is_director:
+        messages.error(request, "У вас нет прав для выполнения этого действия.")
+        return redirect('journal:performance')
+        
+    group = get_object_or_404(Groups, id=group_id)
+    subject = get_object_or_404(Subject, id=subject_id)
+    
     is_teacher_val = is_teacher(user)
-    # Проверяем, является ли пользователь старостой ИМЕННО ЭТОЙ группы
-    is_starosta_of_group = (user.role == User.Roles.STAROSTA and 
+    is_starosta_of_group = (user.system_role and user.system_role.name == "STAROSTA" and 
                             hasattr(user, 'student_profile') and 
                             user.student_profile.group == group)
 
-    # Если не препод и не староста этой группы — выгоняем
     if not (is_teacher_val or is_starosta_of_group):
         messages.error(request, "У вас нет прав для редактирования этого журнала.")
         return redirect("journal:group_info", group_id=group.id)
@@ -454,10 +432,8 @@ def mass_performance_update(request, group_id, subject_id):
         for student_profile in students:
             grade_value = request.POST.get(f"grade_{student_profile.user.id}")
 
-            # ЗАЩИТА: Если это староста, разрешаем только "Н" или пустоту
-            if not is_teacher_val and user.role == User.Roles.STAROSTA:
+            if not is_teacher_val and is_starosta_of_group:
                 if grade_value not in ["Н", "", None]:
-                    # Если староста хитрит и шлет цифру — сбрасываем её
                     grade_value = None 
 
             if grade_value:
@@ -468,7 +444,6 @@ def mass_performance_update(request, group_id, subject_id):
                     defaults={'grade': grade_value}
                 )
             else:
-                # Если поле пустое — удаляем запись за этот день
                 Performance.objects.filter(
                     student=student_profile.user, 
                     subject=subject, 
@@ -478,7 +453,6 @@ def mass_performance_update(request, group_id, subject_id):
         messages.success(request, f"Данные за {selected_date} сохранены")
         return redirect("journal:group_info", group_id=group.id)
 
-    # Данные для отображения (GET)
     existing_marks = Performance.objects.filter(
         subject=subject, 
         date=date_str, 
@@ -492,82 +466,5 @@ def mass_performance_update(request, group_id, subject_id):
         "students": students,
         "marks_map": marks_map,
         "current_date": date_str,
-        "is_teacher_flag": is_teacher_val, # Чтобы шаблон знал, показывать ли оценки
+        "is_teacher_flag": is_teacher_val,
     })
-
-@login_required
-def edit_evaluations(request, group_id, subject_id):
-    if request.user.role not in ['DIRECTOR']:
-        messages.error(request, "У вас нет прав для выполнения этого действия.")
-        return redirect('journal:performance')
-    group = get_object_or_404(Groups, id=group_id)
-    subject = get_object_or_404(Subject, id=subject_id)
-    user = request.user
-    
-    # Защита: Декан не может править оценки
-    if user.role == "DEKAN":
-        raise PermissionDenied
-
-    date_str = request.GET.get('date', timezone.now().date().isoformat())
-    students_list = group.students.all().select_related('user')
-
-    if request.method == "POST":
-        selected_date = request.POST.get("selected_date") or date_str
-        
-        for student_profile in students_list:
-            # Получаем строку из инпута (например, "5, 4, Н")
-            raw_grades = request.POST.get(f"grade_{student_profile.user.id}", "").strip()
-            
-            # 1. Удаляем все старые записи за этот конкретный день по этому предмету, 
-            # чтобы перезаписать их актуальным набором.
-            Performance.objects.filter(
-                student=student_profile.user,
-                subject=subject,
-                date=selected_date
-            ).delete()
-
-            if raw_grades:
-                # 2. Разбиваем строку по запятой и убираем лишние пробелы
-                # Из "5,  4 , 5" получим ['5', '4', '5']
-                grades_list = [g.strip() for g in raw_grades.split(',') if g.strip()]
-
-                for grade_val in grades_list:
-                    # 3. Валидация для старосты (только "Н")
-                    final_val = grade_val
-                    if user.role == User.Roles.STAROSTA and grade_val != "Н":
-                        continue # Староста не может ставить цифры, пропускаем
-
-                    # 4. Создаем новую запись для каждой оценки
-                    Performance.objects.create(
-                        student=student_profile.user,
-                        subject=subject,
-                        date=selected_date,
-                        grade=final_val
-                    )
-        
-        messages.success(request, "Оценки успешно обновлены.")
-        return redirect("journal:group_info", group_id=group.id)
-
-    # Собираем оценки для отображения
-    existing_marks = Performance.objects.filter(
-        subject=subject,
-        date=date_str,
-        student__student_profile__group=group
-    )
-    
-    # Группируем оценки по студентам: {student_id: "5, 4, 5"}
-    marks_map = defaultdict(list)
-    for m in existing_marks:
-        marks_map[m.student.id].append(str(m.grade))
-    
-    # Преобразуем списки в строки через запятую для вывода в инпуты
-    formatted_marks_map = {s_id: ", ".join(m_list) for s_id, m_list in marks_map.items()}
-    
-    context = {
-        "group": group,
-        "subject": subject,
-        "students": students_list,
-        "marks_map": formatted_marks_map,
-        "current_date": date_str,
-    }
-    return render(request, "edit_evalutions.html", context)

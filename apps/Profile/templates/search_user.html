@@ -8,21 +8,21 @@
 <div class="search-container">
     <h2>Результаты поиска</h2>
     
-    {% if profiles %}
+    {% if students %}
         <ul class="block_student_card">
-            {% for profile in profiles %}
+            {% for student in students %}
                 <li class="student-card">
                     <div class="avatar-container">
-                        {% if profile.avatar %}
-                            <img src="{{ profile.avatar.url }}" alt="Аватар">
+                        {% if student.avatar %}
+                            <img src="{{ student.avatar.url }}" alt="Аватар">
                         {% else %}
                             <img src="{% static 'no_avatar.jpeg' %}" alt="Аватар">
                         {% endif %}
                     </div>
-                    <strong>{{ profile.familiy }} {{ profile.name }}</strong>
-                    <p><span>Группа:</span> {{ profile.group }}</p>
-                    <p><span>Факультет:</span> {{ profile.faculti }}</p>
-                    <p><span>Телефон:</span> {{ profile.phone }}</p>
+                    <strong>{{ student.surname }} {{ student.name }}</strong>
+                    <p><span>Группа:</span> {{ student.group }}</p>
+                    <p><span>Факультет:</span> {{ student.faculty }}</p>
+                    <p><span>Телефон:</span> {{ student.phone }}</p>
                 </li>
             {% endfor %}
         </ul>

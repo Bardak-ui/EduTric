@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Профиль {{ user.get_role_display }}{% endblock %}
+{% block title %}Профиль {{ user.role_name }}{% endblock %}
 
 {% block content %}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
 
 <div class="profile-container">
     
-    {% if user.role == 'STUDENT' or user.role == 'STAROSTA' %}
+    {% if user.is_student or user.system_role.name == 'STAROSTA' %}
     <div class="student-id-card">
         <div class="qr-section">
             <div class="qr-placeholder">
@@ -34,7 +34,7 @@
             
             <div class="visual-box student-data-pass">
                 <div class="pass-fio">
-                    {{ profile.familiy }}<br>
+                    {{ profile.surname }}<br>
                     {{ profile.name }}
                 </div>
                 <div class="pass-id">
@@ -48,7 +48,7 @@
 
     <div class="profile-main-card">
         <div class="avatar-wrapper">
-            <a href="{% if user.role == 'STUDENT' or user.role == 'STAROSTA' %}{% url 'edit_profile' %}{% else %}{% url 'edit_profile_teacher' %}{% endif %}">
+            <a href="{% if user.is_student or user.system_role.name == 'STAROSTA' %}{% url 'edit_profile' %}{% else %}{% url 'edit_profile_teacher' %}{% endif %}">
                 {% if profile.avatar %}
                     <img src="{{ profile.avatar.url }}" class="profile-avatar">
                 {% else %}
@@ -58,23 +58,23 @@
         </div>
         
         <div class="profile-info">
-            {% if user.role == 'STUDENT' or user.role == 'STAROSTA' %}
-                <h2 class="user-familiy">{{ profile.familiy }}</h2>
-                <h3 class="user-name">{{ profile.name }} {{ profile.otchestvo|default:"" }}</h3>
+            {% if user.is_student or user.system_role.name == 'STAROSTA' %}
+                <h2 class="user-familiy">{{ profile.surname }}</h2>
+                <h3 class="user-name">{{ profile.name }} {{ profile.patronymic|default:"" }}</h3>
             {% else %}
                 <h2 class="user-familiy">{{ user.last_name|default:user.username }}</h2>
                 <h3 class="user-name">{{ user.first_name }}</h3>
             {% endif %}
             
             <div class="details-list">
-                <p><strong>Роль:</strong> {{ user.get_role_display }}</p>
+                <p><strong>Роль:</strong> {{ user.role_name }}</p>
                 
-                {% if user.role == 'STUDENT' or user.role == 'STAROSTA' %}
+                {% if user.is_student or user.system_role.name == 'STAROSTA' %}
                     <p><strong>Группа:</strong> {{ profile.group.name }}-{{ profile.group.course }}</p>
                     <p><strong>Зачетка:</strong> {{ profile.student_id }}</p>
                 {% else %}
-                    {% if profile.department %}
-                        <p><strong>Кафедра:</strong> {{ profile.department }}</p>
+                    {% if profile.department_name %}
+                        <p><strong>Кафедра:</strong> {{ profile.department_name }}</p>
                     {% endif %}
                     {% if profile.curated_group %}
                         <p><strong>Куратор группы:</strong> {{ profile.curated_group.name }}-{{ profile.curated_group.course }}</p>
@@ -86,9 +86,9 @@
 </div>
 
 <div class="actions">
-    {% if user.role == 'STUDENT' or user.role == 'STAROSTA' %}
+    {% if user.is_student or user.system_role.name == 'STAROSTA' %}
         <a href="{% url 'journal:record_book_view' %}" class="btn-record-book">Открыть зачетную книжку</a>
-    {% elif user.role == 'ACADEMIC_OFFICE' %}
+    {% elif user.is_academic_office %}
         <a href="{% url 'schedule' %}" class="btn-record-book">Расписание</a>
     {% else %}
         <a href="{% url 'journal:performance' %}" class="btn-record-book">Журналы обучения</a>
@@ -107,24 +107,20 @@
 
         if (qrSmall) {
             qrSmall.onclick = function() {
-                // Устанавливаем ту же картинку
                 expandedImg.src = this.src;
-                // Показываем оверлей
                 overlay.style.display = "flex";
                 
-                // Небольшая задержка, чтобы сработала CSS анимация scale
                 setTimeout(() => {
                     overlay.classList.add("active");
                 }, 10);
             };
         }
 
-        // Закрытие при клике на любое место оверлея
         overlay.onclick = function() {
             overlay.classList.remove("active");
             setTimeout(() => {
                 overlay.style.display = "none";
-            }, 300); // Время должно совпадать с transition в CSS
+            }, 300);
         };
     });
 </script>

@@ -20,7 +20,7 @@
             <button type="submit" class="btn btn-primary">Сохранить</button>
             <button type="submit" name="delete" class="btn btn-danger" 
                     onclick="return confirm('Вы уверены, что хотите удалить оценку?')">Удалить</button>
-            <a href="javascript:history.back()" class="btn btn-secondary">Отмена</a>
+            <a href="{% url 'journal:group_info' group_id %}" class="btn btn-secondary">Отмена</a>
         </div>
     </form>
 </div>

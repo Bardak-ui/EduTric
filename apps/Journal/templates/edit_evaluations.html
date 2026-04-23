@@ -25,7 +25,7 @@
                             <tr>
                                 <th>ФИО Студента</th>
                                 <th style="width: 200px;">
-                                    {% if user.role == "STAROSTA" and not is_teacher_flag %}
+                                    {% if user.system_role.name == "STAROSTA" and not is_teacher_flag %}
                                         Явка (только Н)
                                     {% else %}
                                         Оценка / Явка
@@ -36,21 +36,19 @@
                         <tbody>
                             {% for student in students %}
                             <tr>
-                                <td>{{ student.familiy }} {{ student.name }}</td>
+                                <td>{{ student.surname }} {{ student.name }}</td>
                                 <td>
                                     {% with grade=marks_map|get_item:student.user.id %}
                                     <select name="grade_{{ student.user.id }}" class="form-select">
                                         <option value="">— (пусто)</option>
                                         
                                         {% if is_teacher_flag %}
-                                            {# Преподаватель видит все оценки #}
                                             <option value="5" {% if grade == "5" %}selected{% endif %}>5 (Отлично)</option>
                                             <option value="4" {% if grade == "4" %}selected{% endif %}>4 (Хорошо)</option>
                                             <option value="3" {% if grade == "3" %}selected{% endif %}>3 (Удовл.)</option>
                                             <option value="2" {% if grade == "2" %}selected{% endif %}>2 (Неуд.)</option>
                                         {% endif %}
 
-                                        {# "Н" доступна и старосте, и преподавателю #}
                                         <option value="Н" {% if grade == "Н" %}selected{% endif %} class="text-danger fw-bold">Н (Отсутствие)</option>
                                     </select>
                                     {% endwith %}

@@ -60,7 +60,7 @@
                 {% for item in performance_data %}
                     <tr>
                         <td class="sticky-col student-name">
-                            {{ item.student.familiy }} {{ item.student.name|slice:":1" }}.
+                            {{ item.student.surname }} {{ item.student.name|slice:":1" }}.
                         </td>
                         
                         {% for subject in subjects %}
@@ -80,13 +80,9 @@
                                         </div>
                                     {% endwith %}
                                     
-                                    {# Условие: Декан НЕ может менять, а Преподаватель и Староста — могут #}
-                                    {% if user.role != "DEKAN" %}
-                                        {% if is_teacher_flag or user.role == "STAROSTA" %}
+                                    {% if user.system_role.name != "DEAN" %}
+                                        {% if is_teacher_flag or user.system_role.name == "STAROSTA" %}
                                             <div class="teacher-controls" style="margin-top: 8px; display: flex; gap: 10px; justify-content: center;">
-                                                <!-- <a href="{% url 'journal:edit_grade' item.student_user.id subject.id %}" 
-                                                title="Редактировать" style="text-decoration:none">✏️</a>  -->
-                                                
                                                 <a href="{% url 'journal:add_grade_page' item.student_user.id subject.id %}" 
                                                     class="btn-add-grade" title="Добавить оценку">
                                                     <span style="color: #81c784; font-weight: bold; font-size: 1.2rem;">+</span>

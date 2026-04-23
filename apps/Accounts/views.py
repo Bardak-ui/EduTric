@@ -4,7 +4,7 @@ from django.db import transaction
 from django.shortcuts import redirect, render
 
 from .forms import CreateStudent, CreateProfileTeacher, CustomeUserForm, ExtendedRegistrationForm
-from .models import Student, Teacher, User  # Импортируем User для доступа к Roles
+from .models import Student, Teacher, User
 from apps.Profile.signals import generate_unique_id
 
 @login_required
@@ -20,7 +20,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             role = form.cleaned_data.get('role')
-            staff_roles = ['TEACHER', 'DEAN', 'DIRECTOR', 'ACADEMIC_OFFICE']
+            staff_roles = ['TEACHER', 'DEAN', 'DIRECTOR', 'ACADEMIC']
 
             if role in staff_roles:
                 # ПРОВЕРКА КОДА
@@ -44,14 +44,14 @@ def register(request):
                 Student.objects.create(
                     user=user,
                     student_id=generate_unique_id(),
-                    familiy=form.cleaned_data.get('familiy'),
+                    surname=form.cleaned_data.get('surname'),
                     name=form.cleaned_data.get('name'),
-                    otchestvo=form.cleaned_data.get('otchestvo'),
-                    faculti=form.cleaned_data.get('faculti'), # CharField
+                    patronymic=form.cleaned_data.get('patronymic'),
+                    faculty=form.cleaned_data.get('faculti'), # CharField
                     phone=form.cleaned_data.get('phone'),
                     group=form.cleaned_data.get('group'),
                     birthday=form.cleaned_data.get('birthday'),
-                    is_curator=(role == User.Roles.STAROSTA)
+                    is_curator=(role == "STAROSTA")
                 )
 
             login(request, user)

@@ -4,9 +4,8 @@
 
 {% block content %}
 <div class="card">
-    <h1>Welcome, {{ student.user.get_full_name }}</h1>
+    <h1>Welcome, {{ student.surname }} {{ student.name }}</h1>
     <p>Group: {{ student.group.name }}</p>
     <p>Student ID: {{ student.student_id }}</p>
-    <!-- Add schedule, grades, etc. -->
 </div>
 {% endblock %}

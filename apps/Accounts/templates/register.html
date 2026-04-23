@@ -69,27 +69,31 @@
         var subjectsField = document.getElementById('subjects-field');
         var isDeanCheckbox = document.getElementById('id_is_dean');
 
-        var teacherRoles = ['TEACHER', 'DEAN', 'DIRECTOR', 'ACADEMIC_OFFICE'];
+        var teacherRoles = ['TEACHER', 'DEAN', 'DIRECTOR', 'ACADEMIC'];
         var isTeacher = teacherRoles.includes(role);
 
-        // Переключаем основные блоки
         studentFields.style.display = isTeacher ? 'none' : 'block';
         teacherFields.style.display = isTeacher ? 'block' : 'none';
 
-        // Логика внутри блока персонала
         if (isTeacher) {
             departmentField.style.display = (role === 'TEACHER' || role === 'DEAN') ? 'block' : 'none';
             deanCheckboxField.style.display = (role === 'DEAN') ? 'block' : 'none';
             subjectsField.style.display = (role === 'TEACHER' || role === 'DEAN') ? 'block' : 'none';
             
-            // Курируемая группа видна только если роль Декан И стоит галочка
-            curatedGroupField.style.display = (role === 'DEAN' && isDeanCheckbox.checked) ? 'block' : 'none';
+            if (isDeanCheckbox) {
+                curatedGroupField.style.display = (role === 'DEAN' && isDeanCheckbox.checked) ? 'block' : 'none';
+            }
         }
     }
 
     document.getElementById('id_role').addEventListener('change', updateProfileFields);
-    document.getElementById('id_is_dean').addEventListener('change', updateProfileFields);
-    updateProfileFields(); // Запуск при загрузке
+    
+    var isDeanCheckbox = document.getElementById('id_is_dean');
+    if (isDeanCheckbox) {
+        isDeanCheckbox.addEventListener('change', updateProfileFields);
+    }
+    
+    updateProfileFields();
 </script>
 </body>
 </html>

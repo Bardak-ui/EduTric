@@ -36,9 +36,9 @@
                         {% for student in students %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td><strong>{{ student.familiy }}</strong> {{ student.name }}</td>
+                            <td><strong>{{ student.surname }}</strong> {{ student.name }}</td>
                             <td>
-                                {% with current_grade=grades_map|get_item:student.user.id %}
+                                {% with current_grade=marks_map|get_item:student.user.id %}
                                 <select name="grade_{{ student.user.id }}" class="form-select select-grade">
                                     <option value="">— (нет)</option>
                                     <option value="5" {% if current_grade == "5" %}selected{% endif %}>5 (Отлично)</option>

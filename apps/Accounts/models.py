@@ -6,9 +6,13 @@ from apps.Shedule.models import Groups, Faculti
 
 class Role(models.Model):
     ROLE_CHOICES = [
-        ("Администратор", "Администратор"),
-        ("Преподаватель", "Преподаватель"),
-        ("Студент", "Студент"),
+        ("ADMIN", "Администратор"),
+        ("TEACHER", "Преподаватель"),
+        ("DEAN", "Декан"),
+        ("DIRECTOR", "Директор"),
+        ("ACADEMIC", "Ученый отдел"),
+        ("STAROSTA", "Староста"),
+        ("STUDENT", "Студент"),
     ]
 
     name = models.CharField(max_length=50, choices=ROLE_CHOICES, unique=True)
@@ -21,29 +25,74 @@ class Role(models.Model):
         verbose_name_plural = "Роли"
 
 
-class User(AbstractUser):
-    class Roles(models.TextChoices):
-        STUDENT = "STUDENT", "Студент"
-        STAROSTA = "STAROSTA", "Староста"
-        TEACHER = "TEACHER", "Преподаватель"
-        DEAN = "DEAN", "Декан"
-        DIRECTOR = "DIRECTOR", "Директор"
-        ACADEMIC_OFFICE = "ACADEMIC_OFFICE", "Ученый отдел"
+class CustomRole(models.Model):
+    name = models.CharField(max_length=100, unique=True, verbose_name="Название роли")
 
-    role = models.CharField(
-        max_length=32,
-        choices=Roles.choices,
-        default=Roles.STUDENT,
-        verbose_name="Роль пользователя",
+    class Meta:
+        verbose_name = 'Пользовательская роль'
+        verbose_name_plural = 'Пользовательская роли'
+
+
+    def __str__(self):
+        return self.name
+    
+class User(AbstractUser):
+    system_role = models.ForeignKey(
+        Role,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        verbose_name="Системная роль"
+    )
+
+    custome_role = models.ForeignKey(
+        CustomRole,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        verbose_name = "Пользовательская роль"
     )
 
     class Meta:
         db_table = "users"
-        verbose_name = "Пользователь"
-        verbose_name_plural = "Пользователи"
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
     def __str__(self):
-        return self.get_full_name() or self.username
+        return self.username
+
+
+    @property
+    def role_name(self):
+        if self.system_role:
+            return self.system_role.get_name_display()
+        elif self.custome_role:
+            return self.custome_role.name
+        return "Без роли"
+    
+    @property
+    def is_admin(self):
+        return self.system_role and self.system_role.name == "ADMIN"
+    
+    @property
+    def is_teacher(self):
+        return self.system_role and self.system_role.name == "TEACHER"
+    
+    @property
+    def is_student(self):
+        return self.system_role and self.system_role.name == "STUDENT"
+    
+    @property
+    def is_dean(self):
+        return self.system_role and self.system_role.name == "DEAN"
+    
+    @property
+    def is_director(self):
+        return self.system_role and self.system_role.name == "DIRECTOR"
+
+    @property
+    def is_academic_office(self):
+        return self.system_role and self.system_role.name == "ACADEMIC"
 
 
 class Student(models.Model):
@@ -71,10 +120,10 @@ class Student(models.Model):
         verbose_name="Староста/Куратор",
         help_text="Отмечайте, если студент является старостой или куратором группы.",
     )
-    familiy = models.CharField(max_length=100, blank=True, verbose_name="Фамилия")
+    surname = models.CharField(max_length=100, blank=True, verbose_name="Фамилия")
     name = models.CharField(max_length=100, blank=True, verbose_name="Имя")
-    otchestvo = models.CharField(max_length=100, blank=True, verbose_name="Отчество")
-    faculti = models.CharField(max_length=100, blank=True, verbose_name="Факультет")
+    patronymic = models.CharField(max_length=100, blank=True, verbose_name="Отчество")
+    faculty = models.CharField(max_length=100, blank=True, verbose_name="Факультет")
     avatar = models.ImageField(upload_to="student_avatars/", blank=True, null=True, verbose_name="Аватар")
     phone = models.CharField(max_length=20, blank=True, verbose_name="Телефон")
     birthday = models.DateField(blank=True, null=True, verbose_name="Дата рождения")
@@ -85,7 +134,7 @@ class Student(models.Model):
         verbose_name_plural = "Студенты"
 
     def __str__(self):
-        return f"{self.familiy} {self.name} {self.otchestvo}"
+        return f"{self.surname} {self.name} {self.patronymic}"
 
 
 class Teacher(models.Model):
@@ -95,12 +144,11 @@ class Teacher(models.Model):
         related_name="teacher_profile",
         verbose_name="Пользователь",
     )
-    # Добавляем эти поля:
-    last_name = models.CharField(max_length=100, blank=True, verbose_name="Фамилия")
-    first_name = models.CharField(max_length=100, blank=True, verbose_name="Имя")
+    surname = models.CharField(max_length=100, blank=True, verbose_name="Фамилия")
+    name = models.CharField(max_length=100, blank=True, verbose_name="Имя")
     patronymic = models.CharField(max_length=100, blank=True, verbose_name="Отчество")
     
-    faculti = models.ForeignKey(
+    faculty = models.ForeignKey(
         Faculti,
         on_delete=models.SET_NULL,
         null=True,
@@ -108,7 +156,6 @@ class Teacher(models.Model):
         related_name="teachers",
         verbose_name="Факультет / Кафедра",
     )
-    # Оставляем текстовое поле как "Кафедра" внутри факультета (опционально)
     department_name = models.CharField(
         max_length=255,
         blank=True,
@@ -141,8 +188,4 @@ class Teacher(models.Model):
         verbose_name_plural = "Преподаватели"
 
     def __str__(self):
-        # Теперь выводим ФИО прямо из модели преподавателя
-        fio = f"{self.last_name} {self.first_name} {self.patronymic}".strip()
-        display_name = fio if fio else self.user.username
-        facult_name = self.faculti.name if self.faculti else 'Без факультета'
-        return f"{display_name} — {facult_name}"
+        return f"{self.surname} {self.name} {self.patronymic} {self.faculty}" 

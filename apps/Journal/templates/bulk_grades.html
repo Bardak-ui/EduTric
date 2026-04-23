@@ -11,7 +11,7 @@
         
         <div class="mb-3" style="max-width: 300px;">
             <label for="date" class="form-label">Дата занятия:</label>
-            <input type="date" name="date" id="date" class="form-control" value="{{ current_date|date:'Y-m-d' }}" required>
+            <input type="date" name="selected_date" id="date" class="form-control" value="{{ current_date }}" required>
         </div>
 
         <div class="table-responsive">
@@ -31,11 +31,11 @@
                             <td>
                                 <select name="grade_{{ student.user.id }}" class="form-select" style="width: 150px;">
                                     <option value="">—</option>
-                                    <option value="5">5 (Отлично)</option>
-                                    <option value="4">4 (Хорошо)</option>
-                                    <option value="3">3 (Удовл.)</option>
-                                    <option value="2">2 (Неуд.)</option>
-                                    <option value="Н">Н (Отсутствие)</option>
+                                    <option value="5" {% if marks_map|get_item:student.user.id == "5" %}selected{% endif %}>5 (Отлично)</option>
+                                    <option value="4" {% if marks_map|get_item:student.user.id == "4" %}selected{% endif %}>4 (Хорошо)</option>
+                                    <option value="3" {% if marks_map|get_item:student.user.id == "3" %}selected{% endif %}>3 (Удовл.)</option>
+                                    <option value="2" {% if marks_map|get_item:student.user.id == "2" %}selected{% endif %}>2 (Неуд.)</option>
+                                    <option value="Н" {% if marks_map|get_item:student.user.id == "Н" %}selected{% endif %}>Н (Отсутствие)</option>
                                 </select>
                             </td>
                         </tr>
