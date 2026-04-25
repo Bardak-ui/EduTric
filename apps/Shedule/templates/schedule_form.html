@@ -4,118 +4,118 @@
 {% block title %}Добавить пару{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'base.css' %}">
-<link rel="stylesheet" href="{% static 'shedule_form.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="{% static 'shedule_form.css' %}">
 
-<div class="form-container">
-    <h1>Добавить пару</h1>
-    <form method="post">
-        {% csrf_token %}
-        
-        <div class="form-group">
-            <label for="{{ form.group.id_for_label }}">Группа:</label>
-            {{ form.group }}
-            {{ form.group.errors }}
-        </div>
+    <div class="form-container">
+        <h1>Добавить пару</h1>
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.group.id_for_label }}">Группа:</label>
+                {{ form.group }}
+                {{ form.group.errors }}
+            </div>
 
-        <div class="form-group">
-            <label for="{{ form.subject.id_for_label }}">Предмет:</label>
-            {{ form.subject }}
-            {{ form.subject.errors }}
-            <small style=\"display:block; margin-top: 4px; color: #666;\">Предметы отфильтрованы по выбранной группе</small>
-        </div>
+            <div class="form-group">
+                <label for="{{ form.subject.id_for_label }}">Предмет:</label>
+                {{ form.subject }}
+                {{ form.subject.errors }}
+                <small style=\"display:block; margin-top: 4px; color: #666;\">Предметы отфильтрованы по выбранной группе</small>
+            </div>
 
-        <div class=\"form-group\">
-            <label for=\"{{ form.teacher.id_for_label }}\">Преподаватель:</label>
-            {{ form.teacher }}
-            {{ form.teacher.errors }}
-            <small style=\"display:block; margin-top: 4px; color: #666;\">Преподаватели ведущие выбранный предмет</small>
-        </div>
+            <div class=\"form-group\">
+                <label for=\"{{ form.teacher.id_for_label }}\">Преподаватель:</label>
+                {{ form.teacher }}
+                {{ form.teacher.errors }}
+                <small style=\"display:block; margin-top: 4px; color: #666;\">Преподаватели ведущие выбранный предмет</small>
+            </div>
 
-        <div class="form-group">
-            <label for="{{ form.weekday.id_for_label }}">День недели:</label>
-            {{ form.weekday }}
-            {{ form.weekday.errors }}
-        </div>
+            <div class="form-group">
+                <label for="{{ form.weekday.id_for_label }}">День недели:</label>
+                {{ form.weekday }}
+                {{ form.weekday.errors }}
+            </div>
 
-        <div class="form-group">
-            <label for="{{ form.lesson_time.id_for_label }}">Время пары:</label>
-            {{ form.lesson_time }}
-            {{ form.lesson_time.errors }}
-        </div>
+            <div class="form-group">
+                <label for="{{ form.lesson_time.id_for_label }}">Время пары:</label>
+                {{ form.lesson_time }}
+                {{ form.lesson_time.errors }}
+            </div>
 
-        <div class="form-group">
-            <label for="{{ form.room.id_for_label }}">Аудитория:</label>
-            {{ form.room }}
-            {{ form.room.errors }}
-        </div>
+            <div class="form-group">
+                <label for="{{ form.room.id_for_label }}">Аудитория:</label>
+                {{ form.room }}
+                {{ form.room.errors }}
+            </div>
 
-        <div class="form-actions">
-            <button type="submit">Сохранить</button>
-            <a href="{% url 'schedule_group' group.id %}" class="delete-link">Отмена</a>
-        </div>
-    </form>
-</div>
+            <div class="form-actions">
+                <button type="submit">Сохранить</button>
+                <a href="{% url 'schedule_group' group.id %}" class="delete-link">Отмена</a>
+            </div>
+        </form>
+    </div>
 
-<script>
-    const subjectSelect = document.getElementById('id_subject');
-    const teacherSelect = document.getElementById('id_teacher');
+    <script>
+        const subjectSelect = document.getElementById('id_subject');
+        const teacherSelect = document.getElementById('id_teacher');
 
-    // Сохраняем оригинальные опции (на случай, если предмет не выбран)
-    const allTeacherOptions = Array.from(teacherSelect.options).map(opt => ({
-        value: opt.value,
-        text: opt.textContent
-    }));
+        // Сохраняем оригинальные опции (на случай, если предмет не выбран)
+        const allTeacherOptions = Array.from(teacherSelect.options).map(opt => ({
+            value: opt.value,
+            text: opt.textContent
+        }));
 
-    document.addEventListener('DOMContentLoaded', function() {
-        if (subjectSelect.value) {
-            updateTeachers();
-        }
-        subjectSelect.addEventListener('change', updateTeachers);
-    });
+        document.addEventListener('DOMContentLoaded', function() {
+            if (subjectSelect.value) {
+                updateTeachers();
+            }
+            subjectSelect.addEventListener('change', updateTeachers);
+        });
 
-    function updateTeachers() {
-        const selectedSubjectId = subjectSelect.value;
-        const currentTeacherId = teacherSelect.value;
-        
-        if (selectedSubjectId) {
-            fetch(`/shedule/api/teachers-by-subject/${selectedSubjectId}/`)
-                .then(response => response.json())
-                .then(data => {
-                    teacherSelect.innerHTML = '<option value="">---------</option>';
-                    
-                    if (data.teachers && data.teachers.length > 0) {
-                        data.teachers.forEach(teacher => {
-                            const optEl = document.createElement('option');
-                            optEl.value = teacher.id;
-                            // ВАЖНО: используем full_name, так как это прилетает из API
-                            optEl.textContent = teacher.full_name; 
-                            teacherSelect.appendChild(optEl);
-                        });
+        function updateTeachers() {
+            const selectedSubjectId = subjectSelect.value;
+            const currentTeacherId = teacherSelect.value;
+            
+            if (selectedSubjectId) {
+                fetch(`/shedule/api/teachers-by-subject/${selectedSubjectId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        teacherSelect.innerHTML = '<option value="">---------</option>';
                         
-                        // Если учитель всего один - выбираем его сразу
-                        if (data.teachers.length === 1) {
-                            teacherSelect.value = data.teachers[0].id;
-                        } else if (currentTeacherId) {
-                            // Если раньше кто-то был выбран, пробуем восстановить
-                            teacherSelect.value = currentTeacherId;
+                        if (data.teachers && data.teachers.length > 0) {
+                            data.teachers.forEach(teacher => {
+                                const optEl = document.createElement('option');
+                                optEl.value = teacher.id;
+                                // ВАЖНО: используем full_name, так как это прилетает из API
+                                optEl.textContent = teacher.full_name; 
+                                teacherSelect.appendChild(optEl);
+                            });
+                            
+                            // Если учитель всего один - выбираем его сразу
+                            if (data.teachers.length === 1) {
+                                teacherSelect.value = data.teachers[0].id;
+                            } else if (currentTeacherId) {
+                                // Если раньше кто-то был выбран, пробуем восстановить
+                                teacherSelect.value = currentTeacherId;
+                            }
                         }
+                    })
+                    .catch(error => console.error('Error fetching teachers:', error));
+            } else {
+                // Возвращаем всех учителей, если предмет сброшен
+                teacherSelect.innerHTML = '<option value="">---------</option>';
+                allTeacherOptions.forEach(opt => {
+                    if (opt.value) {
+                        const optEl = document.createElement('option');
+                        optEl.value = opt.value;
+                        optEl.textContent = opt.text;
+                        teacherSelect.appendChild(optEl);
                     }
-                })
-                .catch(error => console.error('Error fetching teachers:', error));
-        } else {
-            // Возвращаем всех учителей, если предмет сброшен
-            teacherSelect.innerHTML = '<option value="">---------</option>';
-            allTeacherOptions.forEach(opt => {
-                if (opt.value) {
-                    const optEl = document.createElement('option');
-                    optEl.value = opt.value;
-                    optEl.textContent = opt.text;
-                    teacherSelect.appendChild(optEl);
-                }
-            });
+                });
+            }
         }
-    }
-</script>
+    </script>
 
 {% endblock %}

@@ -6,7 +6,6 @@ from apps.Shedule.models import Groups, Faculty
 
 class Role(models.Model):
     ROLE_CHOICES = [
-        ("ADMIN", "Администратор"),
         ("TEACHER", "Преподаватель"),
         ("DEAN", "Декан"),
         ("DIRECTOR", "Директор"),
@@ -159,6 +158,7 @@ class Teacher(models.Model):
     department_name = models.CharField(
         max_length=255,
         blank=True,
+        null=True,
         verbose_name="Конкретная кафедра",
     )
     is_dean = models.BooleanField(
@@ -177,6 +177,7 @@ class Teacher(models.Model):
     subjects = models.ManyToManyField(
         "Shedule.Subject",
         blank=True,
+        null=True,
         related_name="teachers",
         verbose_name="Предметы",
         help_text="Выберите предметы, которые преподаватель ведёт.",

@@ -13,7 +13,7 @@ User = get_user_model()
 def is_academic_office(user):
     if not user.is_authenticated:
         return False
-    return user.is_academic_office  # ← исправлено
+    return user.is_academic_office
 
 
 @login_required

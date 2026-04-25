@@ -17,12 +17,12 @@ def profile_view(request):
     qr_code_image = None
 
     # 1. Логика для ПРЕПОДАВАТЕЛЯ и АДМИНИСТРАЦИИ
-    if user.is_teacher or user.is_dean or user.is_admin or user.is_director:
+    if user.is_teacher or user.is_dean or user.is_admin or user.is_director or user.is_academic_office:
         profile, created = Teacher.objects.get_or_create(
             user=user,
             defaults={
-                "department_name": "Не указана",
-                "is_dean": user.is_dean,
+               "department_name": "Не указана",
+               "is_dean": user.is_dean,
             },
         )
         context["profile"] = profile

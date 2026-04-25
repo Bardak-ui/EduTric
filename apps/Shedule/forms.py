@@ -37,15 +37,15 @@ class ScheduleForm(forms.ModelForm):
             subjects_qs = target_group.subjects.all().select_related('teacher__user')
             
             # Умная сортировка преподавателей по факультету
-            group_faculti = target_group.faculti
-            if group_faculti:
+            group_faculty = target_group.faculty
+            if group_faculty:
                 teachers_qs = teachers_qs.annotate(
                     is_same_fac=Case(
-                        When(faculti=group_faculti, then=Value(1)),
+                        When(faculty=group_faculty, then=Value(1)),
                         default=Value(0),
                         output_field=IntegerField(),
                     )
-                ).order_by("-is_same_fac", "user__last_name")
+                ).order_by("-is_same_fac", "user__last-name")
             
             # Ограничиваем список учителей теми, кто ведет предметы у этой группы
             teachers_qs = teachers_qs.filter(subjects__in=subjects_qs).distinct()
